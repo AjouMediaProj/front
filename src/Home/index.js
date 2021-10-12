@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-
+import { Form, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 
+
+/*
 function Home({ history }) {
     let [voteTitle, voteTitleSetting] = useState(['첫번째', '두번째']);
     let [따봉, 따봉변경] = useState(0);
@@ -10,7 +12,10 @@ function Home({ history }) {
         <div>
             <div className="black-nav">
                 <div> 투표 사이트</div>
-                <button onClick={() => history.push('/login')}> 로그인 </button>
+                <Button variant="outline-primary" onClick={() => history.push('/login')}>
+                    {' '}
+                    로그인{' '}
+                </Button>
                 <button onClick={() => history.push('/register')}> 회원가입 </button>
             </div>
             <div className="list">
@@ -31,5 +36,5 @@ function Home({ history }) {
         </div>
     );
 }
-
-export default withRouter(Home);
+*/
+export default Home;

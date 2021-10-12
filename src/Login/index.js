@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, Commponent } from 'react';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true;
+const headers = { withCredentials: true };
 
 function Login() {
     const [Email, setEmail] = useState('');
@@ -17,6 +21,27 @@ function Login() {
         console.log(Email + Password);
     };
 
+    const login = () => {
+        const loginEmail = Email;
+        const loginPw = Password;
+
+        const send_param = {
+            headers,
+            email: Email,
+            password: Password,
+        };
+        console.log('login s1111uc');
+        axios
+            .post('http://localhost:8080/member/login', send_param)
+            .then((res) => {
+                console.log('login suc');
+                alert(res.data.message);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <div
             style={{
@@ -33,7 +58,7 @@ function Login() {
                 <input type="password" value={Password} onChange={onPasswordHandler} />
 
                 <br />
-                <button>Login</button>
+                <button onClick={login}>Login</button>
             </form>
         </div>
     );
