@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import blote_logo from 'src/img/logo.PNG';
+import ajou_logo from 'src/img/logo.PNG'; //로고체인지
 
 class Header extends Component {
     render() {
         return (
             <StyledHeader>
                 <LogoButton></LogoButton>
-                <Button onClick={() => (window.location.href = '/vote')}> VOTE</Button>
-                <Button> MY PAGE</Button>
-                <Button onClick={() => (window.location.href = '/contact')}> CONTACT US</Button>
+                <Button> 투표목록</Button>
+                <Button> 투표현황/결과</Button>
+                <Button> 투표코드확인</Button>
             </StyledHeader>
         );
     }
@@ -24,7 +24,7 @@ const StyledHeader = styled.div`
     height: 10vh;
     display: flex;
     align-items: flex-end;
-    background-color: white;
+    background-color: #3c3c3c;
     outline-style: solid;
     outline-color: black;
     outline-width: 1px;
@@ -34,21 +34,22 @@ const LogoButton = styled.button`
     width: 180px;
     height: 60%;
     margin-left: 3%;
-    bottom: 1;
+    margin-bottom: 2vh;
     border: 0;
     outline: 0;
-    background-image: url(${blote_logo});
+    background-image: url(${ajou_logo});
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
 `;
 
 const Button = styled.button`
-    color: gray;
+    color: white;
     min-width: 100px;
-    background-color: white;
+    background-color: #3c3c3c;
     margin-left: 5%;
-    font-size: 20px;
+    margin-bottom: 2vh;
+    font-size: 23px;
     font-weight: bold;
     border: 0;
     outline: 0;

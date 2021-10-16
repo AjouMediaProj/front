@@ -58,7 +58,7 @@ class MainBody extends Component {
                 <h2>System</h2>
                 <h3>보다 투명하게, 보다 공정하게</h3>
                 <h3>
-                    <LinkBtn>아주대학교 학생회 투표 참여하기</LinkBtn>
+                    <LinkBtn onClick={() => (window.location.href = '/vote')}>아주대학교 학생회 투표 참여하기</LinkBtn>
                 </h3>
             </StyledBody>
         );

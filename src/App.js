@@ -4,6 +4,7 @@ import './App.css';
 import axios from 'axios';
 
 import Home from 'src/components/Home';
+import Vote from 'src/components/Vote';
 import Contact from 'src/components/Contact';
 import Login from 'src/Login';
 import Register from 'src/Register';
@@ -26,6 +27,7 @@ function App() {
     return (
         <BrowserRouter>
             <Route exact path="/" component={Home} />
+            <Route exact path="/vote" component={Vote} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/contact" component={Contact} />
