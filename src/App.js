@@ -3,10 +3,10 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import axios from 'axios';
 
-import Home from './components/Home';
-import Contact from './components/Contact';
-import Login from './Login';
-import Register from './Register';
+import Home from 'src/components/Home';
+import Contact from 'src/components/Contact';
+import Login from 'src/Login';
+import Register from 'src/Register';
 
 function App() {
     /*

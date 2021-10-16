@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import main_background from '../../img/MainBackground.jpg';
+import main_background from 'src/img/MainBackground.jpg';
 
 const StyledBody = styled.div`
     width: 100%;
@@ -43,7 +43,7 @@ const LinkBtn = styled.button`
     background-color: rgba(0, 0, 0, 0);
     color: white;
     font-size: 20px;
-    :hover  {
+    :hover {
         background-color: white;
         color: black;
     }

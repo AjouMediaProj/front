@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 //import '../../styles/Header.less';
 
 import styled from 'styled-components';
-import blote_logo from '../../img/logo.PNG';
+import blote_logo from 'src/img/logo.PNG';
 
 //vh는 높이의 퍼센트느낌
 //
