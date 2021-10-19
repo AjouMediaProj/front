@@ -27,7 +27,7 @@ function App() {
     return (
         <BrowserRouter>
             <Route exact path="/" component={Home} />
-            <Route exact path="/vote" component={Vote} />
+            <Route path="/vote" component={Vote} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/contact" component={Contact} />

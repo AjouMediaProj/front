@@ -49,6 +49,7 @@ const LinkBtn = styled.button`
     }
 `;
 
+
 class MainBody extends Component {
     render() {
         return (

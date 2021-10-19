@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
 import styled from 'styled-components';
+import VoteList from 'src/components/Vote/VoteList';
+import VoteStatus from 'src/components/Vote/VoteStatus';
 import main_background from 'src/img/MainBackground.jpg';
 
 const StyledBody = styled.div`
     width: 100%;
-    height: 80vh;
+    min-height: 80vh;
     display: flex;
-    outline: none;
 `;
 
 class Body extends Component {
     render() {
         return (
             <StyledBody>
-                <h1>this is body components</h1>
+                <BrowserRouter>
+                    <Route exact path="/vote" component={VoteList} />
+                    <Route exact path="/vote/status" component={VoteStatus} />
+                </BrowserRouter>
             </StyledBody>
         );
     }

@@ -6,9 +6,9 @@ class Header extends Component {
     render() {
         return (
             <StyledHeader>
-                <LogoButton></LogoButton>
-                <Button> 투표목록</Button>
-                <Button> 투표현황/결과</Button>
+                <LogoButton onClick={() => (window.location.href = '/vote')}></LogoButton>
+                <Button onClick={() => (window.location.href = '/vote')}> 투표목록</Button>
+                <Button onClick={() => (window.location.href = '/vote/status')}> 투표현황/결과</Button>
                 <Button> 투표코드확인</Button>
             </StyledHeader>
         );
