@@ -3,14 +3,13 @@ import utils from 'src/utils';
 class Request {
     /**
      *
-     * @param {String} email
-     * @param {String} password
+     *
      * @returns {Promise<String>}
      */
-    async login(email, password) {
+    async getList() {
         try {
-            const response = await utils.axios.post('/auth', { email, password });
-            return response.data.message;
+            const response = await utils.axios.get('/vote/list');
+            return response;
         } catch (e) {
             console.error(e);
             throw e;

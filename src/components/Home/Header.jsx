@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import blote_logo from 'src/img/logo.PNG';
+import blote_logo from 'src/img/Logo.png';
 
 class Header extends Component {
     render() {
@@ -31,13 +31,14 @@ const StyledHeader = styled.div`
 `;
 
 const LogoButton = styled.button`
-    width: 180px;
+    width: 10vw;
     height: 60%;
     margin-left: 3%;
     bottom: 1;
     border: 0;
     outline: 0;
     background-image: url(${blote_logo});
+
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;

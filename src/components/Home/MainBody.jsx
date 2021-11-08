@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import main_background from 'src/img/MainBackground.jpg';
+import main_background from 'src/img/MainBackground.png';
 
 const StyledBody = styled.div`
     width: 100%;
@@ -48,7 +48,6 @@ const LinkBtn = styled.button`
         color: black;
     }
 `;
-
 
 class MainBody extends Component {
     render() {

@@ -1,5 +1,5 @@
 const config = {
-    apiURL: 'http://localhost:8080/',
+    apiURL: 'http://59.12.7.180',
 };
 
 module.exports = config;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import ajou_logo from 'src/img/logo.PNG'; //로고 체인지
+import ajou_logo from 'src/img/Logo.png'; //로고 체인지
 
 const StyledFooter = styled.div`
     height: 10vh;
@@ -12,7 +12,7 @@ const StyledFooter = styled.div`
         width: auto;
         height: auto;
         max-width: 200px;
-        max-height: 5vh;
+        max-height: 10vh;
         margin-left: 85%;
     }
 `;
