@@ -116,6 +116,7 @@ const FormCheckLeft = styled.input.attrs({ type: 'radio' })`
 function Voting({ history }) {
     const location = useLocation();
     const getParams = location.state.voteIdx;
+
     const [selectValue, setValue] = useState(0);
 
     const handleChange = (event) => {
@@ -123,6 +124,28 @@ function Voting({ history }) {
         setValue(value);
         console.log(value);
     };
+
+    const [overview, setOverview] = useState([]);
+
+    useEffect(async () => {
+        try {
+            const res = await api.vote.getOverview(getParams);
+            console.log('1212314123412341234');
+            console.log(res.data.data.candidates[0]);
+            // const _inputData = await res.data.data.list.map((rowData) => ({
+            //     idx: rowData.idx,
+            //     name: rowData.name,
+            //     date: rowData.startTime,
+            //     category: rowData.category,
+            // }));
+
+            // setOverview(overview.concat(_inputData));
+            // console.log(overview);
+        } catch (err) {
+            //팝업
+            console.log(err);
+        }
+    }, []);
 
     const candidates = [
         { id: 1, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
@@ -149,14 +172,14 @@ function Voting({ history }) {
                             <React.Fragment key={i}>
                                 <CandidateBody>
                                     <h4>{candidate.name}</h4>
-                                    <img src="http://t1.daumcdn.net/friends/prod/editor/dc8b3d02-a15a-4afa-a88b-989cf2a50476.jpg" />
-                                    <h5>
+                                    <img src="https://bloteawsbucket.s3.ap-northeast-2.amazonaws.com/original/1636385521467Picture4.jpg" />
+                                    {/* <h5>
                                         <label>
                                             <FormCheckLeft type="radio" id={candidate.id} name={candidate.name} checked={selectValue == candidate.id} onChange={handleChange} value={candidate.id} />
                                             <FormCheckText>찬성</FormCheckText>
                                         </label>
-                                    </h5>
-                                    {/* <h5>
+                                    </h5> */}
+                                    <h5>
                                         찬성
                                         <input
                                             id={candidate.id}
@@ -167,7 +190,7 @@ function Voting({ history }) {
                                             onChange={handleChange}
                                             style={{ width: 25, height: 25 }}
                                         />
-                                    </h5> */}
+                                    </h5>
                                 </CandidateBody>
                             </React.Fragment>
                         </li>
