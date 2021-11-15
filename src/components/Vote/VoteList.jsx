@@ -5,22 +5,25 @@ import * as api from 'src/api';
 function VoteList({ history }) {
     const [votes, setVotes] = useState([]);
 
+    const changeDate = (a, b) => {
+        var date1 = new Date(a * 1000);
+        var date2 = new Date(b * 1000);
+        return date1.getFullYear() + '.' + (date1.getMonth() + 1) + '.' + date1.getDate() + ' ~ ' + date2.getFullYear() + '.' + (date2.getMonth() + 1) + '.' + date2.getDate();
+    };
+
     useEffect(async () => {
         try {
             const res = await api.vote.getList();
-            console.log('1212314123412341234');
-
-            const _inputData = await res.data.data.list.map((rowData) => ({
+            const _inputData = await res.map((rowData) => ({
                 idx: rowData.idx,
                 name: rowData.name,
-                date: rowData.startTime,
+                date: changeDate(rowData.startTime, rowData.endTime),
                 category: rowData.category,
             }));
-
             setVotes(votes.concat(_inputData));
-            console.log(votes);
         } catch (err) {
             //팝업
+            alert(err);
             console.log(err);
         }
     }, []);
@@ -44,7 +47,7 @@ function VoteList({ history }) {
     // ];
 
     const voteAll = votes.filter((vote) => {
-        return vote.category == 0;
+        return vote.category == 1;
     });
 
     const voteListAll = voteAll.map((vote) => (
@@ -52,8 +55,8 @@ function VoteList({ history }) {
             <VoteStyledBody
                 onClick={() => {
                     history.push({
-                        pathname: '/vote/voting',
-                        state: { voteIdx: vote.idx },
+                        pathname: '/vote/agreement',
+                        state: { voteIdx: vote.idx, voteName: vote.name },
                     });
                 }}
                 color="#506EA5">

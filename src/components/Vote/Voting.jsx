@@ -32,7 +32,7 @@ const CandidateListBody = styled.div`
     outline-width: 1px;
 
     ul {
-        height: 60vh;
+        height: 52vh;
         display: flex;
         outline: none;
         flex-direction: vertical;
@@ -51,6 +51,25 @@ const CandidateListBody = styled.div`
         min-width: 30vw;
         margin: 0% 0% 0% 0%;
     }
+
+    button {
+        margin: 0% 0% 0% 0%;
+        width: 10vw;
+        height: 5vh;
+        border-radius: 30px;
+        background-color: #102f57;
+        color: white;
+    }
+`;
+
+const Button = styled.button`
+    align-items: center;
+    margin: 3% 0% 0% 0%;
+    width: 20vw;
+    height: 5vh;
+    border-radius: 30px;
+    background-color: #102f57;
+    color: white;
 `;
 
 const CandidateBody = styled.div`
@@ -118,31 +137,32 @@ function Voting({ history }) {
     const getParams = location.state.voteIdx;
 
     const [selectValue, setValue] = useState(0);
-
     const handleChange = (event) => {
         const { value } = event.target;
         setValue(value);
         console.log(value);
     };
 
+    const [voteName, setVoteName] = useState('');
     const [overview, setOverview] = useState([]);
 
     useEffect(async () => {
         try {
             const res = await api.vote.getOverview(getParams);
-            console.log('1212314123412341234');
-            console.log(res.data.data.candidates[0]);
-            // const _inputData = await res.data.data.list.map((rowData) => ({
-            //     idx: rowData.idx,
-            //     name: rowData.name,
-            //     date: rowData.startTime,
-            //     category: rowData.category,
-            // }));
-
-            // setOverview(overview.concat(_inputData));
-            // console.log(overview);
+            setVoteName(res.voteName);
+            const _inputData = await res.candidates.map((rowData) => ({
+                idx: rowData.idx,
+                voteIdx: rowData.voteIdx,
+                name: rowData.name,
+                img: rowData.img,
+                txt: rowData.txt,
+                count: rowData.count,
+                status: rowData.status,
+            }));
+            setOverview(overview.concat(_inputData));
         } catch (err) {
             //팝업
+            alert(err);
             console.log(err);
         }
     }, []);
@@ -164,15 +184,15 @@ function Voting({ history }) {
 
     return (
         <VotingBody>
-            <h1>2021학년도 아주대학교 총학생회 선거</h1>
+            <h1>{voteName}</h1>
             <CandidateListBody>
                 <ul>
-                    {candidates.map((candidate, i) => (
+                    {overview.map((candidate, i) => (
                         <li>
                             <React.Fragment key={i}>
                                 <CandidateBody>
                                     <h4>{candidate.name}</h4>
-                                    <img src="https://bloteawsbucket.s3.ap-northeast-2.amazonaws.com/original/1636385521467Picture4.jpg" />
+                                    <img src={candidate.img} />
                                     {/* <h5>
                                         <label>
                                             <FormCheckLeft type="radio" id={candidate.id} name={candidate.name} checked={selectValue == candidate.id} onChange={handleChange} value={candidate.id} />
@@ -182,11 +202,11 @@ function Voting({ history }) {
                                     <h5>
                                         찬성
                                         <input
-                                            id={candidate.id}
-                                            value={candidate.id}
+                                            id={candidate.idx}
+                                            value={candidate.idx}
                                             name="candidate"
                                             type="radio"
-                                            checked={selectValue == candidate.id}
+                                            checked={selectValue == candidate.idx}
                                             onChange={handleChange}
                                             style={{ width: 25, height: 25 }}
                                         />
@@ -196,6 +216,12 @@ function Voting({ history }) {
                         </li>
                     ))}
                 </ul>
+                <button
+                    onClick={() => {
+                        alert(selectValue);
+                    }}>
+                    제 출
+                </button>
             </CandidateListBody>
         </VotingBody>
     );
