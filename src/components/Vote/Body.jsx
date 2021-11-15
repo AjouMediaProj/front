@@ -6,6 +6,7 @@ import VoteStatus from 'src/components/Vote/VoteStatus';
 import SignUp from 'src/components/Vote/SignUp';
 import Voting from 'src/components/Vote/Voting';
 import Signature from 'src/components/Vote/Signature';
+import Agreement from 'src/components/Vote/Agreement';
 import main_background from 'src/img/MainBackground.jpg';
 
 const StyledBody = styled.div`
@@ -24,6 +25,7 @@ class Body extends Component {
                     <Route exact path="/vote/signup" component={SignUp} />
                     <Route exact path="/vote/voting" component={Voting} />
                     <Route exact path="/vote/signature" component={Signature} />
+                    <Route exact path="/vote/agreement" component={Agreement} />
                 </BrowserRouter>
             </StyledBody>
         );

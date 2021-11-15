@@ -27,6 +27,9 @@ const SignatureBody = styled.div`
     width: 60vw;
 
     height: 60vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
     background-color: #ffffff;
     outline-style: solid;
     outline-color: black;
@@ -39,11 +42,34 @@ const SignatureBody = styled.div`
         font-weight: bold;
         color: #000000;
     }
+
+    button {
+        margin: 3% 0% 0% 0%;
+        width: 10vw;
+        height: 5vh;
+        border-radius: 30px;
+        font-size: 20px;
+        background-color: #102f57;
+        color: white;
+    }
+
+    /* canvas {
+        margin: 2% 0% 0% 0%;
+        width: 30vw;
+        height: 30vh;
+        outline-style: solid;
+        outline-color: black;
+        outline-width: 1px;
+        background-color: #f7f7f7;
+        border: 1px solid #cdcdcd;
+    } */
 `;
 
 let sigPad = null;
 
-function Signature() {
+function Signature({ history }) {
+    const location = useLocation();
+
     const [sigPadData, setSigPadData] = useState(null);
 
     useEffect(() => {
@@ -51,6 +77,9 @@ function Signature() {
             onBegin: () => {
                 setSigPadData(sigPad.toDataURL());
             },
+            // onEnd: () => {
+            //     sigPad.clear();
+            // },
         });
     }, []);
 
@@ -61,10 +90,19 @@ function Signature() {
 
     return (
         <VotingBody>
-            <h1>2021학년도 아주대학교 총학생회 선거</h1>
+            <h1>{location.state.voteName}</h1>
             <SignatureBody>
                 <h1>전자서명</h1>
-                <canvas width={300} height={325} style={{ border: '1px solid #cdcdcd' }} />
+                <canvas width={600} height={325} style={{ border: '1px solid #000000', background: '#f7f7f7' }} />
+                <button
+                    onClick={() => {
+                        history.push({
+                            pathname: '/vote/voting',
+                            state: { voteIdx: location.state.voteIdx, voteName: location.state.voteName },
+                        });
+                    }}>
+                    확 인
+                </button>
             </SignatureBody>
         </VotingBody>
     );
