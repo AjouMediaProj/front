@@ -16,6 +16,24 @@ class Request {
             throw e;
         }
     }
+
+    /**
+     *
+     * @param {String} email
+     * @returns
+     */
+    async sendEmail(email) {
+        try {
+            const response = await utils.axios.post('/auth/sendmail', { email });
+            if (response.data.data == null) {
+                throw response.data.error;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
 }
 
 export default new Request();
