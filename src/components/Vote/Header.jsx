@@ -11,6 +11,7 @@ class Header extends Component {
                 <Button onClick={() => (window.location.href = '/vote/status')}> 투표현황/결과</Button>
                 <Button> 투표코드확인</Button>
                 <Button onClick={() => (window.location.href = '/vote/signup')}> 회원가입</Button>
+                <Button onClick={() => (window.location.href = '/vote/signin')}> 로그인</Button>
             </StyledHeader>
         );
     }

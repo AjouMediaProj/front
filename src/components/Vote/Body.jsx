@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import VoteList from 'src/components/Vote/VoteList';
 import VoteStatus from 'src/components/Vote/VoteStatus';
 import SignUp from 'src/components/Vote/SignUp';
+import SignIn from 'src/components/Vote/SignIn';
 import Voting from 'src/components/Vote/Voting';
 import Signature from 'src/components/Vote/Signature';
 import Agreement from 'src/components/Vote/Agreement';
@@ -23,6 +24,7 @@ class Body extends Component {
                     <Route exact path="/vote" component={VoteList} />
                     <Route exact path="/vote/status" component={VoteStatus} />
                     <Route exact path="/vote/signup" component={SignUp} />
+                    <Route exact path="/vote/signin" component={SignIn} />
                     <Route exact path="/vote/voting" component={Voting} />
                     <Route exact path="/vote/signature" component={Signature} />
                     <Route exact path="/vote/agreement" component={Agreement} />
