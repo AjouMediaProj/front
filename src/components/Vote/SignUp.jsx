@@ -20,9 +20,11 @@ const SingupBody = styled.div`
 
     button {
         margin: 3% 0% 0% 0%;
-        width: 7vw;
-        height: 5vh;
-        border-radius: 30px;
+        width: 8vw;
+        height: 4vh;
+        font-size: 15px;
+        font-weight: bold;
+        //border-radius: 30px;
         background-color: #102f57;
         color: white;
     }
@@ -71,22 +73,9 @@ const Wrapper = styled.div`
     align-items: center;
     transform: translate(-50%, 0%);
     margin-left: 15vw;
-    /* outline-style: solid;
-    outline-color: red;
-    outline-width: 1px; */
-
     & + & {
         margin-top: 3vh;
     }
-    /* button {
-        margin: 0% 0% 0% 0%;
-        width: 7vw;
-        height: 4vh;
-        border-radius: 30px;
-        background-color: #102f57;
-
-        color: white;
-    } */
 `;
 
 const Label = styled.div`
@@ -94,12 +83,6 @@ const Label = styled.div`
     color: #000000;
     margin-right: 2vw;
     font-weight: bold;
-    /* outline-style: solid;
-    outline-color: green;
-    outline-width: 1px; */
-    /* & + input {
-        margin-left: 3vw;
-    } */
 `;
 
 const Input = styled.input`
@@ -121,16 +104,18 @@ const Input = styled.input`
 const Wrapper2 = styled.div`
     display: flex;
     flex-direction: row;
-    width: 60vw;
-    outline-style: solid;
-    outline-color: blcak;
-    outline-width: 1px;
-
+    justify-content: center;
+    min-width: 50vw;
+    margin-bottom: 3vh;
+    position: relative;
     button {
         margin: 0% 0% 0% 0%;
-        width: 7vw;
+        position: absolute;
+        right: 7vw;
+        width: 8vw;
         height: 4vh;
-        border-radius: 30px;
+        font-size: 15px;
+        font-weight: bold;
         background-color: #102f57;
         color: white;
     }
@@ -142,6 +127,16 @@ const InputWithLabel = ({ label, ...rest }) => (
         <Label>{label}</Label>
         <Input {...rest} />
     </Wrapper>
+);
+
+const InputWithLabel2 = ({ label, ...rest }) => (
+    <Wrapper2>
+        <Wrapper>
+            <Label>{label}</Label>
+            <Input {...rest} />
+        </Wrapper>
+        <button>인증번호 확인</button>
+    </Wrapper2>
 );
 
 //select with label
@@ -173,6 +168,13 @@ function SignUp() {
     const [isName, setIsName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
     const [isConfirmPassword, setIsConfirmPassword] = useState(false);
+    const [isStudentId, setIsStudentId] = useState(false);
+
+    const [bChecked, setChecked] = useState(false);
+    const checkHandler = (e) => {
+        setChecked(!bChecked);
+        //allCheckedHandler(target.checked);
+    };
 
     const onEmailHandler = (event) => {
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -230,6 +232,13 @@ function SignUp() {
 
     const onStudentIdHandler = (event) => {
         setStudentId(event.currentTarget.value);
+        if (event.currentTarget.value.length !== 9) {
+            console.log('학번은 9글자로');
+            setIsStudentId(false);
+        } else {
+            console.log('올바른 형식');
+            setIsStudentId(true);
+        }
     };
 
     const onMajorHandler = (event) => {
@@ -238,19 +247,39 @@ function SignUp() {
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
+        if (!bChecked) {
+            alert('동의해주세요.');
+            return;
+        } else if (!isEmail) {
+            alert('이메일 주소를 올바른 형식으로 입력해주세요.');
+            return;
+        } else if (ConfirmAuth === '' || ConfirmAuth === undefined) {
+            alert('인증번호를 입력해주세요');
+            return;
+        } else if (!isPassword) {
+            alert('비밀번호를 숫자,영문자,특수문자 조합으로 8자리 이상으로 입력해주세요.');
+            return;
+        } else if (!isConfirmPassword) {
+            alert('비밀번호가 일치하지 않아요. 다시 확인해주세요.');
+            return;
+        } else if (!isName) {
+            alert('이름을 입력해주세요.');
+            return;
+        } else if (!isStudentId) {
+            alert('학번을 올바르게 입력해주세요.');
+            return;
+        } else if (Major === null) {
+            alert('학과를 선택해주세요');
+            return;
+        }
         console.log(Email);
+        console.log(typeof ConfirmAuth);
         console.log(Password);
-        console.log(ConfirmAuth);
         console.log(Name);
         console.log(ConfirmPassword);
-        console.log(Major);
-    };
-
-    const [bChecked, setChecked] = useState(false);
-    const checkHandler = (e) => {
-        setChecked(!bChecked);
-
-        //allCheckedHandler(target.checked);
+        console.log(typeof StudentId);
+        console.log(typeof Major);
+        sendAccount();
     };
 
     const sendEmail = async () => {
@@ -260,6 +289,19 @@ function SignUp() {
             console.log(res);
         } catch (err) {
             console.log(err);
+        }
+    };
+
+    const sendAccount = async () => {
+        try {
+            //if(Email)
+            const res = await api.member.sendAccount(Email, Password, ConfirmAuth, Name, StudentId, Major);
+            console.log(res);
+        } catch (e) {
+            if (e.response) {
+                console.log(e.response.data.url);
+            }
+            console.log(e);
         }
     };
 
@@ -297,7 +339,7 @@ function SignUp() {
             label: '미디어학과1',
         },
         {
-            value: 'media8',
+            value: 1010,
             label: '미디어학과2',
         },
     ];
@@ -311,21 +353,14 @@ function SignUp() {
             <h2>
                 <Checkbox checked={bChecked} onChange={(e) => checkHandler(e)} /> 동의합니다.
             </h2>
-
-            <InputWithLabel label="학교 E-mail 인증" name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
-            <button onClick={sendEmail}>인증번호 확인</button>
-
+            <InputWithLabel2 label="학교 E-mail 인증" name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
             <InputWithLabel name="confirmAuth" placeholder="인증번호를 입력해주세요" backColor="#f7f7f7" onChange={onAuthHandler} />
-            <InputWithLabel label="비밀번호" name="pw" onChange={onPasswordHandler} />
-            {/* <h3>올바른 비밀번호 형식이에요</h3> */}
-            <InputWithLabel label="비밀번호 확인" name="confirmPw" onChange={onConfirmPasswordHandler} />
+            <InputWithLabel label="비밀번호" name="pw" onChange={onPasswordHandler} type="password" />
+            <InputWithLabel label="비밀번호 확인" name="confirmPw" onChange={onConfirmPasswordHandler} type="password" />
             <InputWithLabel label="성명" name="name" onChange={onNameHandler} />
             <InputWithLabel label="학번" name="studentId" onChange={onStudentIdHandler} />
             <SelectWithLabel label="학과" options={options} placeholder="학과선택" styles={customStyles} onChange={onMajorHandler} />
-
             <button onClick={onSubmitHandler}> 확인</button>
-
-            {/* {bChecked ? <h2>yes</h2> : <h2>no</h2>} */}
         </SingupBody>
     );
 }
