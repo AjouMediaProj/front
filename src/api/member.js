@@ -34,6 +34,19 @@ class Request {
             throw e;
         }
     }
+
+    async sendAccount(email, password, authCode, name, studentID, major) {
+        try {
+            const response = await utils.axios.post('/auth/signup', { email, password, authCode, name, studentID, major });
+            if (response.data.data == null) {
+                throw response.data.url;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
 }
 
 export default new Request();

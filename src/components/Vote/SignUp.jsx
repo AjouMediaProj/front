@@ -37,9 +37,12 @@ const SingupBody = styled.div`
     }
 
     h3 {
-        margin: 0% 0% 2% 0%;
+        transform: translate(50%, 0%);
+        //margin-left: 50vw;
+        margin: 0.3% 17% 0.3% 0%;
         text-align: center;
-        font-size: 20px;
+        font-size: 17px;
+        color: ${(props) => props.blue || 'red'};
     }
 `;
 
@@ -106,7 +109,7 @@ const Wrapper2 = styled.div`
     flex-direction: row;
     justify-content: center;
     min-width: 50vw;
-    margin-bottom: 3vh;
+    //margin-bottom: 3vh;
     position: relative;
     button {
         margin: 0% 0% 0% 0%;
@@ -121,6 +124,22 @@ const Wrapper2 = styled.div`
     }
 `;
 
+const Wrapper3 = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    outline: none;
+    flex-direction: column;
+    h3 {
+        transform: translate(50%, 0%);
+        //margin-left: 50vw;
+        margin: 0.5% 19% 0.5% 0%;
+        text-align: center;
+        font-size: 14px;
+        color: ${(props) => props.blue || 'red'};
+    }
+`;
+
 //input with label
 const InputWithLabel = ({ label, ...rest }) => (
     <Wrapper>
@@ -129,13 +148,13 @@ const InputWithLabel = ({ label, ...rest }) => (
     </Wrapper>
 );
 
-const InputWithLabel2 = ({ label, ...rest }) => (
+const InputWithLabel2 = ({ label, onClick, ...rest }) => (
     <Wrapper2>
         <Wrapper>
             <Label>{label}</Label>
             <Input {...rest} />
         </Wrapper>
-        <button>인증번호 확인</button>
+        <button onClick={onClick}>인증번호 확인</button>
     </Wrapper2>
 );
 
@@ -164,6 +183,12 @@ function SignUp() {
     const [StudentId, setStudentId] = useState('');
     const [Major, setMajor] = useState(null);
 
+    //오류메시지 상태저장
+    const [nameMessage, setNameMessage] = useState('');
+    const [emailMessage, setEmailMessage] = useState('');
+    const [passwordMessage, setPasswordMessage] = useState('');
+    const [ConfirmPasswordMessage, setConfirmPasswordMessage] = useState('');
+
     const [isEmail, setIsEmail] = useState(false);
     const [isName, setIsName] = useState(false);
     const [isPassword, setIsPassword] = useState(false);
@@ -181,11 +206,13 @@ function SignUp() {
         const emailCurrent = event.currentTarget.value;
         setEmail(emailCurrent);
         if (!emailRegex.test(emailCurrent)) {
-            console.log('이메일 형식이 틀림');
+            //console.log('이메일 형식이 틀림');
             setIsEmail(false);
+            setEmailMessage('이메일 형식이 잘못되었습니다.');
         } else {
-            console.log('올바른 이메일 형식');
+            //console.log('올바른 이메일 형식');
             setIsEmail(true);
+            setEmailMessage('올바른 이메일 형식입니다.');
         }
     };
 
@@ -196,10 +223,10 @@ function SignUp() {
     const onNameHandler = (event) => {
         setName(event.currentTarget.value);
         if (event.currentTarget.value.length < 2 || event.currentTarget.value.length > 5) {
-            console.log('이름을 2~4글자 사이로');
+            //console.log('이름을 2~4글자 사이로');
             setIsName(false);
         } else {
-            console.log('올바른 형식');
+            //console.log('올바른 형식');
             setIsName(true);
         }
     };
@@ -209,11 +236,13 @@ function SignUp() {
         const passwordCurrent = event.currentTarget.value;
         setPassword(passwordCurrent);
         if (!passwordRegex.test(passwordCurrent)) {
-            console.log('숫자+영문자+특수문자 조합으로 8자리 이상으로 입력');
+            //console.log('숫자+영문자+특수문자 조합으로 8자리 이상으로 입력');
             setIsPassword(false);
+            setPasswordMessage('8~16자 영문 소문자, 숫자, 특수문자를 사용하세요.');
         } else {
-            console.log('올바른 비번형식');
+            //console.log('올바른 비번형식');
             setIsPassword(true);
+            setPasswordMessage('올바른 비밀번호 형식입니다.');
         }
     };
 
@@ -222,11 +251,13 @@ function SignUp() {
         setConfirmPassword(passwordConfirmCurrent);
 
         if (Password === passwordConfirmCurrent) {
-            console.log('비밀번호가 똑같아요');
+            //console.log('비밀번호가 똑같아요');
             setIsConfirmPassword(true);
+            setConfirmPasswordMessage('비밀번호가 일치합니다.');
         } else {
-            console.log('비밀번호가 틀려요');
+            //console.log('비밀번호가 틀려요');
             setIsConfirmPassword(false);
+            setConfirmPasswordMessage('비밀번호가 일치하지 않습니다.');
         }
     };
 
@@ -248,7 +279,7 @@ function SignUp() {
     const onSubmitHandler = (event) => {
         event.preventDefault();
         if (!bChecked) {
-            alert('동의해주세요.');
+            alert('약관에 동의해주세요.');
             return;
         } else if (!isEmail) {
             alert('이메일 주소를 올바른 형식으로 입력해주세요.');
@@ -272,21 +303,24 @@ function SignUp() {
             alert('학과를 선택해주세요');
             return;
         }
-        console.log(Email);
-        console.log(typeof ConfirmAuth);
-        console.log(Password);
-        console.log(Name);
-        console.log(ConfirmPassword);
-        console.log(typeof StudentId);
-        console.log(typeof Major);
+        // console.log(Email);
+        // console.log(typeof ConfirmAuth);
+        // console.log(Password);
+        // console.log(Name);
+        // console.log(ConfirmPassword);
+        // console.log(typeof StudentId);
+        // console.log(typeof Major);
         sendAccount();
     };
 
     const sendEmail = async () => {
         try {
-            //if(Email)
-            const res = await api.member.sendEmail(Email);
-            console.log(res);
+            if (isEmail) {
+                const res = await api.member.sendEmail(Email);
+                console.log(res);
+            } else {
+                alert('이메일 주소를 올바른 형식으로 입력해주세요.');
+            }
         } catch (err) {
             console.log(err);
         }
@@ -353,12 +387,40 @@ function SignUp() {
             <h2>
                 <Checkbox checked={bChecked} onChange={(e) => checkHandler(e)} /> 동의합니다.
             </h2>
-            <InputWithLabel2 label="학교 E-mail 인증" name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
+            <InputWithLabel2 label="학교 E-mail 인증" onClick={sendEmail} name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
+            {isEmail ? (
+                <Wrapper3 blue="#1897e0">
+                    <h3>{emailMessage}</h3>
+                </Wrapper3>
+            ) : (
+                <Wrapper3>
+                    <h3>{emailMessage}</h3>
+                </Wrapper3>
+            )}
+
             <InputWithLabel name="confirmAuth" placeholder="인증번호를 입력해주세요" backColor="#f7f7f7" onChange={onAuthHandler} />
             <InputWithLabel label="비밀번호" name="pw" onChange={onPasswordHandler} type="password" />
+            {isPassword ? (
+                <Wrapper3 blue="#1897e0">
+                    <h3>{passwordMessage}</h3>
+                </Wrapper3>
+            ) : (
+                <Wrapper3>
+                    <h3>{passwordMessage}</h3>
+                </Wrapper3>
+            )}
             <InputWithLabel label="비밀번호 확인" name="confirmPw" onChange={onConfirmPasswordHandler} type="password" />
+            {isConfirmPassword ? (
+                <Wrapper3 blue="#1897e0">
+                    <h3>{ConfirmPasswordMessage}</h3>
+                </Wrapper3>
+            ) : (
+                <Wrapper3>
+                    <h3>{ConfirmPasswordMessage}</h3>
+                </Wrapper3>
+            )}
             <InputWithLabel label="성명" name="name" onChange={onNameHandler} />
-            <InputWithLabel label="학번" name="studentId" onChange={onStudentIdHandler} />
+            <InputWithLabel label="학번" name="studentId" onChyange={onStudentIdHandler} />
             <SelectWithLabel label="학과" options={options} placeholder="학과선택" styles={customStyles} onChange={onMajorHandler} />
             <button onClick={onSubmitHandler}> 확인</button>
         </SingupBody>
