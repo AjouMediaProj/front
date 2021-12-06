@@ -389,7 +389,7 @@ function SignUp() {
             </h2>
             <InputWithLabel2 label="학교 E-mail 인증" onClick={sendEmail} name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
             {isEmail ? (
-                <Wrapper3 blue="#1897e0">
+                <Wrapper3 blue="#4f9e4c">
                     <h3>{emailMessage}</h3>
                 </Wrapper3>
             ) : (
@@ -401,7 +401,7 @@ function SignUp() {
             <InputWithLabel name="confirmAuth" placeholder="인증번호를 입력해주세요" backColor="#f7f7f7" onChange={onAuthHandler} />
             <InputWithLabel label="비밀번호" name="pw" onChange={onPasswordHandler} type="password" />
             {isPassword ? (
-                <Wrapper3 blue="#1897e0">
+                <Wrapper3 blue="#4f9e4c">
                     <h3>{passwordMessage}</h3>
                 </Wrapper3>
             ) : (
@@ -411,7 +411,7 @@ function SignUp() {
             )}
             <InputWithLabel label="비밀번호 확인" name="confirmPw" onChange={onConfirmPasswordHandler} type="password" />
             {isConfirmPassword ? (
-                <Wrapper3 blue="#1897e0">
+                <Wrapper3 blue="#4f9e4c">
                     <h3>{ConfirmPasswordMessage}</h3>
                 </Wrapper3>
             ) : (
