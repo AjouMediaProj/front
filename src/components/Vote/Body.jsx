@@ -9,6 +9,7 @@ import Voting from 'src/components/Vote/Voting';
 import Signature from 'src/components/Vote/Signature';
 import Agreement from 'src/components/Vote/Agreement';
 import main_background from 'src/img/MainBackground.jpg';
+import GlobalFonts from 'src/fonts/GlobalFonts';
 
 const StyledBody = styled.div`
     width: 100%;

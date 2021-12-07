@@ -9,6 +9,8 @@ import Contact from 'src/components/Contact';
 import Login from 'src/Login';
 import Register from 'src/Register';
 
+import GlobalFonts from 'src/fonts/GlobalFonts';
+
 function App() {
     /*
     const callApi = async () => {
@@ -26,6 +28,7 @@ function App() {
 
     return (
         <BrowserRouter>
+            <GlobalFonts />
             <Route exact path="/" component={Home} />
             <Route path="/vote" component={Vote} />
             <Route exact path="/login" component={Login} />

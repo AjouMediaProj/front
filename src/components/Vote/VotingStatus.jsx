@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 // import * as wijmo from '@grapecity/wijmo';
 // import * as wjChart from '@grapecity/wijmo.react.chart';
 
-import { Doughnut } from 'react-chartjs-2';
+import { Doughnut, Pie } from 'react-chartjs-2';
 import styled from 'styled-components';
 
 const StatusBody = styled.div`
@@ -25,8 +25,10 @@ const StatusBody = styled.div`
         width: 8vw;
         height: 4vh;
         font-size: 15px;
+
         font-weight: bold;
-        //border-radius: 30px;
+        border-radius: 30px;
+
         background-color: #102f57;
         color: white;
     }
@@ -53,25 +55,32 @@ const Wrapper = styled.div`
         margin: 0% 0% 0% 0%;
         width: 10vw;
         height: 4vh;
-        /* border: 0;
-        outline: 0; */
-
+        border: 0;
+        outline: 0;
         font-size: 16px;
-        font-weight: bold;
+
+        font-weight: ${(props) => (props.status ? 'normal' : 'bold')};
+        text-decoration: ${(props) => (props.status ? 'none' : 'underline')};
         background-color: #ffffff;
-        color: #8b2b2b;
+
+        color: #393939;
     }
+
     h6 {
         padding: 0% 1% 0% 1%;
         text-align: center;
         font-size: 25px;
         color: #000000;
     }
+    h6 + button {
+        font-weight: ${(props) => (props.status ? 'bold' : 'normal')};
+        text-decoration: ${(props) => (props.status ? 'underline' : 'none')};
+    }
 `;
 
 const Wrapper2 = styled.div`
     width: 25vw;
-    height: 25vh;
+    height: 30vh;
     outline-style: solid;
     outline-color: #707070;
     outline-width: 0.5px;
@@ -83,17 +92,24 @@ const Wrapper2 = styled.div`
 `;
 
 const BoxWithText = styled.div`
-    width: 15vw;
-    height: 25vh;
+    width: 20vw;
+    height: 25vh; //25
     outline-style: solid;
     outline-color: #707070;
     outline-width: 0.5px;
     background-color: #e5e5e5;
-    h1 {
-        font-size: 30px;
+
+    h3 {
+        width: 100%;
+        //text-align: left;
+        font-size: 25px;
+        font-family: 'Nanum';
+        word-break: keep-all;
         color: #393939;
     }
-    h2 {
+    h4 {
+        text-align: left;
+        width: 100%;
         margin-top: 1vw;
         font-size: 25px;
         color: #393939;
@@ -106,25 +122,22 @@ const Statusbox = styled.div`
     justify-content: space-around;
     align-items: center;
     width: 90vw;
-    height: 30vh;
+    height: 35vh; //30
     background-color: #e5e5e5;
     outline-style: solid;
     outline-color: #c2c2c2;
     outline-width: 1px;
 
-    h1 {
-        margin: 4% 0% 2% 0%;
-        text-align: center;
-        font-size: 25px;
-        color: #000000;
+    & + & {
+        margin-top: 3vh;
     }
 `;
 
-const BtnAndBtn = ({ ...rest }) => (
-    <Wrapper>
-        <button>진행중인 투표현황</button>
+const BtnAndBtn = ({ onTrue, onFalse, status, ...rest }) => (
+    <Wrapper status={status}>
+        <button onClick={onFalse}>진행중인 투표현황</button>
         <h6>|</h6>
-        <button onClick={() => (window.location.href = '/vote/signup')}>지난 투표결과</button>
+        <button onClick={onTrue}>지난 투표결과</button>
     </Wrapper>
 );
 
@@ -141,6 +154,7 @@ const data = {
         },
     ],
 };
+
 function VotingStatus() {
     // const data = [
     //     { candidate: 'Samsung', votes: 321 },
@@ -155,56 +169,214 @@ function VotingStatus() {
     //     return wijmo.format('{name} {val:p2}', { name: ht.name, val: ht.value / 1546 });
     // };
 
+    const [status, setStatus] = useState(false);
+    const onStatusTrueHandler = () => {
+        setStatus(true);
+    };
+    const onStatusFalseHandler = () => {
+        setStatus(false);
+    };
+
     return (
         <StatusBody>
-            <BtnAndBtn />
-            <h1>진행중인 투표현황</h1>
-            <Statusbox>
-                <BoxWithText>
-                    <h1>2021학년도 아주대학교 총학생회 선거</h1>
-                    <h2>21.11.21~21.12.23</h2>
-                </BoxWithText>
-                <Wrapper2>
-                    <Doughnut
-                        options={{
-                            maintainAspectRatio: false,
-                            legend: {
-                                display: true,
-                                position: 'right',
-                            },
-                            title: {
-                                display: true,
-                                text: '응답자 비율',
-                                fontSize: 15,
-                                fontStyle: 'bold',
-                                fontFamily: 'sans-serif',
-                            },
-                        }}
-                        data={data}
-                        height={100}
-                    />
-                </Wrapper2>
-                <Wrapper2>
-                    <Doughnut
-                        options={{
-                            maintainAspectRatio: false,
-                            legend: {
-                                display: true,
-                                position: 'right',
-                            },
-                            title: {
-                                display: true,
-                                text: '투표 현황',
-                                fontSize: 15,
-                                fontStyle: 'bold',
-                                fontFamily: 'sans-serif',
-                            },
-                        }}
-                        data={data}
-                        height={100}
-                    />
-                </Wrapper2>
-            </Statusbox>
+            <BtnAndBtn onTrue={onStatusTrueHandler} onFalse={onStatusFalseHandler} status={status} />
+            {status ? (
+                <div>
+                    <h1>지난 투표결과</h1>
+                    <Statusbox>
+                        <BoxWithText>
+                            <h3>2021학년도</h3>
+                            <h3>아주대학교</h3>
+                            <h3>총학생회 선거</h3>
+                            <h4>21.11.21~21.12.23</h4>
+                        </BoxWithText>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '응답자 비율',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '투표 현황',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                    </Statusbox>
+                    <Statusbox>
+                        <BoxWithText>
+                            <h3>2021학년도 아주대학교 국방디지털보안미다어학과 선거</h3>
+                            <h4>21.11.21~21.12.23</h4>
+                        </BoxWithText>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '응답자 비율',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '투표 현황',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                    </Statusbox>
+                </div>
+            ) : (
+                <div>
+                    <h1>진행중인 투표현황</h1>
+                    <Statusbox>
+                        <BoxWithText>
+                            <h3>2021학년도</h3>
+                            <h3>아주대학교</h3>
+                            <h3>총학생회 선거</h3>
+                            <h4>21.11.21~21.12.23</h4>
+                        </BoxWithText>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '응답자 비율',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '투표 현황',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                    </Statusbox>
+                    <Statusbox>
+                        <BoxWithText>
+                            <h3>2021학년도 아주대학교 국방디지털보안미다어학과 선거</h3>
+                            <h4>21.11.21~21.12.23</h4>
+                        </BoxWithText>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '응답자 비율',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                        <Wrapper2>
+                            <Doughnut
+                                options={{
+                                    maintainAspectRatio: false,
+                                    legend: {
+                                        display: true,
+                                        position: 'right',
+                                    },
+                                    title: {
+                                        display: true,
+                                        text: '투표 현황',
+                                        fontSize: 15,
+                                        fontStyle: 'bold',
+                                        fontFamily: 'sans-serif',
+                                    },
+                                }}
+                                data={data}
+                                height={100}
+                            />
+                        </Wrapper2>
+                    </Statusbox>
+                </div>
+            )}
         </StatusBody>
     );
 }
