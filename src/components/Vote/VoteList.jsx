@@ -5,10 +5,26 @@ import * as api from 'src/api';
 function VoteList({ history }) {
     const [votes, setVotes] = useState([]);
 
-    const changeDate = (a, b) => {
-        var date1 = new Date(a * 1000);
-        var date2 = new Date(b * 1000);
-        return date1.getFullYear() + '.' + (date1.getMonth() + 1) + '.' + date1.getDate() + ' ~ ' + date2.getFullYear() + '.' + (date2.getMonth() + 1) + '.' + date2.getDate();
+    const changeDate = (start, end) => {
+        const startTime = new Date(start * 1000);
+        const endTime = new Date(end * 1000);
+
+        let startDate = '';
+        startDate += startTime.getFullYear() + '.';
+        startDate += changeDateFomat(startTime.getMonth() + 1);
+        startDate += '.' + changeDateFomat(startTime.getDate());
+
+        let endDate = '';
+        endDate += endTime.getFullYear() + '.';
+        endDate += changeDateFomat(endTime.getMonth() + 1);
+        endDate += '.' + changeDateFomat(endTime.getDate());
+
+        return startDate + ' ~ ' + endDate;
+    };
+
+    const changeDateFomat = (time) => {
+        if (time < 10) return '0' + time;
+        else return time;
     };
 
     useEffect(async () => {
