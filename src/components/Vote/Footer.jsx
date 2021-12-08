@@ -11,6 +11,7 @@ const StyledFooter = styled.div`
     img {
         width: auto;
         height: auto;
+        background-size: contain;
         max-width: 200px;
         max-height: 10vh;
         margin-left: 85%;

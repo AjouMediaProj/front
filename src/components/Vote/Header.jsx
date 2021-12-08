@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import ajou_logo from 'src/img/Logo.png'; //로고체인지
+import ajou_logo from 'src/img/AjouLogo.png'; //로고체인지
 
 class Header extends Component {
     render() {
@@ -33,12 +33,13 @@ const StyledHeader = styled.div`
 `;
 
 const LogoButton = styled.button`
-    width: 180px;
-    height: 60%;
-    margin-left: 3%;
+    width: 11vw;
+    height: 65%;
+    margin-left: 3vw;
     margin-bottom: 2vh;
     border: 0;
     outline: 0;
+    background-color: #3c3c3c;
     background-image: url(${ajou_logo});
     background-repeat: no-repeat;
     background-position: center;
@@ -47,15 +48,15 @@ const LogoButton = styled.button`
 
 const Button = styled.button`
     color: white;
-    min-width: 100px;
+    min-width: 7vw;
     background-color: #3c3c3c;
-    margin-left: 5%;
+    margin-left: 3vw;
     margin-bottom: 2vh;
     font-size: 23px;
 
     border: 0;
     outline: 0;
     & + button {
-        margin-left: 5%;
+        margin-left: 3%;
     }
 `;

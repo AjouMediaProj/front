@@ -4,7 +4,7 @@ import main_background from 'src/img/MainBackground.png';
 
 const StyledBody = styled.div`
     width: 100%;
-    height: 80vh;
+    height: 84vh;
     display: flex;
     outline: none;
     flex-direction: column;

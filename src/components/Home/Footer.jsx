@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 const StyledFooter = styled.div`
-    height: 10vh;
-    background-color: green;
+    height: 8vh;
+    background-color: white;
 `;
 
 class Footer extends Component {
     render() {
-        return <StyledFooter>asdf</StyledFooter>;
+        return <StyledFooter>Footer Part</StyledFooter>;
     }
 }
 
