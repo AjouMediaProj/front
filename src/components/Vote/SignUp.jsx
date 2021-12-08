@@ -13,8 +13,9 @@ const SingupBody = styled.div`
     background-color: #fbfbfb;
 
     h1 {
-        margin: 1% 85% 2% 0%;
+        margin: 1% 80% 1% 0%;
         font-size: 20px;
+        font-weight: bold;
         color: #000000;
     }
 
@@ -23,17 +24,17 @@ const SingupBody = styled.div`
         width: 8vw;
         height: 4vh;
         font-size: 15px;
-        font-weight: bold;
-        //border-radius: 30px;
         background-color: #102f57;
         color: white;
     }
 
     h2 {
+        display: flex;
         margin: 1% 0% 2% 0%;
         text-align: center;
         font-size: 20px;
         color: #000000;
+        align-items: end;
     }
 
     h3 {
@@ -118,7 +119,6 @@ const Wrapper2 = styled.div`
         width: 8vw;
         height: 4vh;
         font-size: 15px;
-        font-weight: bold;
         background-color: #102f57;
         color: white;
     }
@@ -140,6 +140,33 @@ const Wrapper3 = styled.div`
     }
 `;
 
+const Wrapper4 = styled.div`
+    width: 17vw;
+    display: flex;
+    align-items: center;
+    border: 1px solid #707070;
+    background-color: ${(props) => props.backColor || 'white'};
+`;
+
+const Input2 = styled.input`
+    width: 8vw;
+    height: 4vh;
+    font-size: 17px;
+    border: none;
+    padding: 0% 5% 0% 5%;
+    flex-grow: 1;
+
+    &:focus {
+        outline: none;
+    }
+`;
+
+const Label2 = styled.div`
+    font-size: 17px;
+    color: #707070;
+    margin-right: 2vw;
+`;
+
 //input with label
 const InputWithLabel = ({ label, ...rest }) => (
     <Wrapper>
@@ -152,7 +179,10 @@ const InputWithLabel2 = ({ label, onClick, ...rest }) => (
     <Wrapper2>
         <Wrapper>
             <Label>{label}</Label>
-            <Input {...rest} />
+            <Wrapper4>
+                <Input2 {...rest} />
+                <Label2>{'@ajou.ac.kr'}</Label2>
+            </Wrapper4>
         </Wrapper>
         <button onClick={onClick}>인증번호 확인</button>
     </Wrapper2>
@@ -202,18 +232,18 @@ function SignUp() {
     };
 
     const onEmailHandler = (event) => {
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        const emailCurrent = event.currentTarget.value;
-        setEmail(emailCurrent);
-        if (!emailRegex.test(emailCurrent)) {
-            //console.log('이메일 형식이 틀림');
-            setIsEmail(false);
-            setEmailMessage('이메일 형식이 잘못되었습니다.');
-        } else {
-            //console.log('올바른 이메일 형식');
-            setIsEmail(true);
-            setEmailMessage('올바른 이메일 형식입니다.');
-        }
+        // const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+        // const emailCurrent = event.currentTarget.value;
+        // setEmail(emailCurrent);
+        // if (!emailRegex.test(emailCurrent)) {
+        //     //console.log('이메일 형식이 틀림');
+        //     setIsEmail(false);
+        //     setEmailMessage('이메일 형식이 잘못되었습니다.');
+        // } else {
+        //     //console.log('올바른 이메일 형식');
+        //     setIsEmail(true);
+        //     setEmailMessage('올바른 이메일 형식입니다.');
+        // }
     };
 
     const onAuthHandler = (event) => {
@@ -387,7 +417,7 @@ function SignUp() {
             <h2>
                 <Checkbox checked={bChecked} onChange={(e) => checkHandler(e)} /> 동의합니다.
             </h2>
-            <InputWithLabel2 label="학교 E-mail 인증" onClick={sendEmail} name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
+            <InputWithLabel2 label="학교 E-mail 인증" onClick={sendEmail} name="email" onChange={onEmailHandler} />
             {isEmail ? (
                 <Wrapper3 blue="#4f9e4c">
                     <h3>{emailMessage}</h3>
