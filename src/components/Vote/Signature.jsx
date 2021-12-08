@@ -45,10 +45,9 @@ const SignatureBody = styled.div`
 
     button {
         margin: 3% 0% 0% 0%;
-        width: 10vw;
+        width: 6vw;
         height: 5vh;
-        border-radius: 30px;
-        font-size: 20px;
+        font-size: 18px;
         background-color: #102f57;
         color: white;
     }

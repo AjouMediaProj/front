@@ -25,7 +25,6 @@ const VotingBody = styled.div`
         margin: 3% 0% 0% 0%;
         width: 20vw;
         height: 5vh;
-        border-radius: 30px;
         background-color: #102f57;
         color: white;
     }

@@ -44,7 +44,6 @@ const SignInBody = styled.div`
         margin: 5% 0% 0% 0%;
         width: 10vw;
         height: 5vh;
-        border-radius: 30px;
         font-size: 20px;
         background-color: #102f57;
         color: white;

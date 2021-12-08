@@ -61,7 +61,6 @@ const CandidateListBody = styled.div`
         align-self: center;
         margin-bottom: 3vh;
         border: none;
-        border-radius: 30px;
         background-color: #102f57;
         color: white;
     }
