@@ -71,6 +71,7 @@ const CandidateBody = styled.div`
     text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     h4 {
         height: 20%;
@@ -78,7 +79,6 @@ const CandidateBody = styled.div`
         font-weight: bold;
         text-align: center;
         margin: 7% 0% 0% 0%;
-        align-self: center;
     }
     img {
         width: 20vw;
@@ -87,7 +87,6 @@ const CandidateBody = styled.div`
         outline-color: black;
         outline-width: 1px;
         margin: 7% 0% 0% 0%;
-        align-self: center;
     }
 
     h5 {
@@ -97,8 +96,7 @@ const CandidateBody = styled.div`
         font-weight: bold;
         text-align: center;
         margin: 7% 0% 0% 0%;
-        align-self: center;
-        align-items: center;
+        align-items: end;
     }
 `;
 
