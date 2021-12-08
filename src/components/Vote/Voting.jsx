@@ -23,18 +23,21 @@ const VotingBody = styled.div`
 `;
 
 const CandidateListBody = styled.div`
-    min-width: 60vw;
-    max-width: 90vw;
+    width: 70vw;
     height: 60vh;
+    display: flex;
+    flex-direction: column;
     background-color: #ffffff;
     outline-style: solid;
     outline-color: black;
     outline-width: 1px;
 
     ul {
-        height: 52vh;
+        height: 53vh;
+        max-width: 70vw;
         display: flex;
         outline: none;
+        align-self: center;
         flex-direction: vertical;
         overflow: scroll;
         &::-webkit-scrollbar {
@@ -53,33 +56,29 @@ const CandidateListBody = styled.div`
     }
 
     button {
-        margin: 0% 0% 0% 0%;
         width: 10vw;
         height: 5vh;
+        align-self: center;
+        margin-bottom: 3vh;
+        border: none;
         border-radius: 30px;
         background-color: #102f57;
         color: white;
     }
 `;
 
-const Button = styled.button`
-    align-items: center;
-    margin: 3% 0% 0% 0%;
-    width: 20vw;
-    height: 5vh;
-    border-radius: 30px;
-    background-color: #102f57;
-    color: white;
-`;
-
 const CandidateBody = styled.div`
     text-align: center;
+    display: flex;
+    flex-direction: column;
+
     h4 {
         height: 20%;
         font-size: 20px;
         font-weight: bold;
         text-align: center;
         margin: 7% 0% 0% 0%;
+        align-self: center;
     }
     img {
         width: 20vw;
@@ -88,14 +87,18 @@ const CandidateBody = styled.div`
         outline-color: black;
         outline-width: 1px;
         margin: 7% 0% 0% 0%;
+        align-self: center;
     }
 
     h5 {
+        display: flex;
         height: 20%;
         font-size: 20px;
         font-weight: bold;
         text-align: center;
         margin: 7% 0% 0% 0%;
+        align-self: center;
+        align-items: center;
     }
 `;
 
@@ -208,7 +211,7 @@ function Voting({ history }) {
                                             type="radio"
                                             checked={selectValue == candidate.idx}
                                             onChange={handleChange}
-                                            style={{ width: 25, height: 25 }}
+                                            style={{ width: 20, height: 20, marginLeft: 10 }}
                                         />
                                     </h5>
                                 </CandidateBody>

@@ -26,3 +26,7 @@ code {
     padding-left: 20px;
     padding-right: 20px;
 }
+
+button {
+    border: none;
+}

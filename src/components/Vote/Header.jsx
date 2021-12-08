@@ -7,11 +7,10 @@ class Header extends Component {
         return (
             <StyledHeader>
                 <LogoButton onClick={() => (window.location.href = '/vote')}></LogoButton>
-                <Button onClick={() => (window.location.href = '/vote')}> 투표목록</Button>
-                <Button onClick={() => (window.location.href = '/vote/votingstatus')}> 투표현황/결과</Button>
-                <Button> 투표코드확인</Button>
-                <Button onClick={() => (window.location.href = '/vote/signup')}> 회원가입</Button>
-                <Button onClick={() => (window.location.href = '/vote/signin')}> 로그인</Button>
+                <Button onClick={() => (window.location.href = '/vote')}>투표목록</Button>
+                <Button onClick={() => (window.location.href = '/vote/votingstatus')}>투표현황/결과</Button>
+                <Button>투표코드확인</Button>
+                <LoginButton onClick={() => (window.location.href = '/vote/signin')}>로그인</LoginButton>
             </StyledHeader>
         );
     }
@@ -39,8 +38,7 @@ const LogoButton = styled.button`
     margin-bottom: 2vh;
     border: 0;
     outline: 0;
-    background-color: #3c3c3c;
-    background-image: url(${ajou_logo});
+    background: url(${ajou_logo});
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
@@ -48,15 +46,26 @@ const LogoButton = styled.button`
 
 const Button = styled.button`
     color: white;
-    min-width: 7vw;
     background-color: #3c3c3c;
-    margin-left: 3vw;
+    margin-left: 2vw;
     margin-bottom: 2vh;
-    font-size: 23px;
+    font-size: 18px;
 
     border: 0;
     outline: 0;
     & + button {
-        margin-left: 3%;
+        margin-left: 2%;
     }
+`;
+
+const LoginButton = styled.button`
+    flex-grow: 1;
+    text-align: right;
+    margin-right: 3vw;
+    margin-bottom: 3.5vh;
+    border: 0;
+    outline: 0;
+    color: white;
+    background-color: #3c3c3c;
+    font-size: 17px;
 `;

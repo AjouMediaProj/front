@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import ajou_logo from 'src/img/Logo.png'; //로고 체인지
+import ajou_logo from 'src/img/Logo2.png'; //로고 체인지
 
 const StyledFooter = styled.div`
     height: 10vh;
-    background-color: white;
+    background-color: #fbfbfb;
     display: flex;
     align-items: center;
     outline: none;
@@ -12,9 +12,9 @@ const StyledFooter = styled.div`
         width: auto;
         height: auto;
         background-size: contain;
-        max-width: 200px;
-        max-height: 10vh;
-        margin-left: 85%;
+        max-height: 8vh;
+        margin-left: 90%;
+        margin-bottom: 1.5%;
     }
 `;
 

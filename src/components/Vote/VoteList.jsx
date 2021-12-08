@@ -47,7 +47,7 @@ function VoteList({ history }) {
     // ];
 
     const voteAll = votes.filter((vote) => {
-        return vote.category == 1;
+        return vote.category == 0;
     });
 
     const voteListAll = voteAll.map((vote) => (
@@ -159,12 +159,13 @@ const StyledList = styled.ul`
     outline: none;
     flex-direction: vertical;
     flex-flow: wrap;
-    margin-left: 5%;
-    margin-right: 20%;
+    margin-top: 0.5%;
+    margin-left: 5.5%;
+    width: 80%;
 
     li {
         list-style-type: none;
-        width: 25%;
+        width: 20%;
         margin-bottom: 2%;
         margin-right: 5%;
     }
@@ -185,7 +186,7 @@ const VoteStyledBody = styled.div`
 
     h4 {
         height: 60%;
-        font-size: 20px;
+        font-size: 17px;
         font-weight: bold;
         text-align: center;
         line-height: 7vh;
@@ -199,5 +200,6 @@ const VoteStyledBody = styled.div`
         text-align: right;
         padding-right: 3%;
         line-height: 3vh;
+        border-top: 1px solid #212529;
     }
 `;
