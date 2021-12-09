@@ -6,8 +6,8 @@ function VoteList({ history }) {
     const [votes, setVotes] = useState([]);
 
     const changeDate = (start, end) => {
-        const startTime = new Date(start * 1000);
-        const endTime = new Date(end * 1000);
+        const startTime = new Date(start);
+        const endTime = new Date(end);
 
         let startDate = '';
         startDate += startTime.getFullYear() + '.';
