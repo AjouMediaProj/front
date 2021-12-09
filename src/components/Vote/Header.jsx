@@ -1,11 +1,12 @@
 import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ajou_logo from 'src/img/AjouLogo.png'; //로고체인지
+import utils from 'src/utils';
 
 function Header() {
     const [name, setName] = useState();
     useEffect(() => {
-        if (sessionStorage.getItem('auth')) setName(sessionStorage.getItem('name'));
+        if (sessionStorage.getItem('auth')) setName(utils.storageManager.userInfo.name);
     });
 
     const removeData = () => {

@@ -39,7 +39,7 @@ class Request {
 
     /**
      *
-     * @param {String} code
+     * @param {String} transactionHash
      * @returns
      */
     async getVoteReceipt(transactionHash) {

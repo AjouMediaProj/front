@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import * as api from 'src/api';
 import Select from 'react-select';
-import FormImpl from 'react-bootstrap/esm/Form';
+import utils from 'src/utils';
 
 const emailPlaceholder = '@ajou.ac.kr';
 
@@ -213,23 +213,20 @@ function SignIn({ props, location, history }) {
             return;
         }
         console.log(from);
-        //sendSignIn();
-        sessionStorage.setItem('auth', true);
-        sessionStorage.setItem('name', '강지훈');
-        pathCheck();
-        window.location.href = from.pathname;
-        console.log(location);
+        sendSignIn();
     };
 
-    //로그인
+    //Sign-In
     const sendSignIn = async () => {
         try {
-            //if(Email)
             const res = await api.member.sendSignIn(Email + emailPlaceholder, Password);
-            console.log(res);
+            utils.storageManager.setUserInfo(res);
+            utils.storageManager.setAuth(true);
+            pathCheck();
+            window.location.href = from.pathname;
         } catch (e) {
             if (e.response) {
-                console.log(e.response.data.url);
+                //console.log(e.response.data.url);
             }
             console.log(e);
         }

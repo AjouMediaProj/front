@@ -365,16 +365,23 @@ function SignUp() {
             const res = await api.member.sendAccount(Email + emailPlaceholder, Password, ConfirmAuth, Name, StudentId, Major);
             console.log(res);
             //화면넘기기
+            window.location.href = '/vote/signin';
         } catch (e) {
             if (e.response) {
                 if (e.response.status === 409) {
-                    console.log(e.response);
+                    if (e.response.data.error === 'DuplicatedEmail') {
+                        alert('이미 가입된 사용자입니다.');
+                    } else if (e.response.data.error === 'DuplicatedStudentID') {
+                        alert('중복된 학번입니다.');
+                    } else {
+                        console.log(e.response.error);
+                    }
                 } else if (e.response.status === 400) {
                     alert('이메일 인증에 실패하였습니다.\n인증번호를 확인하거나 다시 요청해주시기 바랍니다.');
                 }
-                console.log(e.response.status);
+            } else {
+                console.log(e);
             }
-            console.log(e);
         }
     };
 
