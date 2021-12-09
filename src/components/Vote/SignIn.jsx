@@ -5,6 +5,8 @@ import * as api from 'src/api';
 import Select from 'react-select';
 import FormImpl from 'react-bootstrap/esm/Form';
 
+const emailPlaceholder = '@ajou.ac.kr';
+
 const Body = styled.div`
     width: 100%;
     max-height: 80vh;
@@ -84,11 +86,25 @@ const Wrapper = styled.div`
     }
 `;
 
+const Wrapper2 = styled.div`
+    width: 17vw;
+    display: flex;
+    align-items: center;
+    border: 1px solid #707070;
+    background-color: ${(props) => props.backColor || 'white'};
+`;
+
 const Label = styled.div`
     font-size: 20px;
     color: #000000;
     margin-right: 2vw;
     font-weight: bold;
+`;
+
+const Label2 = styled.div`
+    font-size: 17px;
+    color: #000000;
+    margin-right: 2vw;
 `;
 
 const Input = styled.input`
@@ -102,10 +118,36 @@ const Input = styled.input`
         color: #707070;
         padding: 0% 0% 0% 60%;
     }
+    &:focus {
+        outline: none;
+    }
+`;
+
+const Input2 = styled.input`
+    width: 8vw;
+    height: 4vh;
+    font-size: 17px;
+    border: none;
+    padding: 0% 5% 0% 5%;
+    flex-grow: 1;
+
+    &:focus {
+        outline: none;
+    }
 `;
 
 //input with label
 const InputWithLabel = ({ label, ...rest }) => (
+    <Wrapper transform="translate(-50%, 0%)" marginTop="15vh" marginLeft="20vw">
+        <Label>{label}</Label>
+        <Wrapper2>
+            <Input2 {...rest} />
+            <Label2>{emailPlaceholder}</Label2>
+        </Wrapper2>
+    </Wrapper>
+);
+
+const InputWithLabel2 = ({ label, ...rest }) => (
     <Wrapper transform="translate(-50%, 0%)" marginTop="15vh" marginLeft="20vw">
         <Label>{label}</Label>
         <Input {...rest} />
@@ -132,15 +174,15 @@ function SignIn({ props, location, history }) {
     }, []);
 
     const onEmailHandler = (event) => {
-        const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
         const emailCurrent = event.currentTarget.value;
         setEmail(emailCurrent);
-        if (!emailRegex.test(emailCurrent)) {
-            console.log('이메일 형식이 틀림');
+
+        if (emailCurrent == '') {
             setIsEmail(false);
+            console.log('이메일 형식이 잘못되었습니다.');
         } else {
-            console.log('올바른 이메일 형식');
             setIsEmail(true);
+            console.log('올바른 이메일 형식입니다.');
         }
     };
 
@@ -197,8 +239,8 @@ function SignIn({ props, location, history }) {
         <Body>
             <h1>아주대학교 온라인 투표시스템 로그인</h1>
             <SignInBody>
-                <InputWithLabel label="학교 E-mail" name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
-                <InputWithLabel label="비밀번호" name="password" onChange={onPasswordHandler} type="password" />
+                <InputWithLabel label="학교 E-mail" name="email" onChange={onEmailHandler} />
+                <InputWithLabel2 label="비밀번호" name="password" onChange={onPasswordHandler} type="password" />
                 <button onClick={onSubmitHandler}>로그인</button>
                 <BtnAndBtn />
             </SignInBody>
