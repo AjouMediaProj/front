@@ -24,7 +24,7 @@ class Request {
      */
     async sendEmail(email) {
         try {
-            const response = await utils.axios.post('/auth/sendmail', { email });
+            const response = await utils.axios.post('/auth/send-mail', { email });
             if (response.data.data == null) {
                 throw response.data.error;
             }
@@ -47,7 +47,7 @@ class Request {
      */
     async sendAccount(email, password, authCode, name, studentID, major) {
         try {
-            const response = await utils.axios.post('/auth/signup', { email, password, authCode, name, studentID, major });
+            const response = await utils.axios.post('/auth/sign-up', { email, password, authCode, name, studentID, major });
             if (response.data.data == null) {
                 throw response.data.url;
             }
@@ -66,7 +66,7 @@ class Request {
      */
     async sendSignIn(email, password) {
         try {
-            const response = await utils.axios.post('/auth/signin', { email, password });
+            const response = await utils.axios.post('/auth/sign-in', { email, password });
             if (response.data.data == null) {
                 throw response.data.url;
             }
