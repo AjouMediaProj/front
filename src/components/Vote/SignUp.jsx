@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import * as api from 'src/api';
 import Select from 'react-select';
 
+const emailPlaceholder = '@ajou.ac.kr';
+
 const SingupBody = styled.div`
     width: 100%;
     min-height: 80vh;
@@ -103,6 +105,9 @@ const Input = styled.input`
         color: #707070;
         //padding: 0% 0% 0% 0%;
     }
+    &:focus {
+        outline: none;
+    }
 `;
 
 const Wrapper2 = styled.div`
@@ -163,7 +168,7 @@ const Input2 = styled.input`
 
 const Label2 = styled.div`
     font-size: 17px;
-    color: #707070;
+    color: #000000;
     margin-right: 2vw;
 `;
 
@@ -181,7 +186,7 @@ const InputWithLabel2 = ({ label, onClick, ...rest }) => (
             <Label>{label}</Label>
             <Wrapper4>
                 <Input2 {...rest} />
-                <Label2>{'@ajou.ac.kr'}</Label2>
+                <Label2>{emailPlaceholder}</Label2>
             </Wrapper4>
         </Wrapper>
         <button onClick={onClick}>인증번호 확인</button>
@@ -232,18 +237,16 @@ function SignUp() {
     };
 
     const onEmailHandler = (event) => {
-        // const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
-        // const emailCurrent = event.currentTarget.value;
-        // setEmail(emailCurrent);
-        // if (!emailRegex.test(emailCurrent)) {
-        //     //console.log('이메일 형식이 틀림');
-        //     setIsEmail(false);
-        //     setEmailMessage('이메일 형식이 잘못되었습니다.');
-        // } else {
-        //     //console.log('올바른 이메일 형식');
-        //     setIsEmail(true);
-        //     setEmailMessage('올바른 이메일 형식입니다.');
-        // }
+        const emailCurrent = event.currentTarget.value;
+        setEmail(emailCurrent);
+
+        if (emailCurrent == '') {
+            setIsEmail(false);
+            setEmailMessage('이메일 형식이 잘못되었습니다.');
+        } else {
+            setIsEmail(true);
+            setEmailMessage('올바른 이메일 형식입니다.');
+        }
     };
 
     const onAuthHandler = (event) => {
@@ -262,7 +265,7 @@ function SignUp() {
     };
 
     const onPasswordHandler = (event) => {
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,24}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&^])[A-Za-z\d$@$!%*#?&^]{8,24}$/;
         const passwordCurrent = event.currentTarget.value;
         setPassword(passwordCurrent);
         if (!passwordRegex.test(passwordCurrent)) {
@@ -346,7 +349,7 @@ function SignUp() {
     const sendEmail = async () => {
         try {
             if (isEmail) {
-                const res = await api.member.sendEmail(Email);
+                const res = await api.member.sendEmail(Email + emailPlaceholder);
                 console.log(res);
             } else {
                 alert('이메일 주소를 올바른 형식으로 입력해주세요.');
@@ -358,8 +361,7 @@ function SignUp() {
 
     const sendAccount = async () => {
         try {
-            //if(Email)
-            const res = await api.member.sendAccount(Email, Password, ConfirmAuth, Name, StudentId, Major);
+            const res = await api.member.sendAccount(Email + emailPlaceholder, Password, ConfirmAuth, Name, StudentId, Major);
             console.log(res);
         } catch (e) {
             if (e.response) {
