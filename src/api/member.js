@@ -35,9 +35,38 @@ class Request {
         }
     }
 
+    /**
+     *
+     * @param {String} email
+     * @param {String} password
+     * @param {String} authCode
+     * @param {String} name
+     * @param {String} studentID
+     * @param {*} major
+     * @returns
+     */
     async sendAccount(email, password, authCode, name, studentID, major) {
         try {
             const response = await utils.axios.post('/auth/signup', { email, password, authCode, name, studentID, major });
+            if (response.data.data == null) {
+                throw response.data.url;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    /**
+     *
+     * @param {String} email
+     * @param {String} password
+     * @returns
+     */
+    async sendSignIn(email, password) {
+        try {
+            const response = await utils.axios.post('/auth/signin', { email, password });
             if (response.data.data == null) {
                 throw response.data.url;
             }

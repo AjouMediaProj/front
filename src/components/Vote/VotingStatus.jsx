@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react';
 // import * as wijmo from '@grapecity/wijmo';
 // import * as wjChart from '@grapecity/wijmo.react.chart';
 
-import { Doughnut, Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
 
 const StatusBody = styled.div`
@@ -17,6 +17,7 @@ const StatusBody = styled.div`
     h1 {
         margin: 1% 85% 2% 0%;
         font-size: 20px;
+        font-weight: bold;
         color: #000000;
     }
 
@@ -25,10 +26,8 @@ const StatusBody = styled.div`
         width: 8vw;
         height: 4vh;
         font-size: 15px;
-
         font-weight: bold;
         border-radius: 30px;
-
         background-color: #102f57;
         color: white;
     }
@@ -50,7 +49,7 @@ const Wrapper = styled.div`
     outline-style: solid;
     outline-color: black;
     outline-width: 1px;
-    padding-left: 21vw;
+    padding-left: 14.5vw;
     button {
         margin: 0% 0% 0% 0%;
         width: 10vw;
@@ -65,7 +64,6 @@ const Wrapper = styled.div`
 
         color: #393939;
     }
-
     h6 {
         padding: 0% 1% 0% 1%;
         text-align: center;

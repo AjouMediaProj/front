@@ -44,24 +44,6 @@ function VoteList({ history }) {
         }
     }, []);
 
-    //임시
-    // const votes = [
-    //     { id: 1, name: '26대 총학생회 선거', date: '2121.10.11~2021.12.11', category: '총학생회' },
-    //     { id: 2, name: '정보통신대학1', date: '2121.10.11~2021.12.11', category: '단과대학교' },
-    //     { id: 3, name: '자연과학대학2', date: '2121.10.11~2021.12.11', category: '단과대학교' },
-    //     { id: 7, name: '자연과학대학3', date: '2121.10.11~2021.12.11', category: '단과대학교' },
-    //     { id: 8, name: '자연과학대학4', date: '2121.10.11~2021.12.11', category: '단과대학교' },
-    //     { id: 9, name: '자연과학대학5', date: '2121.10.11~2021.12.11', category: '단과대학교' },
-    //     { id: 10, name: '자연과학대학6', date: '2121.10.11~2021.12.11', category: '단과대학교' },
-    //     { id: 4, name: '미디어학과', date: '2121.10.11~2021.12.11', category: '학과' },
-    //     { id: 5, name: '경제학과', date: '2121.10.11~2021.12.11', category: '학과' },
-    //     { id: 6, name: '금융공학과1', date: '2121.10.11~2021.12.11', category: '학과' },
-    //     { id: 11, name: '금융공학과2', date: '2121.10.11~2021.12.11', category: '학과' },
-    //     { id: 12, name: '금융공학과43', date: '2121.10.11~2021.12.11', category: '학과' },
-    //     { id: 14, name: '금융공학과4', date: '2121.10.11~2021.12.11', category: '학과' },
-    //     { id: 13, name: '금융공학과5', date: '2121.10.11~2021.12.11', category: '학과' },
-    // ];
-
     const voteAll = votes.filter((vote) => {
         return vote.category == 0;
     });
@@ -90,8 +72,8 @@ function VoteList({ history }) {
             <VoteStyledBody
                 onClick={() => {
                     history.push({
-                        pathname: '/vote/signature',
-                        state: { voteIdx: vote.id },
+                        pathname: '/vote/agreement',
+                        state: { voteIdx: vote.idx, voteName: vote.name },
                     });
                 }}
                 color="#2E8B57">
@@ -106,7 +88,14 @@ function VoteList({ history }) {
     });
     const voteListMajor = voteMajor.map((vote) => (
         <li key={vote.id}>
-            <VoteStyledBody color="#8B5927">
+            <VoteStyledBody
+                onClick={() => {
+                    history.push({
+                        pathname: '/vote/agreement',
+                        state: { voteIdx: vote.idx, voteName: vote.name },
+                    });
+                }}
+                color="#8B5927">
                 <h4>{vote.name}</h4>
                 <h5>{vote.date}</h5>
             </VoteStyledBody>

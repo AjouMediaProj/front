@@ -1,19 +1,36 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ajou_logo from 'src/img/AjouLogo.png'; //로고체인지
 
-class Header extends Component {
-    render() {
-        return (
-            <StyledHeader>
-                <LogoButton onClick={() => (window.location.href = '/vote')}></LogoButton>
-                <Button onClick={() => (window.location.href = '/vote')}>투표목록</Button>
-                <Button onClick={() => (window.location.href = '/vote/votingstatus')}>투표현황/결과</Button>
-                <Button>투표코드확인</Button>
-                <LoginButton onClick={() => (window.location.href = '/vote/signin')}>로그인</LoginButton>
-            </StyledHeader>
-        );
-    }
+function Header() {
+    const [name, setName] = useState();
+    useEffect(() => {
+        if (sessionStorage.getItem('auth')) setName(sessionStorage.getItem('name'));
+    });
+
+    const removeData = () => {
+        sessionStorage.clear();
+        window.location.href = '/vote';
+    };
+
+    return (
+        <StyledHeader>
+            <LogoButton onClick={() => (window.location.href = '/vote')}></LogoButton>
+            <Button onClick={() => (window.location.href = '/vote')}>투표목록</Button>
+            <Button onClick={() => (window.location.href = '/vote/votingstatus')}>투표현황/결과</Button>
+            <Button onClick={() => (window.location.href = '/vote/codecheck')}>투표코드확인</Button>
+            <h1></h1>
+
+            {name ? ( //링크 바꿔야함
+                <>
+                    <LoginButton onClick={removeData}>로그아웃</LoginButton>
+                    <LoginButton>{name}님</LoginButton>
+                </>
+            ) : (
+                <LoginButton onClick={() => (window.location.href = '/vote/signin')}>LOGIN</LoginButton>
+            )}
+        </StyledHeader>
+    );
 }
 
 export default Header;
@@ -29,6 +46,10 @@ const StyledHeader = styled.div`
     outline-style: solid;
     outline-color: black;
     outline-width: 1px;
+
+    h1 {
+        flex-grow: 1;
+    }
 `;
 
 const LogoButton = styled.button`
@@ -59,7 +80,7 @@ const Button = styled.button`
 `;
 
 const LoginButton = styled.button`
-    flex-grow: 1;
+    //flex-grow: 1;
     text-align: right;
     margin-right: 3vw;
     margin-bottom: 3.5vh;
