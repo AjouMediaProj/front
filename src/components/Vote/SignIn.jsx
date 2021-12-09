@@ -225,7 +225,7 @@ function SignIn({ props, location, history }) {
     const sendSignIn = async () => {
         try {
             //if(Email)
-            const res = await api.member.sendSignIn(Email, Password);
+            const res = await api.member.sendSignIn(Email + emailPlaceholder, Password);
             console.log(res);
         } catch (e) {
             if (e.response) {
