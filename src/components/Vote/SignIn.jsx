@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import * as api from 'src/api';
 import Select from 'react-select';
@@ -118,14 +119,16 @@ const BtnAndBtn = ({ ...rest }) => (
     </Wrapper>
 );
 
-function SignIn() {
+function SignIn({ props, location, history }) {
     const [Email, setEmail] = useState('');
-
     const [Password, setPassword] = useState('');
 
     const [isEmail, setIsEmail] = useState(false);
-
     const [isPassword, setIsPassword] = useState(false);
+
+    useEffect(() => {
+        if (location.state) alert('로그인후 이용해주세요');
+    }, []);
 
     const onEmailHandler = (event) => {
         const emailRegex = /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
@@ -140,13 +143,57 @@ function SignIn() {
         }
     };
 
+    const onPasswordHandler = (event) => {
+        const passwordCurrent = event.currentTarget.value;
+        setPassword(passwordCurrent);
+        if (passwordCurrent.length > 0) {
+            setIsPassword(true);
+        } else {
+            setIsPassword(false);
+        }
+    };
+    const { from } = location.state || { from: { pathname: '/vote' } };
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        if (!isEmail) {
+            alert('아이디를 입력해주세요');
+            return;
+        } else if (!isPassword) {
+            alert('비밀번호를 입력해주세요');
+            return;
+        }
+        console.log(from);
+        //sendSignIn();
+        sessionStorage.setItem('auth', true);
+        sessionStorage.setItem('name', '강지훈');
+        console.log(sessionStorage.getItem('auth'));
+        // sessionStorage.setItem('auth', true);
+        //history.push('/vote/codecheck');
+        window.location.href = from.pathname;
+        console.log(location);
+    };
+
+    //로그인
+    const sendSignIn = async () => {
+        try {
+            //if(Email)
+            const res = await api.member.sendSignIn(Email, Password);
+            console.log(res);
+        } catch (e) {
+            if (e.response) {
+                console.log(e.response.data.url);
+            }
+            console.log(e);
+        }
+    };
+
     return (
         <Body>
             <h1>아주대학교 온라인 투표시스템 로그인</h1>
             <SignInBody>
                 <InputWithLabel label="학교 E-mail" name="email" placeholder="@ajou.ac.kr" onChange={onEmailHandler} type="email" />
-                <InputWithLabel label="비밀번호" name="password" onChange={onEmailHandler} type="password" />
-                <button>로그인</button>
+                <InputWithLabel label="비밀번호" name="password" onChange={onPasswordHandler} type="password" />
+                <button onClick={onSubmitHandler}>로그인</button>
                 <BtnAndBtn />
             </SignInBody>
         </Body>
