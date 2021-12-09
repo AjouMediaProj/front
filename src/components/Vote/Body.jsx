@@ -29,7 +29,7 @@ class Body extends Component {
                     <Route path="/vote/voting" component={Voting} />
                     <Route path="/vote/signature" component={Signature} />
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/agreement" render={(props) => <Agreement {...props} />} />
-                    <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/codecheck" render={(props) => <CodeCheck {...props} />} />
+                    <Route path="/vote/codecheck" render={(props) => <CodeCheck {...props} />} />
                 </Switch>
             </StyledBody>
         );
