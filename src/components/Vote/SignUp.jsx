@@ -351,6 +351,7 @@ function SignUp() {
             if (isEmail) {
                 const res = await api.member.sendEmail(Email + emailPlaceholder);
                 console.log(res);
+                alert('인증메일이 발송되었습니다. \n이메일을 확인해주세요.');
             } else {
                 alert('이메일 주소를 올바른 형식으로 입력해주세요.');
             }
@@ -363,9 +364,15 @@ function SignUp() {
         try {
             const res = await api.member.sendAccount(Email + emailPlaceholder, Password, ConfirmAuth, Name, StudentId, Major);
             console.log(res);
+            //화면넘기기
         } catch (e) {
             if (e.response) {
-                console.log(e.response.data.url);
+                if (e.response.status === 409) {
+                    console.log(e.response);
+                } else if (e.response.status === 400) {
+                    alert('이메일 인증에 실패하였습니다.\n인증번호를 확인하거나 다시 요청해주시기 바랍니다.');
+                }
+                console.log(e.response.status);
             }
             console.log(e);
         }
@@ -405,7 +412,7 @@ function SignUp() {
             label: '미디어학과1',
         },
         {
-            value: 1010,
+            value: 10101,
             label: '미디어학과2',
         },
     ];
@@ -452,7 +459,7 @@ function SignUp() {
                 </Wrapper3>
             )}
             <InputWithLabel label="성명" name="name" onChange={onNameHandler} />
-            <InputWithLabel label="학번" name="studentId" onChyange={onStudentIdHandler} />
+            <InputWithLabel label="학번" name="studentId" onChange={onStudentIdHandler} />
             <SelectWithLabel label="학과" options={options} placeholder="학과선택" styles={customStyles} onChange={onMajorHandler} />
             <button onClick={onSubmitHandler}> 확인</button>
         </SingupBody>

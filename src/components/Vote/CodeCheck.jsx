@@ -39,6 +39,35 @@ const SignInBody = styled.div`
         color: red;
     }
 
+    h2 {
+        align-self: flex-start;
+        margin: 0% 0% 2% 5%;
+        //text-align: center;
+        font-size: 22px;
+        //font-weight: bold;
+        color: #0139aa;
+    }
+    h3 {
+        align-self: flex-start;
+        margin: 3% 0% 2% 5%;
+        //text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    h4 {
+        align-self: flex-start;
+        margin: 5% 0% 2% 5%;
+        //text-align: center;
+        font-size: 22px;
+
+        color: #000000;
+    }
+    h4 + h4 {
+        margin: -1% 0% 2% 5%;
+    }
+
     button {
         margin: 5% 0% 0% 0%;
         width: 8vw;
@@ -62,17 +91,7 @@ const Wrapper = styled.div`
     & + & {
         margin-top: 3vh;
     }
-    button {
-        width: 20vw;
-        height: 4vh;
-        border: 0;
-        outline: 0;
-        margin-bottom: 4vh;
-        font-size: 20px;
-        font-weight: bold;
-        background-color: #ffffff;
-        color: #000000;
-    }
+
     h6 {
         padding: 0% 10% 0% 10%;
         text-align: center;
@@ -93,12 +112,8 @@ const Input = styled.input`
     height: 4vh;
     border: 1px solid #707070;
     font-size: 20px;
-    padding: 0% 5% 0% 5%;
+    padding: 0% 2% 0% 2%;
     background-color: ${(props) => props.backColor || 'white'};
-    ::placeholder {
-        color: #707070;
-        padding: 0% 0% 0% 60%;
-    }
 `;
 
 //input with label
@@ -110,9 +125,13 @@ const InputWithLabel = ({ label, ...rest }) => (
 );
 
 function CodeCheck({ props, location, history }) {
-    const [name, setName] = useState();
     const [code, setCode] = useState();
     const [isCode, setIsCode] = useState(false);
+
+    const [voteName, setVoteName] = useState();
+    const [candName, setCandName] = useState();
+    const [renounce, setRenounce] = useState(false);
+    const [isTrue, setIsTrue] = useState(false);
     //console.log(location);
 
     useEffect(async () => {
@@ -136,17 +155,58 @@ function CodeCheck({ props, location, history }) {
             alert('투표코드를 올바르게 입력해주세요.');
             return;
         }
+        getReceipt();
         console.log(code);
+    };
+
+    const onResultHandler = (event) => {
+        event.preventDefault();
+        setIsTrue(false);
+        setIsCode(false);
+        setCode('');
+        setVoteName('');
+        setCandName('');
+        setRenounce(false);
+        //window.location.href = '/vote/codecheck';
+    };
+
+    const getReceipt = async () => {
+        try {
+            const res = await api.vote.getVoteReceipt(code);
+            // console.log(res.voteName);
+            // console.log(res.candName);
+            // console.log(res.renounce);
+            setVoteName(res.voteName);
+            setCandName(res.candName);
+            setRenounce(res.renounce);
+            setIsTrue(true);
+        } catch (e) {
+            if (e.response) {
+                console.log(e.response);
+            }
+            console.log(e);
+        }
     };
 
     return (
         <Body>
             <h1>투표코드확인</h1>
-            <SignInBody>
-                <InputWithLabel label="코드입력" onChange={onCodeHandler} onBlur={onCodeHandler} />
-                <button onClick={onSubmitHandler}>확 인</button>
-                <h1>블록체인 투표시스템은 투표코드를 통해 투표결과가 투명하게 진행되었는지 확인할 수 있습니다.</h1>
-            </SignInBody>
+            {isTrue ? (
+                <SignInBody>
+                    <h4>Transaction Hash</h4>
+                    <h2>{code}</h2>
+                    <h3>위 코드에 대한 투표코드 결과</h3>
+                    <h4>참여한 투표: {voteName}</h4>
+                    <h4>투표 내용: {candName} 찬성</h4>
+                    <button onClick={onResultHandler}>확 인</button>
+                </SignInBody>
+            ) : (
+                <SignInBody>
+                    <InputWithLabel label="코드입력" onChange={onCodeHandler} onBlur={onCodeHandler} />
+                    <button onClick={onSubmitHandler}>확 인</button>
+                    <h1>블록체인 투표시스템은 투표코드를 통해 투표결과가 투명하게 진행되었는지 확인할 수 있습니다.</h1>
+                </SignInBody>
+            )}
         </Body>
     );
 }

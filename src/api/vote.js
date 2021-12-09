@@ -8,7 +8,7 @@ class Request {
      */
     async getList() {
         try {
-            const response = await utils.axios.post('/vote/getVoteList');
+            const response = await utils.axios.post('/vote/get-vote-list');
             if (response.data.data == null) {
                 throw response.data.error;
             }
@@ -26,7 +26,25 @@ class Request {
      */
     async getOverview(voteIdx) {
         try {
-            const response = await utils.axios.post('/vote/getVoteOverview', { voteIdx });
+            const response = await utils.axios.post('/vote/get-vote-overview', { voteIdx });
+            if (response.data.data == null) {
+                throw response.data.error;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    /**
+     *
+     * @param {String} code
+     * @returns
+     */
+    async getVoteReceipt(transactionHash) {
+        try {
+            const response = await utils.axios.post('/vote/decode-vote-receipt', { transactionHash });
             if (response.data.data == null) {
                 throw response.data.error;
             }

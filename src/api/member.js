@@ -25,10 +25,7 @@ class Request {
     async sendEmail(email) {
         try {
             const response = await utils.axios.post('/auth/send-mail', { email });
-            if (response.data.data == null) {
-                throw response.data.error;
-            }
-            return response.data.data;
+            return true;
         } catch (e) {
             console.error(e);
             throw e;
@@ -41,17 +38,14 @@ class Request {
      * @param {String} password
      * @param {String} authCode
      * @param {String} name
-     * @param {String} studentID
-     * @param {*} major
+     * @param {Number} studentID
+     * @param {Number} major
      * @returns
      */
     async sendAccount(email, password, authCode, name, studentID, major) {
         try {
             const response = await utils.axios.post('/auth/sign-up', { email, password, authCode, name, studentID, major });
-            if (response.data.data == null) {
-                throw response.data.url;
-            }
-            return response.data.data;
+            return true;
         } catch (e) {
             console.error(e);
             throw e;
