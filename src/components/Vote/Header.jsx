@@ -23,8 +23,8 @@ function Header() {
 
             {name ? ( //링크 바꿔야함
                 <>
-                    <LoginButton onClick={removeData}>로그아웃</LoginButton>
                     <LoginButton>{name}님</LoginButton>
+                    <LoginButton onClick={removeData}>로그아웃</LoginButton>
                 </>
             ) : (
                 <LoginButton onClick={() => (window.location.href = '/vote/signin')}>LOGIN</LoginButton>
@@ -71,7 +71,6 @@ const Button = styled.button`
     margin-left: 2vw;
     margin-bottom: 2vh;
     font-size: 18px;
-
     border: 0;
     outline: 0;
     & + button {

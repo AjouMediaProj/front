@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import * as api from 'src/api';
 import Select from 'react-select';
+import FormImpl from 'react-bootstrap/esm/Form';
 
 const Body = styled.div`
     width: 100%;
@@ -152,7 +153,14 @@ function SignIn({ props, location, history }) {
             setIsPassword(false);
         }
     };
+
     const { from } = location.state || { from: { pathname: '/vote' } };
+    const pathCheck = () => {
+        if (from.pathname === '/vote/agreement') {
+            from.pathname = '/vote';
+        }
+    };
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
         if (!isEmail) {
@@ -166,9 +174,7 @@ function SignIn({ props, location, history }) {
         //sendSignIn();
         sessionStorage.setItem('auth', true);
         sessionStorage.setItem('name', '강지훈');
-        console.log(sessionStorage.getItem('auth'));
-        // sessionStorage.setItem('auth', true);
-        //history.push('/vote/codecheck');
+        pathCheck();
         window.location.href = from.pathname;
         console.log(location);
     };
