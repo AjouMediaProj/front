@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import * as api from 'src/api';
 import Select from 'react-select';
+import utils from 'src/utils';
 
 const emailPlaceholder = '@ajou.ac.kr';
 
@@ -368,7 +369,7 @@ function SignUp() {
             window.location.href = '/vote/signin';
         } catch (e) {
             if (e.response) {
-                if (e.response.status === 409) {
+                if (e.response.status === utils.types.HttpStatus.Conflict) {
                     if (e.response.data.error === 'DuplicatedEmail') {
                         alert('이미 가입된 사용자입니다.');
                     } else if (e.response.data.error === 'DuplicatedStudentID') {
@@ -376,7 +377,7 @@ function SignUp() {
                     } else {
                         console.log(e.response.error);
                     }
-                } else if (e.response.status === 400) {
+                } else if (e.response.status === utils.types.HttpStatus.BadRequest) {
                     alert('이메일 인증에 실패하였습니다.\n인증번호를 확인하거나 다시 요청해주시기 바랍니다.');
                 }
             } else {
