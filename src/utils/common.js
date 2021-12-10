@@ -1,3 +1,5 @@
+import types from 'src/utils/types';
+
 class common {
     /**
      *
@@ -31,6 +33,18 @@ class common {
     changeDateFomat(time) {
         if (time < 10) return '0' + time;
         else return time;
+    }
+
+    errorHandler(err) {
+        if (err.response == null) {
+            console.log(err);
+        } else if (err.response.status === types.HttpStatus.Unauthorized) {
+            alert('세션 만료, 새로고침됩니다.');
+            sessionStorage.clear();
+            window.location.href = '/vote';
+        } else {
+            throw err;
+        }
     }
 }
 
