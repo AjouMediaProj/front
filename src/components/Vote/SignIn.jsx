@@ -196,6 +196,12 @@ function SignIn({ props, location, history }) {
         }
     };
 
+    const onKeyPress = (event) => {
+        if (event.key == 'Enter') {
+            onSubmitHandler(event);
+        }
+    };
+
     const { from } = location.state || { from: { pathname: '/vote' } };
     const pathCheck = () => {
         if (from.pathname === '/vote/agreement') {
@@ -226,9 +232,13 @@ function SignIn({ props, location, history }) {
             window.location.href = from.pathname;
         } catch (e) {
             if (e.response) {
-                //console.log(e.response.data.url);
+                if (e.response.status === utils.types.HttpStatus.NotFound) {
+                    console.log(e.response.data.error);
+                    alert('아이디 혹은 비밀번호가 틀렸습니다.');
+                }
+            } else {
+                console.log(e);
             }
-            console.log(e);
         }
     };
 
@@ -237,7 +247,7 @@ function SignIn({ props, location, history }) {
             <h1>아주대학교 온라인 투표시스템 로그인</h1>
             <SignInBody>
                 <InputWithLabel label="학교 E-mail" name="email" onChange={onEmailHandler} />
-                <InputWithLabel2 label="비밀번호" name="password" onChange={onPasswordHandler} type="password" />
+                <InputWithLabel2 label="비밀번호" name="password" onChange={onPasswordHandler} onKeyPress={onKeyPress} type="password" />
                 <button onClick={onSubmitHandler}>로그인</button>
                 <BtnAndBtn />
             </SignInBody>

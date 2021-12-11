@@ -14,8 +14,7 @@ class Request {
             }
             return response.data.data.list;
         } catch (e) {
-            console.error(e);
-            throw e;
+            utils.common.errorHandler(e);
         }
     }
 
@@ -32,8 +31,7 @@ class Request {
             }
             return response.data.data;
         } catch (e) {
-            console.error(e);
-            throw e;
+            utils.common.errorHandler(e);
         }
     }
 
@@ -50,8 +48,7 @@ class Request {
             }
             return response.data.data;
         } catch (e) {
-            console.error(e);
-            throw e;
+            utils.common.errorHandler(e);
         }
     }
 }

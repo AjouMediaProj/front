@@ -11,8 +11,7 @@ class Request {
             const response = await utils.axios.post('/auth/send-mail', { email });
             return true;
         } catch (e) {
-            console.error(e);
-            throw e;
+            utils.common.errorHandler(e);
         }
     }
 
@@ -31,8 +30,7 @@ class Request {
             const response = await utils.axios.post('/auth/sign-up', { email, password, authCode, name, studentID, major });
             return true;
         } catch (e) {
-            console.error(e);
-            throw e;
+            utils.common.errorHandler(e);
         }
     }
 
@@ -47,8 +45,7 @@ class Request {
             const response = await utils.axios.post('/auth/sign-in', { email, password });
             return response.data.data;
         } catch (e) {
-            console.error(e);
-            throw e;
+            utils.common.errorHandler(e);
         }
     }
 }
