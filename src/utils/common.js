@@ -39,9 +39,9 @@ class common {
         if (err.response == null) {
             console.log(err);
         } else if (err.response.status === types.HttpStatus.Unauthorized) {
-            alert('세션 만료, 새로고침됩니다.');
             sessionStorage.clear();
             window.location.href = '/vote';
+            throw '세션 만료, 새로고침됩니다.';
         } else {
             throw err;
         }

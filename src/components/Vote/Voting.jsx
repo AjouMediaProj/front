@@ -163,7 +163,6 @@ function Voting({ history }) {
         } catch (err) {
             //팝업
             alert(err);
-            console.log(err);
         }
     }, []);
 

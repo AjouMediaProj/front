@@ -1,31 +1,10 @@
 import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import * as api from 'src/api';
+import utils from 'src/utils';
 
 function VoteList({ history }) {
     const [votes, setVotes] = useState([]);
-
-    const changeDate = (start, end) => {
-        const startTime = new Date(start);
-        const endTime = new Date(end);
-
-        let startDate = '';
-        startDate += startTime.getFullYear() + '.';
-        startDate += changeDateFomat(startTime.getMonth() + 1);
-        startDate += '.' + changeDateFomat(startTime.getDate());
-
-        let endDate = '';
-        endDate += endTime.getFullYear() + '.';
-        endDate += changeDateFomat(endTime.getMonth() + 1);
-        endDate += '.' + changeDateFomat(endTime.getDate());
-
-        return startDate + ' ~ ' + endDate;
-    };
-
-    const changeDateFomat = (time) => {
-        if (time < 10) return '0' + time;
-        else return time;
-    };
 
     useEffect(async () => {
         try {
@@ -33,7 +12,7 @@ function VoteList({ history }) {
             const _inputData = await res.map((rowData) => ({
                 idx: rowData.idx,
                 name: rowData.name,
-                date: changeDate(rowData.startTime, rowData.endTime),
+                date: utils.common.changeDate(rowData.startTime, rowData.endTime),
                 category: rowData.category,
             }));
             setVotes(votes.concat(_inputData));
@@ -68,7 +47,7 @@ function VoteList({ history }) {
         return vote.category == 101;
     });
     const voteListCourse = voteCourse.map((vote) => (
-        <li key={vote.id}>
+        <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
                     history.push({
@@ -87,7 +66,7 @@ function VoteList({ history }) {
         return vote.category == 10101;
     });
     const voteListMajor = voteMajor.map((vote) => (
-        <li key={vote.id}>
+        <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
                     history.push({

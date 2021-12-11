@@ -1,9 +1,8 @@
-import React, { Component, useState } from 'react';
-// import * as wijmo from '@grapecity/wijmo';
-// import * as wjChart from '@grapecity/wijmo.react.chart';
-
+import React, { Component, useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
+import utils from 'src/utils';
+import * as api from 'src/api';
 
 const StatusBody = styled.div`
     width: 100%;
@@ -92,9 +91,7 @@ const Wrapper2 = styled.div`
 const BoxWithText = styled.div`
     width: 20vw;
     height: 25vh; //25
-    outline-style: solid;
-    outline-color: #707070;
-    outline-width: 0.5px;
+
     background-color: #e5e5e5;
 
     h3 {
@@ -109,7 +106,7 @@ const BoxWithText = styled.div`
         text-align: left;
         width: 100%;
         margin-top: 1vw;
-        font-size: 25px;
+        font-size: 20px;
         color: #393939;
     }
 `;
@@ -139,34 +136,35 @@ const BtnAndBtn = ({ onTrue, onFalse, status, ...rest }) => (
     </Wrapper>
 );
 
+// const data = {
+//     labels: [],
+//     datasets: [
+//         {
+//             labels: [],
+//             data: [],
+//             borderWidth: 4,
+//             hoverBorderWidth: 3,
+//             backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)'],
+//             fill: true,
+//         },
+//     ],
+// };
+
 const data = {
-    labels: ['긍정적 15%', '부정적', '보통'],
+    labels: ['긍정적 ', '부정적', '보통'],
     datasets: [
         {
-            labels: ['긍정적', '부정적', '보통'],
-            data: [60, 13, 27],
-            borderWidth: 2,
+            labels: ['긍정적 15', '부정적', '보통'],
+            data: [0, 0, 0],
+            borderWidth: 4,
             hoverBorderWidth: 3,
-            backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)'],
+            backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)', 'rgba(255,0,0,1)'],
             fill: true,
         },
     ],
 };
 
 function VotingStatus() {
-    // const data = [
-    //     { candidate: 'Samsung', votes: 321 },
-    //     { candidate: 'Apple', votes: 215 },
-    //     { candidate: 'Huawei', votes: 160 },
-    //     { candidate: 'OPPO', votes: 112 },
-    //     { candidate: 'Vivo', votes: 100 },
-    //     { candidate: 'Others', votes: 638 },
-    // ];
-
-    // const getLabelContent = (ht) => {
-    //     return wijmo.format('{name} {val:p2}', { name: ht.name, val: ht.value / 1546 });
-    // };
-
     const [status, setStatus] = useState(false);
     const onStatusTrueHandler = () => {
         setStatus(true);
@@ -175,6 +173,205 @@ function VotingStatus() {
         setStatus(false);
     };
 
+    const [voteData, setVoteData] = useState([]);
+
+    useEffect(async () => {
+        try {
+            const res = await api.vote.getMyVote();
+            setVoteData(res.list);
+        } catch (e) {
+            if (e.response) {
+                console.log(e.response);
+            } else {
+                console.log(e);
+            }
+        }
+    }, []);
+
+    //Set Vote Name for Status
+    const setVoteName = (name, start, end) => {
+        const array = name.split(' ');
+        let firstStr = array[0];
+        let secondStr = array[1];
+        let lastStr = '';
+        for (var i = 2; i < array.length; i++) {
+            lastStr += array[i] + ' ';
+        }
+        let date = utils.common.changeDate(start, end);
+        return (
+            <BoxWithText>
+                <h3>{firstStr}</h3>
+                <h3>{secondStr}</h3>
+                <h3>{lastStr}</h3>
+                <h4>{date}</h4>
+            </BoxWithText>
+        );
+    };
+
+    const TotalNumber = 250;
+
+    //Set Response Data for Status
+    const setResData = (totalCnt) => {
+        let dataSet = {
+            labels: [],
+            datasets: [
+                {
+                    labels: ['응답자', '미응답자'],
+                    data: [],
+                    borderWidth: 4,
+                    hoverBorderWidth: 3,
+                    backgroundColor: ['rgba(255, 232, 138, 1)', 'rgba(165, 165, 165, 1)'],
+                    fill: true,
+                },
+            ],
+        };
+        dataSet.labels = ['응답자 ' + (totalCnt / TotalNumber) * 100 + '%', '미응답자 ' + ((TotalNumber - totalCnt) / TotalNumber) * 100 + '%'];
+        dataSet.datasets[0].data = [totalCnt, TotalNumber - totalCnt];
+        return dataSet;
+    };
+
+    //Set Candidates Data for Status
+    const setCandData = (candList) => {
+        let dataSet = {
+            labels: [],
+            datasets: [
+                {
+                    labels: [],
+                    data: [],
+                    borderWidth: 4,
+                    hoverBorderWidth: 3,
+                    backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)'],
+                    fill: true,
+                },
+            ],
+        };
+        let total = 0;
+        for (var i = 0; i < candList.length; i++) {
+            total += candList[i].count;
+        }
+        dataSet.labels = candList.map((item) => item.name + ' ' + ((item.count / total) * 100).toFixed(1) + '%');
+        dataSet.datasets[0].labels = candList.map((item) => item.name);
+        dataSet.datasets[0].data = candList.map((item) => item.count);
+        return dataSet;
+    };
+
+    const setCandDataOnly = (totalCnt, candList) => {
+        let dataSet = {
+            labels: [],
+            datasets: [
+                {
+                    labels: [],
+                    data: [],
+                    borderWidth: 4,
+                    hoverBorderWidth: 3,
+                    backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)'],
+                    fill: true,
+                },
+            ],
+        };
+        dataSet.labels = [candList[0].name + ' ' + ((candList[0].count / totalCnt) * 100).toFixed(1) + '%', '반대' + ' ' + (((totalCnt - candList[0].count) / totalCnt) * 100).toFixed(1) + '%'];
+        dataSet.datasets[0].labels = [candList[0].name, '반대'];
+        dataSet.datasets[0].data = [candList[0].count, totalCnt - candList[0].count];
+        return dataSet;
+    };
+
+    const drawVoteStatus = voteData.map((item) => {
+        if (item.candidates.length === 1) {
+            let resData = setResData(item.totalVoteCnt);
+            let candData = setCandDataOnly(item.totalVoteCnt, item.candidates);
+            return (
+                <Statusbox>
+                    {setVoteName(item.voteName, item.startTime, item.endTime)}
+                    <Wrapper2>
+                        <Doughnut
+                            options={{
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: true,
+                                    position: 'right',
+                                },
+                                title: {
+                                    display: true,
+                                    text: '응답자 비율',
+                                    fontSize: 15,
+                                    fontStyle: 'bold',
+                                },
+                            }}
+                            data={resData}
+                            height={100}
+                        />
+                    </Wrapper2>
+                    <Wrapper2>
+                        <Doughnut
+                            options={{
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: true,
+                                    position: 'right',
+                                },
+                                title: {
+                                    display: true,
+                                    text: '투표 현황',
+                                    fontSize: 15,
+                                    fontStyle: 'bold',
+                                },
+                            }}
+                            data={candData}
+                            height={100}
+                        />
+                    </Wrapper2>
+                </Statusbox>
+            );
+        } else {
+            let resData = setResData(item.totalVoteCnt);
+            let candData = setCandData(item.candidates);
+
+            return (
+                <Statusbox>
+                    {setVoteName(item.voteName, item.startTime, item.endTime)}
+                    <Wrapper2>
+                        <Doughnut
+                            options={{
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: true,
+                                    position: 'right',
+                                },
+                                title: {
+                                    display: true,
+                                    text: '응답자 비율',
+                                    fontSize: 15,
+                                    fontStyle: 'bold',
+                                },
+                            }}
+                            data={resData}
+                            height={100}
+                        />
+                    </Wrapper2>
+                    <Wrapper2>
+                        <Doughnut
+                            options={{
+                                maintainAspectRatio: false,
+                                legend: {
+                                    display: true,
+                                    position: 'right',
+                                },
+                                title: {
+                                    display: true,
+                                    text: '투표 현황',
+                                    fontSize: 15,
+                                    fontStyle: 'bold',
+                                },
+                            }}
+                            data={candData}
+                            height={100}
+                        />
+                    </Wrapper2>
+                </Statusbox>
+            );
+        }
+    });
+
     return (
         <StatusBody>
             <BtnAndBtn onTrue={onStatusTrueHandler} onFalse={onStatusFalseHandler} status={status} />
@@ -182,58 +379,6 @@ function VotingStatus() {
                 <div>
                     <h1>지난 투표결과</h1>
                     <Statusbox>
-                        <BoxWithText>
-                            <h3>2021학년도</h3>
-                            <h3>아주대학교</h3>
-                            <h3>총학생회 선거</h3>
-                            <h4>21.11.21~21.12.23</h4>
-                        </BoxWithText>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '응답자 비율',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '투표 현황',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                    </Statusbox>
-                    <Statusbox>
-                        <BoxWithText>
-                            <h3>2021학년도 아주대학교 국방디지털보안미다어학과 선거</h3>
-                            <h4>21.11.21~21.12.23</h4>
-                        </BoxWithText>
                         <Wrapper2>
                             <Doughnut
                                 options={{
@@ -279,100 +424,7 @@ function VotingStatus() {
             ) : (
                 <div>
                     <h1>진행중인 투표현황</h1>
-                    <Statusbox>
-                        <BoxWithText>
-                            <h3>2021학년도</h3>
-                            <h3>아주대학교</h3>
-                            <h3>총학생회 선거</h3>
-                            <h4>21.11.21~21.12.23</h4>
-                        </BoxWithText>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '응답자 비율',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '투표 현황',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                    </Statusbox>
-                    <Statusbox>
-                        <BoxWithText>
-                            <h3>2021학년도 아주대학교 국방디지털보안미다어학과 선거</h3>
-                            <h4>21.11.21~21.12.23</h4>
-                        </BoxWithText>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '응답자 비율',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '투표 현황',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                    </Statusbox>
+                    {drawVoteStatus}
                 </div>
             )}
         </StatusBody>
