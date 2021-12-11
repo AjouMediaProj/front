@@ -69,6 +69,26 @@ class Request {
             throw e;
         }
     }
+
+    /**
+     *
+     * @param {Number} voteIdx
+     * @param {Number} candIdx
+     * @param {Boolean} renounce
+     * @returns
+     */
+    async sendVote(voteIdx, candIdx, renounce) {
+        try {
+            const response = await utils.axios.post('/vote/vote', { voteIdx, candIdx, renounce });
+            if (response.data.data == null) {
+                throw response.data.error;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
 }
 
 export default new Request();

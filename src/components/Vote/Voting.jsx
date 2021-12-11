@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import main_background from 'src/img/MainBackground.png';
 import * as api from 'src/api';
+import utils from 'src/utils';
 
 const VotingBody = styled.div`
     width: 100%;
@@ -137,6 +138,7 @@ function Voting({ history }) {
     const getParams = location.state.voteIdx;
 
     const [selectValue, setValue] = useState(0);
+
     const handleChange = (event) => {
         const { value } = event.target;
         setValue(value);
@@ -166,20 +168,35 @@ function Voting({ history }) {
         }
     }, []);
 
-    const candidates = [
-        { id: 1, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        { id: 2, voteIdx: 1, name: '홍길동1', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        { id: 3, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        { id: 4, voteIdx: 1, name: '홍길동1', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        { id: 5, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 6, voteIdx: 1, name: '홍길동1', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 7, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 8, voteIdx: 1, name: '홍길동1', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 9, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 10, voteIdx: 1, name: '홍길동1', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 11, voteIdx: 1, name: '홍길동', img: 'asd', txt: 'asd', count: 0, state: 0 },
-        // { id: 12, voteIdx: 1, name: '홍길동1', img: 'asd', txt: 'asd', count: 0, state: 0 },
-    ];
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        if (selectValue === 0) {
+            alert('후보를 선택해주세요.');
+            return;
+        } else {
+            sendVote();
+        }
+    };
+
+    const sendVote = async () => {
+        try {
+            const res = await api.vote.sendVote(location.state.voteIdx, selectValue, false);
+            let hash = res.receipt;
+            history.push({
+                pathname: '/vote/voteresult',
+                state: { hash: hash, voteName: location.state.voteName },
+            });
+        } catch (e) {
+            if (e.response) {
+                if (e.response.status === utils.types.HttpStatus.NotFound) {
+                    console.log(e.response.data.error);
+                    //alert('아이디 혹은 비밀번호가 틀렸습니다.');
+                }
+            } else {
+                alert(e);
+            }
+        }
+    };
 
     return (
         <VotingBody>
@@ -215,12 +232,7 @@ function Voting({ history }) {
                         </li>
                     ))}
                 </ul>
-                <button
-                    onClick={() => {
-                        alert(selectValue);
-                    }}>
-                    제 출
-                </button>
+                <button onClick={onSubmitHandler}>제 출</button>
             </CandidateListBody>
         </VotingBody>
     );

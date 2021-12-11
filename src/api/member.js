@@ -8,7 +8,7 @@ class Request {
      */
     async sendEmail(email) {
         try {
-            const response = await utils.axios.post('/auth/send-mail', { email });
+            const response = await utils.axios.post('/auth/send-auth-mail', { email });
             return true;
         } catch (e) {
             utils.common.errorHandler(e);
