@@ -51,6 +51,24 @@ class Request {
             utils.common.errorHandler(e);
         }
     }
+
+    /**
+     *
+     *
+     * @returns
+     */
+    async getMyVote() {
+        try {
+            const response = await utils.axios.post('/vote/get-my-vote-in-progress');
+            if (response.data.data == null) {
+                throw response.data.error;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
 }
 
 export default new Request();

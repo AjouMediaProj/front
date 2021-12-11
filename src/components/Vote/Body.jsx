@@ -23,7 +23,8 @@ class Body extends Component {
             <StyledBody>
                 <Switch>
                     <Route exact path="/vote" component={VoteList} />
-                    <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/votingstatus" render={(props) => <VotingStatus {...props} />} />
+                    {/* <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/votingstatus" render={(props) => <VotingStatus {...props} />} /> */}
+                    <Route path="/vote/votingstatus" component={VotingStatus} />
                     <Route path="/vote/signup" component={SignUp} />
                     <Route path="/vote/signin" render={(props) => <SignIn {...props} />} />
                     <Route path="/vote/voting" component={Voting} />
