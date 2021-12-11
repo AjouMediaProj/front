@@ -367,6 +367,7 @@ function SignUp() {
             console.log(res);
             //화면넘기기
             window.location.href = '/vote/signin';
+            alert('회원가입에 성공했습니다.');
         } catch (e) {
             if (e.response) {
                 if (e.response.status === utils.types.HttpStatus.Conflict) {
@@ -381,7 +382,7 @@ function SignUp() {
                     alert('이메일 인증에 실패하였습니다.\n인증번호를 확인하거나 다시 요청해주시기 바랍니다.');
                 }
             } else {
-                console.log(e);
+                alert(e);
             }
         }
     };
