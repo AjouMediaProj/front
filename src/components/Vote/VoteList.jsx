@@ -11,7 +11,7 @@ function VoteList({ history }) {
             const res = await api.vote.getList();
             const _inputData = await res.map((rowData) => ({
                 idx: rowData.idx,
-                name: rowData.name,
+                name: splitName(rowData.name),
                 date: utils.common.changeDate(rowData.startTime, rowData.endTime),
                 category: rowData.category,
             }));
@@ -22,6 +22,18 @@ function VoteList({ history }) {
             console.log(err);
         }
     }, []);
+
+    const splitName = (name) => {
+        let rtn = '';
+        const nameArr = name.split(' ');
+        for (let i in nameArr) {
+            if (i == 0) {
+                continue;
+            }
+            rtn += nameArr[i] + ' ';
+        }
+        return rtn;
+    };
 
     const voteAll = votes.filter((vote) => {
         return vote.category == 0;
