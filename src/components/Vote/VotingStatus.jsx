@@ -22,9 +22,6 @@ const StatusBody = styled.div`
         font-size: 20px;
         font-weight: bold;
         color: #000000;
-        outline-style: solid;
-        outline-color: black;
-        outline-width: 1px;
     }
 
     button {
@@ -43,6 +40,9 @@ const StatusBody = styled.div`
         text-align: center;
         font-size: 20px;
         color: #000000;
+    }
+    h5 {
+        flex-grow: 1;
     }
 `;
 
@@ -270,6 +270,28 @@ const Table = styled.table`
     }
 `;
 
+const Wrapper5 = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 10vw;
+    height: 3vh;
+    background-color: #fbfbfb;
+    //justify-content: center;
+`;
+
+const BtnContainer = styled.div`
+    button {
+        margin: 0 0 0 0;
+        width: 4vw;
+        height: 3vh;
+        color: #080808;
+        background-color: #fbfbfb;
+        font-size: 15px;
+        font-weight: ${(props) => props.weight || 'normal'};
+    }
+`;
+
 function VotingStatus({ history }) {
     const location = useLocation();
 
@@ -289,7 +311,8 @@ function VotingStatus({ history }) {
     //----------------------------------------------------------------------
     const [year, setYear] = useState(0);
     const [title, setTitle] = useState('');
-    const [isTitle, setIsTitle] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [isBold, setIsBold] = useState(false);
 
     useEffect(async () => {
         try {
@@ -516,10 +539,39 @@ function VotingStatus({ history }) {
 
     const onTitleHandler = (event) => {
         setTitle(event.currentTarget.value);
-        if (event.currentTarget.value.length > 0) {
-            setIsTitle(true);
-        } else {
-            setIsTitle(false);
+    };
+
+    const onSearchHandler = async (page) => {
+        if (page > 0 && page < Math.ceil(listCount / 8) + 1) {
+            setPageNumber(page);
+            try {
+                const res = await api.vote.getPastVote(page, title, year);
+                setPastVoteData(res.list);
+                setListCount(res.totalCount);
+            } catch (e) {
+                if (e.response) {
+                    if (e.response.status === utils.types.HttpStatus.Conflict) {
+                        // if (e.response.data.error === 'DuplicatedEmail') {
+                        //     alert('이미 가입된 사용자입니다.');
+                        // } else if (e.response.data.error === 'DuplicatedStudentID') {
+                        //     alert('중복된 학번입니다.');
+                        // } else {
+                        //     console.log(e.response.error);
+                        // }
+                    } else if (e.response.status === utils.types.HttpStatus.BadRequest) {
+                        //alert('이메일 인증에 실패하였습니다.\n인증번호를 확인하거나 다시 요청해주시기 바랍니다.');
+                    }
+                } else {
+                    alert(e);
+                }
+            }
+        }
+    };
+
+    const onKeyPress = (event) => {
+        if (event.key == 'Enter') {
+            onSearchHandler(1);
+            console.log(12);
         }
     };
 
@@ -547,6 +599,11 @@ function VotingStatus({ history }) {
         );
     });
 
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(listCount / 8); i++) {
+        pageNumbers.push(i);
+    }
+
     return (
         <StatusBody>
             <BtnAndBtn onTrue={onStatusTrueHandler} onFalse={onStatusFalseHandler} status={status} />
@@ -556,8 +613,11 @@ function VotingStatus({ history }) {
                     <Wrapper3>
                         <Select label="연도" options={options} placeholder="연도" styles={customStyles} onChange={onYearHandler} />
                         <Wrapper4>
-                            <Input name="title" placeholder="투표 검색" onChange={onTitleHandler} />
-                            <button></button>
+                            <Input name="title" placeholder="투표 검색" onChange={onTitleHandler} onKeyPress={onKeyPress} />
+                            <button
+                                onClick={() => {
+                                    onSearchHandler(1);
+                                }}></button>
                         </Wrapper4>
                     </Wrapper3>
                     <Table>
@@ -570,6 +630,46 @@ function VotingStatus({ history }) {
                         </thead>
                         <tbody>{drawPastVoteList}</tbody>
                     </Table>
+                    <h5></h5>
+                    <Wrapper5 weight={isBold}>
+                        <BtnContainer>
+                            <button
+                                onClick={() => {
+                                    onSearchHandler(pageNumber - 1);
+                                }}>
+                                &lt; 이전
+                            </button>
+                        </BtnContainer>
+                        {pageNumbers.map((num) => {
+                            return num === pageNumber ? (
+                                <BtnContainer weight="bold">
+                                    <button
+                                        onClick={() => {
+                                            onSearchHandler(num);
+                                        }}>
+                                        {num}
+                                    </button>
+                                </BtnContainer>
+                            ) : (
+                                <BtnContainer>
+                                    <button
+                                        onClick={() => {
+                                            onSearchHandler(num);
+                                        }}>
+                                        {num}
+                                    </button>
+                                </BtnContainer>
+                            );
+                        })}
+                        <BtnContainer>
+                            <button
+                                onClick={() => {
+                                    onSearchHandler(pageNumber + 1);
+                                }}>
+                                다음 &gt;
+                            </button>
+                        </BtnContainer>
+                    </Wrapper5>
                 </>
             ) : (
                 <>
