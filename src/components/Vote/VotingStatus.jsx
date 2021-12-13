@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
 import utils from 'src/utils';
@@ -269,8 +270,12 @@ const Table = styled.table`
     }
 `;
 
-function VotingStatus() {
-    const [status, setStatus] = useState(false); //false: progress , ture: past
+function VotingStatus({ history }) {
+    const location = useLocation();
+
+    const getParams = location.state ? location.state.status : false;
+
+    const [status, setStatus] = useState(getParams); //false: progress , ture: past
     const onStatusTrueHandler = () => {
         setStatus(true);
     };
@@ -282,12 +287,15 @@ function VotingStatus() {
     const [pastVoteData, setPastVoteData] = useState([]);
     const [listCount, setListCount] = useState();
     //----------------------------------------------------------------------
-    const [year, setYear] = useState();
+    const [year, setYear] = useState(0);
     const [title, setTitle] = useState('');
     const [isTitle, setIsTitle] = useState(false);
 
     useEffect(async () => {
         try {
+            setStatus(utils.storageManager.back ? true : status);
+            sessionStorage.removeItem('back');
+
             if (!status) {
                 const res = await api.vote.getMyVote();
                 setVoteData(res.list);
@@ -525,7 +533,13 @@ function VotingStatus() {
             }
         }
         return (
-            <tr>
+            <tr
+                onClick={() =>
+                    history.push({
+                        pathname: '/vote/pastvotingstatus',
+                        state: { data: item },
+                    })
+                }>
                 <td>{item.idx}</td>
                 <td>{item.voteName}</td>
                 <td>{result}</td>
@@ -554,19 +568,6 @@ function VotingStatus() {
                                 <th>결과</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>2</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>3</td>
-                                <td>2</td>
-                            </tr>
-                        </tbody>
-
                         <tbody>{drawPastVoteList}</tbody>
                     </Table>
                 </>

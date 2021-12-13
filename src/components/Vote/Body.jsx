@@ -3,6 +3,7 @@ import { BrowserRouter as Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 import VoteList from 'src/components/Vote/VoteList';
 import VotingStatus from 'src/components/Vote/VotingStatus';
+import PastVotingStatus from 'src/components/Vote/PastVotingStatus';
 import SignUp from 'src/components/Vote/SignUp';
 import SignIn from 'src/components/Vote/SignIn';
 import Voting from 'src/components/Vote/Voting';
@@ -24,8 +25,9 @@ class Body extends Component {
             <StyledBody>
                 <Switch>
                     <Route exact path="/vote" component={VoteList} />
-                    {/* <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/votingstatus" render={(props) => <VotingStatus {...props} />} /> */}
-                    <Route path="/vote/votingstatus" component={VotingStatus} />
+                    <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/votingstatus" render={(props) => <VotingStatus {...props} />} />
+                    <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/pastvotingstatus" render={(props) => <PastVotingStatus {...props} />} />
+
                     <Route path="/vote/signup" component={SignUp} />
                     <Route path="/vote/signin" render={(props) => <SignIn {...props} />} />
                     <Route path="/vote/voting" component={Voting} />
