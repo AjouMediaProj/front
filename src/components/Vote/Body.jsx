@@ -11,6 +11,7 @@ import Signature from 'src/components/Vote/Signature';
 import Agreement from 'src/components/Vote/Agreement';
 import VoteResult from 'src/components/Vote/VoteResult';
 import CodeCheck from 'src/components/Vote/CodeCheck';
+import MyPage from 'src/components/Vote/MyPage';
 import AuthRoute from 'src/components/AuthRoute';
 
 const StyledBody = styled.div`
@@ -27,6 +28,7 @@ class Body extends Component {
                     <Route exact path="/vote" component={VoteList} />
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/votingstatus" render={(props) => <VotingStatus {...props} />} />
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/pastvotingstatus" render={(props) => <PastVotingStatus {...props} />} />
+                    <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/mypage" render={(props) => <MyPage {...props} />} />
 
                     <Route path="/vote/signup" component={SignUp} />
                     <Route path="/vote/signin" render={(props) => <SignIn {...props} />} />
