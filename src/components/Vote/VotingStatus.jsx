@@ -2,7 +2,9 @@ import React, { Component, useState, useEffect } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
 import utils from 'src/utils';
+import Select from 'react-select';
 import * as api from 'src/api';
+import btn_logo from 'src/img/search.png';
 
 const StatusBody = styled.div`
     width: 100%;
@@ -14,10 +16,14 @@ const StatusBody = styled.div`
     background-color: #fbfbfb;
 
     h1 {
-        margin: 1% 85% 2% 0%;
+        margin: 1% 70% 2% 0%;
+        width: 20vw;
         font-size: 20px;
         font-weight: bold;
         color: #000000;
+        outline-style: solid;
+        outline-color: black;
+        outline-width: 1px;
     }
 
     button {
@@ -164,8 +170,107 @@ const data = {
     ],
 };
 
+//styles of select
+const customStyles = {
+    control: (provided) => ({
+        ...provided,
+        height: '5vh',
+        width: '10vw',
+    }),
+};
+
+const Wrapper3 = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 5vh;
+    padding-left: 5vw;
+`;
+
+const Wrapper4 = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 25vw;
+    height: 5vh;
+
+    border-radius: 2px;
+    outline-style: solid;
+    outline-color: #cecdcd;
+    outline-width: 0.5px;
+    margin-left: 3vw;
+
+    button {
+        height: 5vh;
+        width: 3vw;
+        margin: 0% 0% 0% 0%;
+        border-radius: 0;
+        background-image: url(${btn_logo});
+        background-color: white;
+        background-size: 1.5vw 2.7vh;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+`;
+
+const Input = styled.input`
+    width: 22vw;
+    height: 5vh;
+    border: 1px solid #707070;
+    /* outline-style: solid;
+    outline-color: blue;
+    outline-width: 1px; */
+    font-size: 17px;
+    padding: 0% 5% 0% 5%;
+    outline: 0;
+    border: 0;
+    background-color: white;
+    ::placeholder {
+        color: #707070;
+        //padding: 0% 0% 0% 0%;
+    }
+    &:focus {
+        outline: none;
+    }
+`;
+
+const Table = styled.table`
+    width: 90%;
+    margin: 3vh 0 1vh 0;
+    text-align: center;
+    border-spacing: 0;
+
+    th {
+        border-bottom: 1px solid #393939;
+        border-top: 1px solid #393939;
+        background-color: #ebf1f9;
+        //padding: 0;
+        font-size: 17px;
+        padding: 1vh 0 1vh 0;
+        font-weight: bold;
+    }
+    tr {
+        font-size: 17px;
+        border-bottom: 1px solid #b0b0b0;
+    }
+    tr:hover {
+        background-color: #eceaea;
+        cursor: pointer;
+    }
+    td {
+        text-align: center;
+    }
+
+    td + td {
+        //padding: 10px 5px;
+        text-align: start;
+        padding: 1vh 0 1vh 10vw;
+    }
+`;
+
 function VotingStatus() {
-    const [status, setStatus] = useState(false);
+    const [status, setStatus] = useState(false); //false: progress , ture: past
     const onStatusTrueHandler = () => {
         setStatus(true);
     };
@@ -174,11 +279,21 @@ function VotingStatus() {
     };
 
     const [voteData, setVoteData] = useState([]);
+    const [pastVoteData, setPastVoteData] = useState([]);
+    //----------------------------------------------------------------------
+    const [year, setYear] = useState();
+    const [title, setTitle] = useState('');
+    const [isTitle, setIsTitle] = useState(false);
 
     useEffect(async () => {
         try {
-            const res = await api.vote.getMyVote();
-            setVoteData(res.list);
+            if (!status) {
+                const res = await api.vote.getMyVote();
+                setVoteData(res.list);
+            } else {
+                const res = await api.vote.getPastVote(1, '', 0);
+                setPastVoteData(res);
+            }
         } catch (e) {
             if (e.response) {
                 console.log(e.response);
@@ -186,7 +301,7 @@ function VotingStatus() {
                 console.log(e);
             }
         }
-    }, []);
+    }, [status]);
 
     //Set Vote Name for Status
     const setVoteName = (name, start, end) => {
@@ -225,7 +340,7 @@ function VotingStatus() {
                 },
             ],
         };
-        dataSet.labels = ['응답자 ' + (totalCnt / TotalNumber) * 100 + '%', '미응답자 ' + ((TotalNumber - totalCnt) / TotalNumber) * 100 + '%'];
+        dataSet.labels = ['응답자 ' + ((totalCnt / TotalNumber) * 100).toFixed(1) + '%', '미응답자 ' + (((TotalNumber - totalCnt) / TotalNumber) * 100).toFixed(1) + '%'];
         dataSet.datasets[0].data = [totalCnt, TotalNumber - totalCnt];
         return dataSet;
     };
@@ -372,60 +487,78 @@ function VotingStatus() {
         }
     });
 
+    //--------------------------------------------------------------
+
+    const options = [
+        {
+            value: 2020,
+            label: '2020',
+        },
+        {
+            value: 2021,
+            label: '2021',
+        },
+    ];
+
+    const onYearHandler = (event) => {
+        setYear(event.value);
+    };
+
+    const onTitleHandler = (event) => {
+        setTitle(event.currentTarget.value);
+        if (event.currentTarget.value.length > 0) {
+            setIsTitle(true);
+        } else {
+            setIsTitle(false);
+        }
+    };
+
+    const drawPastVoteList = pastVoteData.list.map((item) => {
+        let result = '';
+        let count = -1;
+        for (let i = 0; i < item.candidates.length; i++) {
+            if (item.candidates[i].count > count) {
+                result = item.candidates[i].name;
+            }
+        }
+        return (
+            <tr>
+                <td>{item.idx}</td>
+                <td>{item.voteName}</td>
+                <td>{result}</td>
+            </tr>
+        );
+    });
+
     return (
         <StatusBody>
             <BtnAndBtn onTrue={onStatusTrueHandler} onFalse={onStatusFalseHandler} status={status} />
             {status ? (
-                <div>
+                <>
                     <h1>지난 투표결과</h1>
-                    <Statusbox>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '응답자 비율',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                        <Wrapper2>
-                            <Doughnut
-                                options={{
-                                    maintainAspectRatio: false,
-                                    legend: {
-                                        display: true,
-                                        position: 'right',
-                                    },
-                                    title: {
-                                        display: true,
-                                        text: '투표 현황',
-                                        fontSize: 15,
-                                        fontStyle: 'bold',
-                                        fontFamily: 'sans-serif',
-                                    },
-                                }}
-                                data={data}
-                                height={100}
-                            />
-                        </Wrapper2>
-                    </Statusbox>
-                </div>
+                    <Wrapper3>
+                        <Select label="연도" options={options} placeholder="연도" styles={customStyles} onChange={onYearHandler} />
+                        <Wrapper4>
+                            <Input name="title" placeholder="투표 검색" onChange={onTitleHandler} />
+                            <button></button>
+                        </Wrapper4>
+                    </Wrapper3>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>투표번호</th>
+                                <th>투표명</th>
+                                <th>결과</th>
+                            </tr>
+                        </thead>
+                        <tbody>{drawPastVoteList}</tbody>
+                    </Table>
+                </>
             ) : (
-                <div>
+                <>
                     <h1>진행중인 투표현황</h1>
                     {drawVoteStatus}
-                </div>
+                </>
             )}
         </StatusBody>
     );
