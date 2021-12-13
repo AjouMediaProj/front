@@ -292,7 +292,7 @@ function VotingStatus() {
                 setVoteData(res.list);
             } else {
                 const res = await api.vote.getPastVote(1, '', 0);
-                setPastVoteData(res);
+                setPastVoteData(res.list);
             }
         } catch (e) {
             if (e.response) {
@@ -513,7 +513,7 @@ function VotingStatus() {
         }
     };
 
-    const drawPastVoteList = pastVoteData.list.map((item) => {
+    const drawPastVoteList = pastVoteData.map((item) => {
         let result = '';
         let count = -1;
         for (let i = 0; i < item.candidates.length; i++) {
