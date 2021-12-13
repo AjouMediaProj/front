@@ -280,6 +280,7 @@ function VotingStatus() {
 
     const [voteData, setVoteData] = useState([]);
     const [pastVoteData, setPastVoteData] = useState([]);
+    const [listCount, setListCount] = useState();
     //----------------------------------------------------------------------
     const [year, setYear] = useState();
     const [title, setTitle] = useState('');
@@ -293,6 +294,7 @@ function VotingStatus() {
             } else {
                 const res = await api.vote.getPastVote(1, '', 0);
                 setPastVoteData(res.list);
+                setListCount(res.totalCount);
             }
         } catch (e) {
             if (e.response) {
@@ -518,6 +520,7 @@ function VotingStatus() {
         let count = -1;
         for (let i = 0; i < item.candidates.length; i++) {
             if (item.candidates[i].count > count) {
+                count = item.candidates[i].count;
                 result = item.candidates[i].name;
             }
         }
@@ -551,6 +554,19 @@ function VotingStatus() {
                                 <th>결과</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>2</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>3</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+
                         <tbody>{drawPastVoteList}</tbody>
                     </Table>
                 </>
