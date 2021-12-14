@@ -403,7 +403,7 @@ function VotingStatus({ history }) {
                     data: [],
                     borderWidth: 4,
                     hoverBorderWidth: 3,
-                    backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)'],
+                    backgroundColor: ['rgba(255, 168, 91, 1)', 'rgba(68, 104, 222, 1)', '#019c7d', '#ffe88a', 'rgba(165, 165, 165, 1)'],
                     fill: true,
                 },
             ],
