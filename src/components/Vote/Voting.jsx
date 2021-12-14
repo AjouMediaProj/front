@@ -190,7 +190,12 @@ function Voting({ history }) {
             if (e.response) {
                 if (e.response.status === utils.types.HttpStatus.NotFound) {
                     console.log(e.response.data.error);
-                    //alert('아이디 혹은 비밀번호가 틀렸습니다.');
+                } else if (e.response.status === utils.types.HttpStatus.InternalServerError) {
+                    if (e.response.data.error === 'UserAlreadyVoted') {
+                        alert('이미 진행한 투표입니다.');
+                    } else if (e.response.data.error === 'InvalidVoteCategory') {
+                        alert('투표 권한이 없습니다.');
+                    }
                 }
             } else {
                 alert(e);
