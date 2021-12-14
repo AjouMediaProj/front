@@ -22,9 +22,6 @@ const StatusBody = styled.div`
         font-size: 20px;
         font-weight: bold;
         color: #000000;
-        outline-style: solid;
-        outline-color: black;
-        outline-width: 1px;
     }
 
     button {

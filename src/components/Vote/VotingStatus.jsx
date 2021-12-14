@@ -241,15 +241,32 @@ const Table = styled.table`
     margin: 3vh 0 1vh 0;
     text-align: center;
     border-spacing: 0;
-
-    th {
+    th:nth-child(1) {
         border-bottom: 1px solid #393939;
         border-top: 1px solid #393939;
         background-color: #ebf1f9;
-        //padding: 0;
         font-size: 17px;
         padding: 1vh 0 1vh 0;
         font-weight: bold;
+        width: 15%;
+    }
+    th:nth-child(2) {
+        border-bottom: 1px solid #393939;
+        border-top: 1px solid #393939;
+        background-color: #ebf1f9;
+        font-size: 17px;
+        padding: 1vh 0 1vh 0;
+        font-weight: bold;
+        width: 60%;
+    }
+    th:nth-child(3) {
+        border-bottom: 1px solid #393939;
+        border-top: 1px solid #393939;
+        background-color: #ebf1f9;
+        font-size: 17px;
+        padding: 1vh 0 1vh 0;
+        font-weight: bold;
+        width: 25%;
     }
     tr {
         font-size: 17px;
@@ -262,11 +279,9 @@ const Table = styled.table`
     td {
         text-align: center;
     }
-
     td + td {
-        //padding: 10px 5px;
-        text-align: start;
-        padding: 1vh 0 1vh 10vw;
+        text-align: left;
+        padding: 1vh 0 1vh 10%;
     }
 `;
 

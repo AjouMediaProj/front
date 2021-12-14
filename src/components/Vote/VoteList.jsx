@@ -14,6 +14,7 @@ function VoteList({ history }) {
                 name: splitName(rowData.name),
                 date: utils.common.changeDate(rowData.startTime, rowData.endTime),
                 category: rowData.category,
+                isVoted: rowData.isVoted,
             }));
             setVotes(votes.concat(_inputData));
         } catch (err) {
@@ -43,10 +44,14 @@ function VoteList({ history }) {
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    history.push({
-                        pathname: '/vote/agreement',
-                        state: { voteIdx: vote.idx, voteName: vote.name },
-                    });
+                    if (vote.isVoted) {
+                        alert('이미 투표한 선거입니다.');
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
+                    }
                 }}
                 color="#506EA5">
                 <h4>{vote.name}</h4>
@@ -62,10 +67,14 @@ function VoteList({ history }) {
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    history.push({
-                        pathname: '/vote/agreement',
-                        state: { voteIdx: vote.idx, voteName: vote.name },
-                    });
+                    if (vote.isVoted) {
+                        alert('이미 투표한 선거입니다.');
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
+                    }
                 }}
                 color="#2E8B57">
                 <h4>{vote.name}</h4>
@@ -81,10 +90,14 @@ function VoteList({ history }) {
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    history.push({
-                        pathname: '/vote/agreement',
-                        state: { voteIdx: vote.idx, voteName: vote.name },
-                    });
+                    if (vote.isVoted) {
+                        alert('이미 투표한 선거입니다.');
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
+                    }
                 }}
                 color="#8B5927">
                 <h4>{vote.name}</h4>
