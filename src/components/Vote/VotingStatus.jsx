@@ -326,6 +326,8 @@ function VotingStatus({ history }) {
     //----------------------------------------------------------------------
     const [year, setYear] = useState(0);
     const [title, setTitle] = useState('');
+    const [pYear, setPYear] = useState(0);
+    const [pTitle, setPTitle] = useState('');
     const [pageNumber, setPageNumber] = useState(1);
     const [isBold, setIsBold] = useState(false);
 
@@ -556,7 +558,7 @@ function VotingStatus({ history }) {
         setTitle(event.currentTarget.value);
     };
 
-    const onSearchHandler = async (page) => {
+    const onSearchHandler = async (page, title, year) => {
         if (page > 0 && page < Math.ceil(listCount / 8) + 1) {
             setPageNumber(page);
             try {
@@ -585,7 +587,7 @@ function VotingStatus({ history }) {
 
     const onKeyPress = (event) => {
         if (event.key == 'Enter') {
-            onSearchHandler(1);
+            onSearchHandler(1, title, year);
             console.log(12);
         }
     };
@@ -631,7 +633,9 @@ function VotingStatus({ history }) {
                             <Input name="title" placeholder="투표 검색" onChange={onTitleHandler} onKeyPress={onKeyPress} />
                             <button
                                 onClick={() => {
-                                    onSearchHandler(1);
+                                    onSearchHandler(1, title, year);
+                                    setPTitle(title);
+                                    setPYear(year);
                                 }}></button>
                         </Wrapper4>
                     </Wrapper3>
@@ -650,7 +654,7 @@ function VotingStatus({ history }) {
                         <BtnContainer>
                             <button
                                 onClick={() => {
-                                    onSearchHandler(pageNumber - 1);
+                                    onSearchHandler(pageNumber - 1, pTitle, pYear);
                                 }}>
                                 &lt; 이전
                             </button>
@@ -660,7 +664,7 @@ function VotingStatus({ history }) {
                                 <BtnContainer weight="bold">
                                     <button
                                         onClick={() => {
-                                            onSearchHandler(num);
+                                            onSearchHandler(num, pTitle, pYear);
                                         }}>
                                         {num}
                                     </button>
@@ -669,7 +673,7 @@ function VotingStatus({ history }) {
                                 <BtnContainer>
                                     <button
                                         onClick={() => {
-                                            onSearchHandler(num);
+                                            onSearchHandler(num, pTitle, pYear);
                                         }}>
                                         {num}
                                     </button>
@@ -679,7 +683,7 @@ function VotingStatus({ history }) {
                         <BtnContainer>
                             <button
                                 onClick={() => {
-                                    onSearchHandler(pageNumber + 1);
+                                    onSearchHandler(pageNumber + 1, pTitle, pYear);
                                 }}>
                                 다음 &gt;
                             </button>
