@@ -563,8 +563,12 @@ function VotingStatus({ history }) {
             setPageNumber(page);
             try {
                 const res = await api.vote.getPastVote(page, title, year);
-                setPastVoteData(res.list);
-                setListCount(res.totalCount);
+                if (res.list.length === 0) {
+                    alert('검색 결과가 없습니다.');
+                } else {
+                    setPastVoteData(res.list);
+                    setListCount(res.totalCount);
+                }
             } catch (e) {
                 if (e.response) {
                     if (e.response.status === utils.types.HttpStatus.Conflict) {
