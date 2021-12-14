@@ -49,8 +49,10 @@ function VoteList({ history }) {
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    if (vote.category !== Math.floor(utils.storageManager.userInfo.major / 10000)) {
-                        alert('투표 권한이 없습니다.');
+                    if (utils.storageManager.userInfo !== null) {
+                        if (vote.category !== Math.floor(utils.storageManager.userInfo.major / 10000)) {
+                            alert('투표 권한이 없습니다.');
+                        }
                     } else if (vote.isVoted) {
                         alert('이미 투표한 선거입니다.');
                     } else {
@@ -74,8 +76,10 @@ function VoteList({ history }) {
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    if (vote.category !== Math.floor(utils.storageManager.userInfo.major / 100)) {
-                        alert('투표 권한이 없습니다.');
+                    if (utils.storageManager.userInfo !== null) {
+                        if (vote.category !== Math.floor(utils.storageManager.userInfo.major / 100)) {
+                            alert('투표 권한이 없습니다.');
+                        }
                     } else if (vote.isVoted) {
                         alert('이미 투표한 선거입니다.');
                     } else {
@@ -99,8 +103,10 @@ function VoteList({ history }) {
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    if (vote.category !== utils.storageManager.userInfo.major) {
-                        alert('투표 권한이 없습니다.');
+                    if (utils.storageManager.userInfo !== null) {
+                        if (vote.category !== utils.storageManager.userInfo.major) {
+                            alert('투표 권한이 없습니다.');
+                        }
                     } else if (vote.isVoted) {
                         alert('이미 투표한 선거입니다.');
                     } else {
