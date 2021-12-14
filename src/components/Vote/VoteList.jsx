@@ -60,6 +60,11 @@ function VoteList({ history }) {
                                 state: { voteIdx: vote.idx, voteName: vote.name },
                             });
                         }
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
                     }
                 }}
                 color="#506EA5">
@@ -87,6 +92,11 @@ function VoteList({ history }) {
                                 state: { voteIdx: vote.idx, voteName: vote.name },
                             });
                         }
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
                     }
                 }}
                 color="#2E8B57">
@@ -114,6 +124,11 @@ function VoteList({ history }) {
                                 state: { voteIdx: vote.idx, voteName: vote.name },
                             });
                         }
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
                     }
                 }}
                 color="#8B5927">
