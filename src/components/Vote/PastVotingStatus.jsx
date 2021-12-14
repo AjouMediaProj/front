@@ -17,7 +17,7 @@ const StatusBody = styled.div`
     background-color: #fbfbfb;
 
     h1 {
-        margin: 1% 70% 2% 0%;
+        margin: 2% 70% 1% 0%;
         width: 20vw;
         font-size: 20px;
         font-weight: bold;
@@ -488,7 +488,7 @@ function PastVotingStatus({ history }) {
     return (
         <StatusBody>
             <BtnAndBtn onTrue={onStatusTrueHandler} onFalse={onStatusFalseHandler} status={status} />
-            <h1>지난 투표 결과</h1>
+            <h1>지난 투표결과</h1>
             {postData}
         </StatusBody>
     );
