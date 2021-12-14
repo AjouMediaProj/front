@@ -246,6 +246,18 @@ function SignUp() {
         //allCheckedHandler(target.checked);
     };
 
+    useEffect(() => {
+        setMajorData();
+    }, []);
+    let options = [];
+    const setMajorData = () => {
+        for (let key in utils.types.Category) {
+            if (key.length === 5) {
+                options.push({ value: Number(key), label: utils.types.Category[key] });
+            }
+        }
+    };
+
     const onEmailHandler = (event) => {
         const emailCurrent = event.currentTarget.value;
         setEmail(emailCurrent);
@@ -477,162 +489,10 @@ function SignUp() {
 
 export default SignUp;
 
-const options = [
-    {
-        value: 10101,
-        label: '미디어학과',
-    },
-    {
-        value: 10102,
-        label: '전자공학과',
-    },
-    {
-        value: 10103,
-        label: '소프트웨어학과',
-    },
-    {
-        value: 10104,
-        label: '국방디지털융합학과',
-    },
-    {
-        value: 10105,
-        label: '사이버보안학과',
-    },
-    {
-        value: 10106,
-        label: '인공지능융합학과',
-    },
+let options = [];
 
-    {
-        value: 10201,
-        label: '기계공학과',
-    },
-    {
-        value: 10202,
-        label: '환경안전공학과',
-    },
-    {
-        value: 10203,
-        label: '산업공학과',
-    },
-    {
-        value: 10204,
-        label: '건설시스템공학과',
-    },
-    {
-        value: 10205,
-        label: '화학공학과',
-    },
-    {
-        value: 10206,
-        label: '교통시스템공학과',
-    },
-    {
-        value: 10207,
-        label: '신소재공학과',
-    },
-    {
-        value: 10208,
-        label: '건축학과',
-    },
-    {
-        value: 10209,
-        label: '응용화학생명공학과',
-    },
-    {
-        value: 10210,
-        label: '융합시스템공학과',
-    },
-
-    {
-        value: 10301,
-        label: '수학과',
-    },
-    {
-        value: 10302,
-        label: '화학과',
-    },
-    {
-        value: 10303,
-        label: '물리학과',
-    },
-    {
-        value: 10304,
-        label: '생명과학과',
-    },
-
-    {
-        value: 10401,
-        label: '경영학과',
-    },
-    {
-        value: 10402,
-        label: '금융공학과',
-    },
-    {
-        value: 10403,
-        label: 'e-비즈니스학과',
-    },
-    {
-        value: 10404,
-        label: '글로벌경영학과',
-    },
-
-    {
-        value: 10501,
-        label: '국어국문학과',
-    },
-    {
-        value: 10502,
-        label: '사학과',
-    },
-    {
-        value: 10503,
-        label: '영어영문학과',
-    },
-    {
-        value: 10504,
-        label: '문화콘텐츠학과',
-    },
-    {
-        value: 10505,
-        label: '불어불문학과',
-    },
-
-    {
-        value: 10601,
-        label: '경제학과',
-    },
-    {
-        value: 10602,
-        label: '사회학과',
-    },
-    {
-        value: 10603,
-        label: '행정학과',
-    },
-    {
-        value: 10604,
-        label: '정치외교학과',
-    },
-    {
-        value: 10605,
-        label: '심리학과',
-    },
-    {
-        value: 10606,
-        label: '스포츠레저학과',
-    },
-    {
-        value: 10701,
-        label: '의과대학',
-    },
-    {
-        value: 10801,
-        label: '간호학과',
-    },
-    {
-        value: 10901,
-        label: '약학과',
-    },
-];
+for (let key in utils.types.Category) {
+    if (key.length === 5) {
+        options.push({ value: Number(key), laabel: utils.types.Category.key });
+    }
+}
