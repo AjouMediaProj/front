@@ -36,8 +36,13 @@ function VoteList({ history }) {
         return rtn;
     };
 
+    const calNumLength = (num) => {
+        num = num.toString();
+        return num.length;
+    };
+
     const voteAll = votes.filter((vote) => {
-        return vote.category == 0;
+        return calNumLength(vote.category) === 1;
     });
 
     const voteListAll = voteAll.map((vote) => (
@@ -61,7 +66,7 @@ function VoteList({ history }) {
     ));
 
     const voteCourse = votes.filter((vote) => {
-        return vote.category == 101;
+        return calNumLength(vote.category) === 3;
     });
     const voteListCourse = voteCourse.map((vote) => (
         <li key={vote.idx}>
@@ -84,7 +89,7 @@ function VoteList({ history }) {
     ));
 
     const voteMajor = votes.filter((vote) => {
-        return vote.category == 10101;
+        return calNumLength(vote.category) === 5;
     });
     const voteListMajor = voteMajor.map((vote) => (
         <li key={vote.idx}>
