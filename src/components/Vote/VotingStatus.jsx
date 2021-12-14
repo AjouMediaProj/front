@@ -541,12 +541,20 @@ function VotingStatus({ history }) {
 
     const options = [
         {
-            value: 2020,
-            label: '2020',
+            value: 0,
+            label: '전체',
         },
         {
             value: 2021,
             label: '2021',
+        },
+        {
+            value: 2020,
+            label: '2020',
+        },
+        {
+            value: 2019,
+            label: '2019',
         },
     ];
 
