@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ajou_logo from 'src/img/AjouLogo.png';
 import utils from 'src/utils';
+import * as api from 'src/api';
 
 function Header() {
     const [name, setName] = useState();
@@ -9,9 +10,16 @@ function Header() {
         if (sessionStorage.getItem('auth')) setName(utils.storageManager.userInfo.name);
     });
 
-    const removeData = () => {
-        sessionStorage.clear();
-        window.location.href = '/vote';
+    const removeData = async () => {
+        try {
+            const res = await api.member.sendSignOut();
+            sessionStorage.clear();
+            window.location.href = '/vote';
+        } catch (err) {
+            //팝업
+            alert(err);
+            console.log(err);
+        }
     };
 
     return (
