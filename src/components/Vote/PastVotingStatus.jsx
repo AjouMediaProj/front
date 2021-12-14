@@ -315,10 +315,10 @@ function PastVotingStatus({ history }) {
         );
     };
 
-    const TotalNumber = 250;
+    //const TotalNumber = 250;
 
     //Set Response Data for Status
-    const setResData = (totalCnt) => {
+    const setResData = (totalCnt, TotalNumber) => {
         let dataSet = {
             labels: [],
             datasets: [
@@ -386,7 +386,7 @@ function PastVotingStatus({ history }) {
         let item = location.state.data;
 
         if (item.candidates.length === 1) {
-            let resData = setResData(item.totalVoteCnt);
+            let resData = setResData(item.totalVoteCnt, utils.types.StudentCnt[item.category]);
             let candData = setCandDataOnly(item.totalVoteCnt, item.candidates);
             return (
                 <Statusbox>
@@ -432,7 +432,7 @@ function PastVotingStatus({ history }) {
                 </Statusbox>
             );
         } else {
-            let resData = setResData(item.totalVoteCnt);
+            let resData = setResData(item.totalVoteCnt, utils.types.StudentCnt[item.category]);
             let candData = setCandData(item.candidates);
 
             return (
