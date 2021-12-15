@@ -6,6 +6,12 @@ import utils from 'src/utils';
 function VoteList({ history }) {
     const [votes, setVotes] = useState([]);
 
+    const [bChecked, setChecked] = useState(false);
+    const checkHandler = (e) => {
+        setChecked(!bChecked);
+        //allCheckedHandler(target.checked);
+    };
+
     useEffect(async () => {
         try {
             const res = await api.vote.getList();
@@ -41,8 +47,31 @@ function VoteList({ history }) {
         return num.length;
     };
 
+    const validCategory = (voteCategory, userMajor) => {
+        let rtn = false;
+
+        switch (voteCategory.toString().length) {
+            case 1:
+                userMajor = Math.floor(userMajor / 10000);
+                break;
+
+            case 3:
+                userMajor = Math.floor(userMajor / 100);
+                break;
+        }
+        if (voteCategory == userMajor) {
+            rtn = true;
+        }
+
+        return rtn;
+    };
+
     const voteAll = votes.filter((vote) => {
-        return calNumLength(vote.category) === 1;
+        if (bChecked) {
+            return calNumLength(vote.category) === 1 && validCategory(vote.category, utils.storageManager.userInfo.major);
+        } else {
+            return calNumLength(vote.category) === 1;
+        }
     });
 
     const voteListAll = voteAll.map((vote) => (
@@ -50,7 +79,7 @@ function VoteList({ history }) {
             <VoteStyledBody
                 onClick={() => {
                     if (utils.storageManager.userInfo !== null) {
-                        if (vote.category !== Math.floor(utils.storageManager.userInfo.major / 10000)) {
+                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
                             alert('투표 권한이 없습니다.');
                         } else if (vote.isVoted) {
                             alert('이미 투표한 선거입니다.');
@@ -75,14 +104,18 @@ function VoteList({ history }) {
     ));
 
     const voteCourse = votes.filter((vote) => {
-        return calNumLength(vote.category) === 3;
+        if (bChecked) {
+            return calNumLength(vote.category) === 3 && validCategory(vote.category, utils.storageManager.userInfo.major);
+        } else {
+            return calNumLength(vote.category) === 3;
+        }
     });
     const voteListCourse = voteCourse.map((vote) => (
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
                     if (utils.storageManager.userInfo !== null) {
-                        if (vote.category !== Math.floor(utils.storageManager.userInfo.major / 100)) {
+                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
                             alert('투표 권한이 없습니다.');
                         } else if (vote.isVoted) {
                             alert('이미 투표한 선거입니다.');
@@ -107,14 +140,18 @@ function VoteList({ history }) {
     ));
 
     const voteMajor = votes.filter((vote) => {
-        return calNumLength(vote.category) === 5;
+        if (bChecked) {
+            return calNumLength(vote.category) === 5 && validCategory(vote.category, utils.storageManager.userInfo.major);
+        } else {
+            return calNumLength(vote.category) === 5;
+        }
     });
     const voteListMajor = voteMajor.map((vote) => (
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
                     if (utils.storageManager.userInfo !== null) {
-                        if (vote.category !== utils.storageManager.userInfo.major) {
+                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
                             alert('투표 권한이 없습니다.');
                         } else if (vote.isVoted) {
                             alert('이미 투표한 선거입니다.');
@@ -141,6 +178,13 @@ function VoteList({ history }) {
     return (
         <StyledBody>
             <h1>진행중인 투표목록</h1>
+            {utils.storageManager.userInfo ? (
+                <h2>
+                    내 투표만 보기 <Checkbox checked={bChecked} onChange={(e) => checkHandler(e)} />
+                </h2>
+            ) : (
+                ''
+            )}
             {(() => {
                 if (voteListAll.length !== 0) {
                     return <h2>총학생회</h2>;
@@ -243,4 +287,9 @@ const VoteStyledBody = styled.div`
         line-height: 3vh;
         border-top: 1px solid #212529;
     }
+`;
+
+const Checkbox = styled.input.attrs({ type: 'checkbox' })`
+    width: 2vw;
+    height: 2vh;
 `;
