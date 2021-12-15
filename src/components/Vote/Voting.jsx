@@ -148,24 +148,28 @@ function Voting({ history }) {
     const [voteName, setVoteName] = useState('');
     const [overview, setOverview] = useState([]);
 
-    useEffect(async () => {
-        try {
-            const res = await api.vote.getOverview(getParams);
-            setVoteName(res.voteName);
-            const _inputData = await res.candidates.map((rowData) => ({
-                idx: rowData.idx,
-                voteIdx: rowData.voteIdx,
-                name: rowData.name,
-                img: rowData.img,
-                txt: rowData.txt,
-                count: rowData.count,
-                status: rowData.status,
-            }));
-            setOverview(overview.concat(_inputData));
-        } catch (err) {
-            //팝업
-            alert(err);
-        }
+    // useEffect(async () => {
+    //     try {
+    //         const res = await api.vote.getOverview(getParams);
+    //         setVoteName(res.voteName);
+    //         const _inputData = await res.candidates.map((rowData) => ({
+    //             idx: rowData.idx,
+    //             voteIdx: rowData.voteIdx,
+    //             name: rowData.name,
+    //             img: rowData.img,
+    //             txt: rowData.txt,
+    //             count: rowData.count,
+    //             status: rowData.status,
+    //         }));
+    //         setOverview(overview.concat(_inputData));
+    //     } catch (err) {
+    //         //팝업
+    //         alert(err);
+    //     }
+    // }, []);
+    useEffect(() => {
+        setVoteName(location.state.voteName);
+        setOverview(location.state.voteData);
     }, []);
 
     const onSubmitHandler = (event) => {
@@ -209,11 +213,11 @@ function Voting({ history }) {
             <CandidateListBody>
                 <ul>
                     {overview.map((candidate, i) => (
-                        <li>
+                        <li key={candidate.idx}>
                             <React.Fragment key={i}>
                                 <CandidateBody>
                                     <h4>{candidate.name}</h4>
-                                    <img src={candidate.img} />
+                                    <img src={candidate.photo} />
                                     {/* <h5>
                                         <label>
                                             <FormCheckLeft type="radio" id={candidate.id} name={candidate.name} checked={selectValue == candidate.id} onChange={handleChange} value={candidate.id} />

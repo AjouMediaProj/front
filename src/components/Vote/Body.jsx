@@ -8,6 +8,7 @@ import SignUp from 'src/components/Vote/SignUp';
 import SignIn from 'src/components/Vote/SignIn';
 import Voting from 'src/components/Vote/Voting';
 import Signature from 'src/components/Vote/Signature';
+import Promise from 'src/components/Vote/Promise';
 import Agreement from 'src/components/Vote/Agreement';
 import VoteResult from 'src/components/Vote/VoteResult';
 import CodeCheck from 'src/components/Vote/CodeCheck';
@@ -34,6 +35,7 @@ class Body extends Component {
                     <Route path="/vote/signin" render={(props) => <SignIn {...props} />} />
                     <Route path="/vote/voting" component={Voting} />
                     <Route path="/vote/signature" component={Signature} />
+                    <Route path="/vote/promise" component={Promise} />
                     <Route path="/vote/voteresult" component={VoteResult} />
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/agreement" render={(props) => <Agreement {...props} />} />
                     <Route path="/vote/codecheck" render={(props) => <CodeCheck {...props} />} />
