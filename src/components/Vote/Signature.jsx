@@ -96,7 +96,7 @@ function Signature({ history }) {
                 <button
                     onClick={() => {
                         history.push({
-                            pathname: '/vote/voting',
+                            pathname: '/vote/promise',
                             state: { voteIdx: location.state.voteIdx, voteName: location.state.voteName },
                         });
                     }}>

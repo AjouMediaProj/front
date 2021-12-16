@@ -41,9 +41,6 @@ const StatusBody = styled.div`
         font-size: 20px;
         color: #000000;
     }
-    h5 {
-        flex-grow: 1;
-    }
 `;
 
 const Wrapper = styled.div`
@@ -241,32 +238,15 @@ const Table = styled.table`
     margin: 3vh 0 1vh 0;
     text-align: center;
     border-spacing: 0;
-    th:nth-child(1) {
+
+    th {
         border-bottom: 1px solid #393939;
         border-top: 1px solid #393939;
         background-color: #ebf1f9;
+        //padding: 0;
         font-size: 17px;
         padding: 1vh 0 1vh 0;
         font-weight: bold;
-        width: 15%;
-    }
-    th:nth-child(2) {
-        border-bottom: 1px solid #393939;
-        border-top: 1px solid #393939;
-        background-color: #ebf1f9;
-        font-size: 17px;
-        padding: 1vh 0 1vh 0;
-        font-weight: bold;
-        width: 60%;
-    }
-    th:nth-child(3) {
-        border-bottom: 1px solid #393939;
-        border-top: 1px solid #393939;
-        background-color: #ebf1f9;
-        font-size: 17px;
-        padding: 1vh 0 1vh 0;
-        font-weight: bold;
-        width: 25%;
     }
     tr {
         font-size: 17px;
@@ -279,79 +259,41 @@ const Table = styled.table`
     td {
         text-align: center;
     }
+
     td + td {
-        text-align: left;
-        padding: 1vh 0 1vh 10%;
+        //padding: 10px 5px;
+        text-align: start;
+        padding: 1vh 0 1vh 10vw;
     }
 `;
 
-const Wrapper5 = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    min-width: 10vw;
-    height: 3vh;
-    background-color: #fbfbfb;
-    //justify-content: center;
-`;
-
-const BtnContainer = styled.div`
-    button {
-        margin: 0 0 0 0;
-        width: 4vw;
-        height: 3vh;
-        color: #080808;
-        background-color: #fbfbfb;
-        font-size: 15px;
-        font-weight: ${(props) => props.weight || 'normal'};
-    }
-`;
-
-function VotingStatus({ history }) {
+function PastVotingStatus({ history }) {
     const location = useLocation();
-
-    const getParams = location.state ? location.state.status : false;
-
-    const [status, setStatus] = useState(getParams); //false: progress , ture: past
+    const [status, setStatus] = useState(true); //false: progress , ture: past
     const onStatusTrueHandler = () => {
         setStatus(true);
+        history.push({
+            pathname: '/vote/votingstatus',
+            state: { status: true },
+        });
     };
     const onStatusFalseHandler = () => {
         setStatus(false);
+        history.push({
+            pathname: '/vote/votingstatus',
+            state: { status: false },
+        });
+    };
+
+    //back action(pop)
+    window.onpopstate = function (event) {
+        utils.storageManager.setBack(true);
     };
 
     const [voteData, setVoteData] = useState([]);
     const [pastVoteData, setPastVoteData] = useState([]);
     const [listCount, setListCount] = useState();
     //----------------------------------------------------------------------
-    const [year, setYear] = useState(0);
-    const [title, setTitle] = useState('');
-    const [pYear, setPYear] = useState(0);
-    const [pTitle, setPTitle] = useState('');
-    const [pageNumber, setPageNumber] = useState(1);
-    const [isBold, setIsBold] = useState(false);
-
-    useEffect(async () => {
-        try {
-            setStatus(utils.storageManager.back ? true : status);
-            sessionStorage.removeItem('back');
-
-            if (!status) {
-                const res = await api.vote.getMyVote();
-                setVoteData(res.list);
-            } else {
-                const res = await api.vote.getPastVote(1, '', 0);
-                setPastVoteData(res.list);
-                setListCount(res.totalCount);
-            }
-        } catch (e) {
-            if (e.response) {
-                console.log(e.response);
-            } else {
-                console.log(e);
-            }
-        }
-    }, [status]);
 
     //Set Vote Name for Status
     const setVoteName = (name, start, end) => {
@@ -429,7 +371,7 @@ function VotingStatus({ history }) {
                     data: [],
                     borderWidth: 4,
                     hoverBorderWidth: 3,
-                    backgroundColor: ['rgba(238, 102, 121, 1)', 'rgba(98, 181, 229, 1)', 'rgba(255, 198, 0, 1)'],
+                    backgroundColor: ['rgba(255, 168, 91, 1)', 'rgba(68, 104, 222, 1)', '#019c7d', '#ffe88a', 'rgba(165, 165, 165, 1)'],
                     fill: true,
                 },
             ],
@@ -440,7 +382,9 @@ function VotingStatus({ history }) {
         return dataSet;
     };
 
-    const drawVoteStatus = voteData.map((item) => {
+    const drawData = () => {
+        let item = location.state.data;
+
         if (item.candidates.length === 1) {
             let resData = setResData(item.totalVoteCnt, utils.types.StudentCnt[item.category]);
             let candData = setCandDataOnly(item.totalVoteCnt, item.candidates);
@@ -535,181 +479,19 @@ function VotingStatus({ history }) {
                 </Statusbox>
             );
         }
-    });
+    };
+
+    const postData = drawData();
 
     //--------------------------------------------------------------
-
-    const options = [
-        {
-            value: 0,
-            label: '전체',
-        },
-        {
-            value: 2021,
-            label: '2021',
-        },
-        {
-            value: 2020,
-            label: '2020',
-        },
-        {
-            value: 2019,
-            label: '2019',
-        },
-    ];
-
-    const onYearHandler = (event) => {
-        setYear(event.value);
-    };
-
-    const onTitleHandler = (event) => {
-        setTitle(event.currentTarget.value);
-    };
-
-    const onSearchHandler = async (page, title, year) => {
-        if (page > 0 && page < Math.ceil(listCount / 8) + 1) {
-            setPageNumber(page);
-            try {
-                const res = await api.vote.getPastVote(page, title, year);
-                if (res.list.length === 0) {
-                    alert('검색 결과가 없습니다.');
-                } else {
-                    setPastVoteData(res.list);
-                    setListCount(res.totalCount);
-                }
-            } catch (e) {
-                if (e.response) {
-                    if (e.response.status === utils.types.HttpStatus.Conflict) {
-                        // if (e.response.data.error === 'DuplicatedEmail') {
-                        //     alert('이미 가입된 사용자입니다.');
-                        // } else if (e.response.data.error === 'DuplicatedStudentID') {
-                        //     alert('중복된 학번입니다.');
-                        // } else {
-                        //     console.log(e.response.error);
-                        // }
-                    } else if (e.response.status === utils.types.HttpStatus.BadRequest) {
-                        //alert('이메일 인증에 실패하였습니다.\n인증번호를 확인하거나 다시 요청해주시기 바랍니다.');
-                    }
-                } else {
-                    alert(e);
-                }
-            }
-        }
-    };
-
-    const onKeyPress = (event) => {
-        if (event.key == 'Enter') {
-            onSearchHandler(1, title, year);
-            console.log(12);
-        }
-    };
-
-    const drawPastVoteList = pastVoteData.map((item) => {
-        let result = '';
-        let count = -1;
-        for (let i = 0; i < item.candidates.length; i++) {
-            if (item.candidates[i].count > count) {
-                count = item.candidates[i].count;
-                result = item.candidates[i].name;
-            }
-        }
-        return (
-            <tr
-                onClick={() =>
-                    history.push({
-                        pathname: '/vote/pastvotingstatus',
-                        state: { data: item },
-                    })
-                }>
-                <td>{item.idx}</td>
-                <td>{item.voteName}</td>
-                <td>{result}</td>
-            </tr>
-        );
-    });
-
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(listCount / 8); i++) {
-        pageNumbers.push(i);
-    }
 
     return (
         <StatusBody>
             <BtnAndBtn onTrue={onStatusTrueHandler} onFalse={onStatusFalseHandler} status={status} />
-            {status ? (
-                <>
-                    <h1>지난 투표결과</h1>
-                    <Wrapper3>
-                        <Select label="연도" options={options} placeholder="연도" styles={customStyles} onChange={onYearHandler} />
-                        <Wrapper4>
-                            <Input name="title" placeholder="투표 검색" onChange={onTitleHandler} onKeyPress={onKeyPress} />
-                            <button
-                                onClick={() => {
-                                    onSearchHandler(1, title, year);
-                                    setPTitle(title);
-                                    setPYear(year);
-                                }}></button>
-                        </Wrapper4>
-                    </Wrapper3>
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>투표번호</th>
-                                <th>투표명</th>
-                                <th>결과</th>
-                            </tr>
-                        </thead>
-                        <tbody>{drawPastVoteList}</tbody>
-                    </Table>
-                    <h5></h5>
-                    <Wrapper5 weight={isBold}>
-                        <BtnContainer>
-                            <button
-                                onClick={() => {
-                                    onSearchHandler(pageNumber - 1, pTitle, pYear);
-                                }}>
-                                &lt; 이전
-                            </button>
-                        </BtnContainer>
-                        {pageNumbers.map((num) => {
-                            return num === pageNumber ? (
-                                <BtnContainer weight="bold">
-                                    <button
-                                        onClick={() => {
-                                            onSearchHandler(num, pTitle, pYear);
-                                        }}>
-                                        {num}
-                                    </button>
-                                </BtnContainer>
-                            ) : (
-                                <BtnContainer>
-                                    <button
-                                        onClick={() => {
-                                            onSearchHandler(num, pTitle, pYear);
-                                        }}>
-                                        {num}
-                                    </button>
-                                </BtnContainer>
-                            );
-                        })}
-                        <BtnContainer>
-                            <button
-                                onClick={() => {
-                                    onSearchHandler(pageNumber + 1, pTitle, pYear);
-                                }}>
-                                다음 &gt;
-                            </button>
-                        </BtnContainer>
-                    </Wrapper5>
-                </>
-            ) : (
-                <>
-                    <h1>진행중인 투표현황</h1>
-                    {drawVoteStatus}
-                </>
-            )}
+            <h1>지난 투표결과</h1>
+            {postData}
         </StatusBody>
     );
 }
 
-export default VotingStatus;
+export default PastVotingStatus;

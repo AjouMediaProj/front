@@ -31,6 +31,22 @@ class StorageManager {
     setAuth(status) {
         sessionStorage.setItem('auth', status);
     }
+
+    /**
+     *
+     * @returns {Boolean}
+     */
+    get back() {
+        return sessionStorage.getItem('back');
+    }
+
+    /**
+     *
+     * @param {Boolean} status
+     */
+    setBack(status) {
+        sessionStorage.setItem('back', status);
+    }
 }
 
 export default new StorageManager();

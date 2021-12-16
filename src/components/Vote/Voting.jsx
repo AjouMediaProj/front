@@ -83,6 +83,7 @@ const CandidateBody = styled.div`
     img {
         width: 20vw;
         height: 30vh;
+        object-fit: contain;
         outline-style: solid;
         outline-color: black;
         outline-width: 1px;
@@ -148,24 +149,28 @@ function Voting({ history }) {
     const [voteName, setVoteName] = useState('');
     const [overview, setOverview] = useState([]);
 
-    useEffect(async () => {
-        try {
-            const res = await api.vote.getOverview(getParams);
-            setVoteName(res.voteName);
-            const _inputData = await res.candidates.map((rowData) => ({
-                idx: rowData.idx,
-                voteIdx: rowData.voteIdx,
-                name: rowData.name,
-                img: rowData.img,
-                txt: rowData.txt,
-                count: rowData.count,
-                status: rowData.status,
-            }));
-            setOverview(overview.concat(_inputData));
-        } catch (err) {
-            //팝업
-            alert(err);
-        }
+    // useEffect(async () => {
+    //     try {
+    //         const res = await api.vote.getOverview(getParams);
+    //         setVoteName(res.voteName);
+    //         const _inputData = await res.candidates.map((rowData) => ({
+    //             idx: rowData.idx,
+    //             voteIdx: rowData.voteIdx,
+    //             name: rowData.name,
+    //             img: rowData.img,
+    //             txt: rowData.txt,
+    //             count: rowData.count,
+    //             status: rowData.status,
+    //         }));
+    //         setOverview(overview.concat(_inputData));
+    //     } catch (err) {
+    //         //팝업
+    //         alert(err);
+    //     }
+    // }, []);
+    useEffect(() => {
+        setVoteName(location.state.voteName);
+        setOverview(location.state.voteData);
     }, []);
 
     const onSubmitHandler = (event) => {
@@ -190,7 +195,12 @@ function Voting({ history }) {
             if (e.response) {
                 if (e.response.status === utils.types.HttpStatus.NotFound) {
                     console.log(e.response.data.error);
-                    //alert('아이디 혹은 비밀번호가 틀렸습니다.');
+                } else if (e.response.status === utils.types.HttpStatus.InternalServerError) {
+                    if (e.response.data.error === 'UserAlreadyVoted') {
+                        alert('이미 진행한 투표입니다.');
+                    } else if (e.response.data.error === 'InvalidVoteCategory') {
+                        alert('투표 권한이 없습니다.');
+                    }
                 }
             } else {
                 alert(e);
@@ -204,11 +214,11 @@ function Voting({ history }) {
             <CandidateListBody>
                 <ul>
                     {overview.map((candidate, i) => (
-                        <li>
+                        <li key={candidate.idx}>
                             <React.Fragment key={i}>
                                 <CandidateBody>
                                     <h4>{candidate.name}</h4>
-                                    <img src={candidate.img} />
+                                    <img src={candidate.photo} />
                                     {/* <h5>
                                         <label>
                                             <FormCheckLeft type="radio" id={candidate.id} name={candidate.name} checked={selectValue == candidate.id} onChange={handleChange} value={candidate.id} />

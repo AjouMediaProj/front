@@ -8,8 +8,8 @@ class Header extends Component {
             <StyledHeader>
                 <LogoButton></LogoButton>
                 <Button onClick={() => (window.location.href = '/vote')}> VOTE</Button>
-                <Button> MY PAGE</Button>
-                <Button onClick={() => (window.location.href = '/contact')}> CONTACT US</Button>
+                <Button> SERVICE</Button>
+                <Button> CONTACT</Button>
             </StyledHeader>
         );
     }
@@ -21,7 +21,7 @@ export default Header;
 //
 const StyledHeader = styled.div`
     width: 100%;
-    height: 8vh;
+    height: 10vh;
     display: flex;
     align-items: flex-end;
     background-color: white;

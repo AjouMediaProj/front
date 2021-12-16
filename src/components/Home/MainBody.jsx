@@ -4,7 +4,7 @@ import main_background from 'src/img/MainBackground.png';
 
 const StyledBody = styled.div`
     width: 100%;
-    height: 84vh;
+    min-height: 130vh;
     display: flex;
     outline: none;
     flex-direction: column;
@@ -13,36 +13,36 @@ const StyledBody = styled.div`
     background-image: url(${main_background});
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: 100% auto;
 
     h1 {
         margin-top: 10vh;
         margin-right: 10%;
         color: white;
-        font-size: 40px;
+        font-size: 50px;
     }
     h2 {
         margin-top: 1vh;
         margin-right: 10%;
         color: white;
-        font-size: 40px;
+        font-size: 50px;
     }
     h3 {
         margin-top: 3vh;
         margin-right: 10%;
         color: white;
-        font-size: 30px;
+        font-size: 40px;
     }
 `;
 
 const LinkBtn = styled.button`
-    width: 25vw;
-    height: 5vh;
+    width: 30vw;
+    height: 7vh;
     border: 1px solid white;
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0);
     color: white;
-    font-size: 20px;
+    font-size: 30px;
     :hover {
         background-color: white;
         color: black;
