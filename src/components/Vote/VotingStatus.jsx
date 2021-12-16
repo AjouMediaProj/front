@@ -41,6 +41,14 @@ const StatusBody = styled.div`
         font-size: 20px;
         color: #000000;
     }
+
+    h3 {
+        margin: 1% 70% 0% 0%;
+        width: 20vw;
+        font-size: 20px;
+        font-weight: bold;
+        color: #d41a1a;
+    }
     h5 {
         flex-grow: 1;
     }
@@ -343,6 +351,7 @@ function VotingStatus({ history }) {
                 const res = await api.vote.getPastVote(1, '', 0);
                 setPastVoteData(res.list);
                 setListCount(res.totalCount);
+                setPageList();
             }
         } catch (e) {
             if (e.response) {
@@ -600,7 +609,6 @@ function VotingStatus({ history }) {
     const onKeyPress = (event) => {
         if (event.key == 'Enter') {
             onSearchHandler(1, title, year);
-            console.log(12);
         }
     };
 
@@ -629,9 +637,20 @@ function VotingStatus({ history }) {
     });
 
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(listCount / 8); i++) {
+    let count1 = pageNumber % 10 === 0 ? pageNumber - 9 : pageNumber - (pageNumber % 10) + 1;
+    let countPlus1 = count1 + 10 > Math.ceil(listCount / 8) ? Math.ceil(listCount / 8) : count1 + 9;
+    for (let i = count1; i <= countPlus1; i++) {
         pageNumbers.push(i);
     }
+
+    const setPageList = () => {
+        pageNumbers.splice(0);
+        let count1 = pageNumber % 10 === 0 ? pageNumber - 9 : pageNumber - (pageNumber % 10) + 1;
+        let countPlus1 = count1 + 10 > Math.ceil(listCount / 8) ? Math.ceil(listCount / 8) : count1 + 9;
+        for (let i = count1; i <= countPlus1; i++) {
+            pageNumbers.push(i);
+        }
+    };
 
     return (
         <StatusBody>
@@ -667,6 +686,7 @@ function VotingStatus({ history }) {
                             <button
                                 onClick={() => {
                                     onSearchHandler(pageNumber - 1, pTitle, pYear);
+                                    setPageList();
                                 }}>
                                 &lt; 이전
                             </button>
@@ -696,6 +716,7 @@ function VotingStatus({ history }) {
                             <button
                                 onClick={() => {
                                     onSearchHandler(pageNumber + 1, pTitle, pYear);
+                                    setPageList();
                                 }}>
                                 다음 &gt;
                             </button>
@@ -704,6 +725,7 @@ function VotingStatus({ history }) {
                 </>
             ) : (
                 <>
+                    <h3>* 1시간마다 동기화 됩니다</h3>
                     <h1>진행중인 투표현황</h1>
                     {drawVoteStatus}
                 </>

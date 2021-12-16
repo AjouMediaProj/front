@@ -81,7 +81,7 @@ const Category = Object.freeze({
 });
 
 const StudentCnt = Object.freeze({
-    0: 9200,
+    1: 9200,
     101: 2800,
     10101: 400,
     10102: 1000,
