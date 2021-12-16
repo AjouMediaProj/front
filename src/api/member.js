@@ -58,9 +58,9 @@ class Request {
         }
     }
 
-    async sendPassword(pastPassword, password) {
+    async sendPassword(password) {
         try {
-            const response = await utils.axios.post('/auth/update-password', { pastPassword, password });
+            const response = await utils.axios.post('/auth/update-password', { password });
             if (response.data.data == null) {
                 throw response.data.error;
             }

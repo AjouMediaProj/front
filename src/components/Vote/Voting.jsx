@@ -83,6 +83,7 @@ const CandidateBody = styled.div`
     img {
         width: 20vw;
         height: 30vh;
+        object-fit: contain;
         outline-style: solid;
         outline-color: black;
         outline-width: 1px;
