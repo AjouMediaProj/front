@@ -48,6 +48,27 @@ class Request {
             utils.common.errorHandler(e);
         }
     }
+
+    async sendSignOut() {
+        try {
+            await utils.axios.post('/auth/sign-out');
+            return true;
+        } catch (e) {
+            utils.common.errorHandler(e);
+        }
+    }
+
+    async sendPassword(pastPassword, password) {
+        try {
+            const response = await utils.axios.post('/auth/update-password', { pastPassword, password });
+            if (response.data.data == null) {
+                throw response.data.error;
+            }
+            return true;
+        } catch (e) {
+            utils.common.errorHandler(e);
+        }
+    }
 }
 
 export default new Request();

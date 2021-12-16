@@ -6,14 +6,21 @@ import utils from 'src/utils';
 function VoteList({ history }) {
     const [votes, setVotes] = useState([]);
 
+    const [bChecked, setChecked] = useState(false);
+    const checkHandler = (e) => {
+        setChecked(!bChecked);
+        //allCheckedHandler(target.checked);
+    };
+
     useEffect(async () => {
         try {
             const res = await api.vote.getList();
             const _inputData = await res.map((rowData) => ({
                 idx: rowData.idx,
-                name: rowData.name,
+                name: splitName(rowData.name),
                 date: utils.common.changeDate(rowData.startTime, rowData.endTime),
                 category: rowData.category,
+                isVoted: rowData.isVoted,
             }));
             setVotes(votes.concat(_inputData));
         } catch (err) {
@@ -23,18 +30,71 @@ function VoteList({ history }) {
         }
     }, []);
 
+    const splitName = (name) => {
+        let rtn = '';
+        const nameArr = name.split(' ');
+        for (let i in nameArr) {
+            if (i == 0) {
+                continue;
+            }
+            rtn += nameArr[i] + ' ';
+        }
+        return rtn;
+    };
+
+    const calNumLength = (num) => {
+        num = num.toString();
+        return num.length;
+    };
+
+    const validCategory = (voteCategory, userMajor) => {
+        let rtn = false;
+
+        switch (voteCategory.toString().length) {
+            case 1:
+                userMajor = Math.floor(userMajor / 10000);
+                break;
+
+            case 3:
+                userMajor = Math.floor(userMajor / 100);
+                break;
+        }
+        if (voteCategory == userMajor) {
+            rtn = true;
+        }
+
+        return rtn;
+    };
+
     const voteAll = votes.filter((vote) => {
-        return vote.category == 0;
+        if (bChecked) {
+            return calNumLength(vote.category) === 1 && validCategory(vote.category, utils.storageManager.userInfo.major);
+        } else {
+            return calNumLength(vote.category) === 1;
+        }
     });
 
     const voteListAll = voteAll.map((vote) => (
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    history.push({
-                        pathname: '/vote/agreement',
-                        state: { voteIdx: vote.idx, voteName: vote.name },
-                    });
+                    if (utils.storageManager.userInfo !== null) {
+                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
+                            alert('투표 권한이 없습니다.');
+                        } else if (vote.isVoted) {
+                            alert('이미 투표한 선거입니다.');
+                        } else {
+                            history.push({
+                                pathname: '/vote/agreement',
+                                state: { voteIdx: vote.idx, voteName: vote.name },
+                            });
+                        }
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
+                    }
                 }}
                 color="#506EA5">
                 <h4>{vote.name}</h4>
@@ -44,16 +104,33 @@ function VoteList({ history }) {
     ));
 
     const voteCourse = votes.filter((vote) => {
-        return vote.category == 101;
+        if (bChecked) {
+            return calNumLength(vote.category) === 3 && validCategory(vote.category, utils.storageManager.userInfo.major);
+        } else {
+            return calNumLength(vote.category) === 3;
+        }
     });
     const voteListCourse = voteCourse.map((vote) => (
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    history.push({
-                        pathname: '/vote/agreement',
-                        state: { voteIdx: vote.idx, voteName: vote.name },
-                    });
+                    if (utils.storageManager.userInfo !== null) {
+                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
+                            alert('투표 권한이 없습니다.');
+                        } else if (vote.isVoted) {
+                            alert('이미 투표한 선거입니다.');
+                        } else {
+                            history.push({
+                                pathname: '/vote/agreement',
+                                state: { voteIdx: vote.idx, voteName: vote.name },
+                            });
+                        }
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
+                    }
                 }}
                 color="#2E8B57">
                 <h4>{vote.name}</h4>
@@ -63,16 +140,33 @@ function VoteList({ history }) {
     ));
 
     const voteMajor = votes.filter((vote) => {
-        return vote.category == 10101;
+        if (bChecked) {
+            return calNumLength(vote.category) === 5 && validCategory(vote.category, utils.storageManager.userInfo.major);
+        } else {
+            return calNumLength(vote.category) === 5;
+        }
     });
     const voteListMajor = voteMajor.map((vote) => (
         <li key={vote.idx}>
             <VoteStyledBody
                 onClick={() => {
-                    history.push({
-                        pathname: '/vote/agreement',
-                        state: { voteIdx: vote.idx, voteName: vote.name },
-                    });
+                    if (utils.storageManager.userInfo !== null) {
+                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
+                            alert('투표 권한이 없습니다.');
+                        } else if (vote.isVoted) {
+                            alert('이미 투표한 선거입니다.');
+                        } else {
+                            history.push({
+                                pathname: '/vote/agreement',
+                                state: { voteIdx: vote.idx, voteName: vote.name },
+                            });
+                        }
+                    } else {
+                        history.push({
+                            pathname: '/vote/agreement',
+                            state: { voteIdx: vote.idx, voteName: vote.name },
+                        });
+                    }
                 }}
                 color="#8B5927">
                 <h4>{vote.name}</h4>
@@ -84,6 +178,13 @@ function VoteList({ history }) {
     return (
         <StyledBody>
             <h1>진행중인 투표목록</h1>
+            {utils.storageManager.userInfo ? (
+                <h2>
+                    내 투표만 보기 <Checkbox checked={bChecked} onChange={(e) => checkHandler(e)} />
+                </h2>
+            ) : (
+                ''
+            )}
             {(() => {
                 if (voteListAll.length !== 0) {
                     return <h2>총학생회</h2>;
@@ -186,4 +287,9 @@ const VoteStyledBody = styled.div`
         line-height: 3vh;
         border-top: 1px solid #212529;
     }
+`;
+
+const Checkbox = styled.input.attrs({ type: 'checkbox' })`
+    width: 2vw;
+    height: 2vh;
 `;

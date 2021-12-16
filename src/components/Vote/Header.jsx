@@ -1,7 +1,8 @@
 import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ajou_logo from 'src/img/AjouLogo.png'; //로고체인지
+import ajou_logo from 'src/img/AjouLogo.png';
 import utils from 'src/utils';
+import * as api from 'src/api';
 
 function Header() {
     const [name, setName] = useState();
@@ -9,9 +10,16 @@ function Header() {
         if (sessionStorage.getItem('auth')) setName(utils.storageManager.userInfo.name);
     });
 
-    const removeData = () => {
-        sessionStorage.clear();
-        window.location.href = '/vote';
+    const removeData = async () => {
+        try {
+            const res = await api.member.sendSignOut();
+            sessionStorage.clear();
+            window.location.href = '/vote';
+        } catch (err) {
+            //팝업
+            alert(err);
+            console.log(err);
+        }
     };
 
     return (
@@ -24,8 +32,8 @@ function Header() {
 
             {name ? ( //링크 바꿔야함
                 <>
-                    <LoginButton>{name}님</LoginButton>
-                    <LoginButton onClick={removeData}>로그아웃</LoginButton>
+                    <LoginButton onClick={() => (window.location.href = '/vote/mypage')}>{name}님</LoginButton>
+                    <LoginButton onClick={removeData}>LOGOUT</LoginButton>
                 </>
             ) : (
                 <LoginButton onClick={() => (window.location.href = '/vote/signin')}>LOGIN</LoginButton>

@@ -72,6 +72,26 @@ class Request {
 
     /**
      *
+     * @param {Number} page
+     * @param {String} name
+     * @param {Number} year
+     * @returns
+     */
+    async getPastVote(page, name, year) {
+        try {
+            const response = await utils.axios.post('/vote/get-past-vote-result', { page, name, year });
+            if (response.data.data == null) {
+                throw response.data.error;
+            }
+            return response.data.data;
+        } catch (e) {
+            console.error(e);
+            throw e;
+        }
+    }
+
+    /**
+     *
      * @param {Number} voteIdx
      * @param {Number} candIdx
      * @param {Boolean} renounce

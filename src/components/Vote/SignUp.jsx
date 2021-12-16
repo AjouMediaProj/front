@@ -54,16 +54,25 @@ const SignatureBody = styled.div`
     width: 90vw;
     height: 20vh;
     background-color: #ffffff;
+    padding: 1% 2% 1% 2%;
     outline-style: solid;
     outline-color: black;
     outline-width: 1px;
-
+    white-space: pre-line;
     h1 {
-        margin: 4% 0% 2% 0%;
-        text-align: center;
-        font-size: 25px;
-
+        margin: 0% 0% 0% 0%;
+        //text-align: center;
+        font-size: 15px;
         color: #000000;
+    }
+    overflow: scroll;
+    &::-webkit-scrollbar {
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.4);
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 6px;
     }
 `;
 
@@ -237,6 +246,18 @@ function SignUp() {
         //allCheckedHandler(target.checked);
     };
 
+    useEffect(() => {
+        setMajorData();
+    }, []);
+    let options = [];
+    const setMajorData = () => {
+        for (let key in utils.types.Category) {
+            if (key.length === 5) {
+                options.push({ value: Number(key), label: utils.types.Category[key] });
+            }
+        }
+    };
+
     const onEmailHandler = (event) => {
         const emailCurrent = event.currentTarget.value;
         setEmail(emailCurrent);
@@ -387,50 +408,41 @@ function SignUp() {
         }
     };
 
-    const options = [
-        {
-            value: 'media',
-            label: '미디어학과',
-        },
-        {
-            value: 'media1',
-            label: '미디어학과1',
-        },
-        {
-            value: 'media2',
-            label: '미디어학과2',
-        },
-        {
-            value: 'media3',
-            label: '미디어학과',
-        },
-        {
-            value: 'media4',
-            label: '미디어학과1',
-        },
-        {
-            value: 'media5',
-            label: '미디어학과2',
-        },
-        {
-            value: 'media6',
-            label: '미디어학과',
-        },
-        {
-            value: 'media7',
-            label: '미디어학과1',
-        },
-        {
-            value: 10101,
-            label: '미디어학과2',
-        },
-    ];
-
     return (
         <SingupBody>
             <h1>개인정보보호정책</h1>
             <SignatureBody>
-                <h1>동의합니다</h1>
+                <h1>
+                    가. 개인정보의 수집 및 이용 목적
+                    <br />
+                    ① BLOTE은 다음의 목적을 위하여 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는 개인정보 보호법 제18조에
+                    따라 별도의 동의를 받는 등 필요한 조치를 이행할 예정입니다.
+                    <br />
+                    1. BLOTE 서비스 제공을 위한 회원관리
+                    <br />
+                    1) 공간정보 다운로드, 오픈API 신청 및 활용 등 포털 서비스 제공과 서비스 부정이용 방지를 목적으로 개인정보를 처리합니다.
+                    <br />
+                    나. 수집하는 개인정보의 항목
+                    <br />
+                    ① BLOTE 회원정보(필수): 이름, 이메일(아이디), 비밀번호
+                    <br />
+                    다. 개인정보의 보유 및 이용기간
+                    <br />
+                    ① BLOTE은 법령에 따른 개인정보 보유ㆍ이용기간 또는 정보주체로부터 개인정보를 수집 시에 동의 받은 개인정보 보유ㆍ이용기간 내에서 개인정보를 처리ㆍ보유합니다.
+                    <br />
+                    1. BLOTE 회원정보
+                    <br />
+                    - 수집근거: 정보주체의 동의
+                    <br />
+                    - 보존기간: 회원 탈퇴 요청 전까지(1년 경과 시 재동의)
+                    <br />
+                    - 보존근거: 정보주체의 동의
+                    <br />
+                    라. 동의 거부 권리 및 동의 거부에 따른 불이익
+                    <br />
+                    위 개인정보의 수집 및 이용에 대한 동의를 거부할 수 있으나, 동의를 거부할 경우 회원 가입이 제한됩니다.
+                    <br />
+                </h1>
             </SignatureBody>
             <h2>
                 <Checkbox checked={bChecked} onChange={(e) => checkHandler(e)} /> 동의합니다.
@@ -476,3 +488,11 @@ function SignUp() {
 }
 
 export default SignUp;
+
+let options = [];
+
+for (let key in utils.types.Category) {
+    if (key.length === 5) {
+        options.push({ value: Number(key), laabel: utils.types.Category.key });
+    }
+}
