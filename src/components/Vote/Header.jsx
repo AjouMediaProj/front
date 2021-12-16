@@ -29,8 +29,7 @@ function Header() {
             <Button onClick={() => (window.location.href = '/vote/votingstatus')}>투표현황/결과</Button>
             <Button onClick={() => (window.location.href = '/vote/codecheck')}>투표코드확인</Button>
             <h1></h1>
-
-            {name ? ( //링크 바꿔야함
+            {name ? (
                 <>
                     <LoginButton onClick={() => (window.location.href = '/vote/mypage')}>{name}님</LoginButton>
                     <LoginButton onClick={removeData}>LOGOUT</LoginButton>

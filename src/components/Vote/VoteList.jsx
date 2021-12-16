@@ -79,7 +79,7 @@ function VoteList({ history }) {
             <VoteStyledBody
                 onClick={() => {
                     if (utils.storageManager.userInfo !== null) {
-                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
+                        if (!validCategory(vote.category, utils.storageManager.userInfo.major)) {
                             alert('투표 권한이 없습니다.');
                         } else if (vote.isVoted) {
                             alert('이미 투표한 선거입니다.');
@@ -115,7 +115,7 @@ function VoteList({ history }) {
             <VoteStyledBody
                 onClick={() => {
                     if (utils.storageManager.userInfo !== null) {
-                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
+                        if (!validCategory(vote.category, utils.storageManager.userInfo.major)) {
                             alert('투표 권한이 없습니다.');
                         } else if (vote.isVoted) {
                             alert('이미 투표한 선거입니다.');
@@ -151,7 +151,7 @@ function VoteList({ history }) {
             <VoteStyledBody
                 onClick={() => {
                     if (utils.storageManager.userInfo !== null) {
-                        if (validCategory(vote.category, utils.storageManager.userInfo.major)) {
+                        if (!validCategory(vote.category, utils.storageManager.userInfo.major)) {
                             alert('투표 권한이 없습니다.');
                         } else if (vote.isVoted) {
                             alert('이미 투표한 선거입니다.');
@@ -239,7 +239,6 @@ const StyledBody = styled.div`
 
 //카테고리별 리스트 틀
 const StyledList = styled.ul`
-    /* background-color: red; */
     display: flex;
     outline: none;
     flex-direction: vertical;
@@ -260,10 +259,6 @@ const StyledList = styled.ul`
 const VoteStyledBody = styled.div`
     width: 100%;
     height: 10vh;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; */
     background-color: white;
     outline-style: solid;
     outline-color: black;

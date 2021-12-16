@@ -1,8 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import SignaturePad from 'signature_pad';
-import main_background from 'src/img/MainBackground.png';
 import * as api from 'src/api';
 
 const VotingBody = styled.div`

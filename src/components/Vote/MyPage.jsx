@@ -1,7 +1,6 @@
 import React, { Component, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import * as api from 'src/api';
-import Select from 'react-select';
 import utils from 'src/utils';
 
 const emailPlaceholder = '@ajou.ac.kr';
@@ -42,7 +41,6 @@ const MyPageBody = styled.div`
 
     h3 {
         transform: translate(50%, 0%);
-        //margin-left: 50vw;
         margin: 0.3% 17% 0.3% 0%;
         text-align: center;
         font-size: 17px;
@@ -70,11 +68,6 @@ const SignatureBody = styled.div`
     }
 `;
 
-const Checkbox = styled.input.attrs({ type: 'checkbox' })`
-    width: 2vw;
-    height: 2vh;
-`;
-
 //input을 감싸주는 껍데기
 const Wrapper = styled.div`
     display: flex;
@@ -99,16 +92,11 @@ const Input = styled.input`
     width: 17vw;
     height: 4vh;
     border: 1px solid #707070;
-    /* outline-style: solid;
-    outline-color: blue;
-    outline-width: 1px; */
     font-size: 17px;
     padding: 0% 5% 0% 5%;
     background-color: ${(props) => props.backColor || 'white'};
     ::placeholder {
         color: #707070;
-
-        //padding: 0% 0% 0% 0%;
     }
     &:focus {
         outline: none;
@@ -120,7 +108,6 @@ const Wrapper2 = styled.div`
     flex-direction: row;
     justify-content: center;
     min-width: 50vw;
-    //margin-bottom: 3vh;
     position: relative;
     button {
         margin: 0% 0% 0% 0%;
@@ -142,7 +129,6 @@ const Wrapper3 = styled.div`
     flex-direction: column;
     h3 {
         transform: translate(50%, 0%);
-        //margin-left: 50vw;
         margin: 0.5% 19% 0.5% 0%;
         text-align: center;
         font-size: 14px;
@@ -165,7 +151,6 @@ const Input2 = styled.input`
     border: none;
     padding: 0% 5% 0% 5%;
     flex-grow: 1;
-
     &:focus {
         outline: none;
     }
@@ -266,14 +251,6 @@ function MyPage() {
         } else {
             alert('비밀번호가 일치하지 않습니다.');
         }
-
-        // console.log(Email);
-        // console.log(typeof ConfirmAuth);
-        // console.log(Password);
-        // console.log(Name);
-        // console.log(ConfirmPassword);
-        // console.log(typeof StudentId);
-        // console.log(typeof Major);
     };
 
     const sendChangePassword = async () => {
