@@ -173,9 +173,6 @@ function CodeCheck({ props, location, history }) {
     const getReceipt = async () => {
         try {
             const res = await api.vote.getVoteReceipt(code);
-            // console.log(res.voteName);
-            // console.log(res.candName);
-            // console.log(res.renounce);
             setVoteName(res.voteName);
             setCandName(res.candName);
             setRenounce(res.renounce);

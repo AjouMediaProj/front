@@ -3,7 +3,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import styled from 'styled-components';
 import utils from 'src/utils';
-import Select from 'react-select';
 import * as api from 'src/api';
 import btn_logo from 'src/img/search.png';
 
@@ -60,11 +59,9 @@ const Wrapper = styled.div`
         border: 0;
         outline: 0;
         font-size: 16px;
-
         font-weight: ${(props) => (props.status ? 'normal' : 'bold')};
         text-decoration: ${(props) => (props.status ? 'none' : 'underline')};
         background-color: #fbfbfb;
-
         color: #393939;
     }
     h6 {
@@ -87,9 +84,6 @@ const Wrapper2 = styled.div`
     outline-width: 0.5px;
     background-color: #ffffff;
     padding-bottom: 1%;
-    /* & + & {
-        margin-left: 4vw;
-    } */
 `;
 
 const BoxWithText = styled.div`
@@ -100,7 +94,6 @@ const BoxWithText = styled.div`
 
     h3 {
         width: 100%;
-        //text-align: left;
         font-size: 25px;
         font-family: 'Nanum';
         word-break: keep-all;
@@ -121,7 +114,7 @@ const Statusbox = styled.div`
     justify-content: space-around;
     align-items: center;
     width: 90vw;
-    height: 35vh; //30
+    height: 35vh;
     background-color: #e5e5e5;
     outline-style: solid;
     outline-color: #c2c2c2;

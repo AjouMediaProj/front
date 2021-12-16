@@ -30,7 +30,6 @@ class Body extends Component {
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/votingstatus" render={(props) => <VotingStatus {...props} />} />
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/pastvotingstatus" render={(props) => <PastVotingStatus {...props} />} />
                     <AuthRoute restricted={false} authenticated={sessionStorage.getItem('auth')} path="/vote/mypage" render={(props) => <MyPage {...props} />} />
-
                     <Route path="/vote/signup" component={SignUp} />
                     <Route path="/vote/signin" render={(props) => <SignIn {...props} />} />
                     <Route path="/vote/voting" component={Voting} />
