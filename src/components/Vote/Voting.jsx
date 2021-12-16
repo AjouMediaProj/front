@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import main_background from 'src/img/MainBackground.png';
 import * as api from 'src/api';
 import utils from 'src/utils';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const VotingBody = styled.div`
     width: 100%;
@@ -25,7 +26,7 @@ const VotingBody = styled.div`
 
 const CandidateListBody = styled.div`
     width: 70vw;
-    height: 60vh;
+    height: 63vh;
     display: flex;
     flex-direction: column;
     background-color: #ffffff;
@@ -60,6 +61,7 @@ const CandidateListBody = styled.div`
         width: 10vw;
         height: 5vh;
         align-self: center;
+        margin-top: 2vh;
         margin-bottom: 3vh;
         border: none;
         background-color: #102f57;
@@ -134,6 +136,13 @@ const FormCheckLeft = styled.input.attrs({ type: 'radio' })`
     display: none;
 `;
 
+const DivStyle = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+`;
+
 function Voting({ history }) {
     const location = useLocation();
     const getParams = location.state.voteIdx;
@@ -148,6 +157,7 @@ function Voting({ history }) {
 
     const [voteName, setVoteName] = useState('');
     const [overview, setOverview] = useState([]);
+    const [circle, setCircle] = useState('none');
 
     // useEffect(async () => {
     //     try {
@@ -173,17 +183,32 @@ function Voting({ history }) {
         setOverview(location.state.voteData);
     }, []);
 
+    let click = true;
+    const overClick = () => {
+        if (click) {
+            console.log('클릭됨');
+            click = !click;
+            setTimeout(() => {
+                click = true;
+            }, 2000);
+        } else {
+            console.log('중복됨');
+        }
+    };
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
         if (selectValue === 0) {
             alert('후보를 선택해주세요.');
             return;
         } else {
-            sendVote();
+            if (click) sendVote();
+            overClick();
         }
     };
 
     const sendVote = async () => {
+        setCircle('inline');
         try {
             const res = await api.vote.sendVote(location.state.voteIdx, selectValue, false);
             let hash = res.receipt;
@@ -191,6 +216,7 @@ function Voting({ history }) {
                 pathname: '/vote/voteresult',
                 state: { hash: hash, voteName: location.state.voteName },
             });
+            setCircle('none');
         } catch (e) {
             if (e.response) {
                 if (e.response.status === utils.types.HttpStatus.NotFound) {
@@ -211,6 +237,7 @@ function Voting({ history }) {
     return (
         <VotingBody>
             <h1>{voteName}</h1>
+
             <CandidateListBody>
                 <ul>
                     {overview.map((candidate, i) => (
@@ -242,6 +269,7 @@ function Voting({ history }) {
                         </li>
                     ))}
                 </ul>
+                <CircularProgress style={{ alignSelf: 'center', display: circle }} />
                 <button onClick={onSubmitHandler}>제 출</button>
             </CandidateListBody>
         </VotingBody>
