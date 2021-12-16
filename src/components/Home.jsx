@@ -11,7 +11,6 @@ class Home extends Component {
             <div className="Home">
                 <Header />
                 <MainBody />
-                <Footer />
             </div>
         );
     }

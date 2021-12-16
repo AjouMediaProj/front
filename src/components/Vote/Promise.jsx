@@ -5,7 +5,6 @@ import * as api from 'src/api';
 import Select from 'react-select';
 import utils from 'src/utils';
 import Icon from 'src/img/icon.png';
-import down from 'src/img/down.jpg';
 
 const emailPlaceholder = '@ajou.ac.kr';
 

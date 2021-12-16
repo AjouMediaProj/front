@@ -66,7 +66,7 @@ const Wrapper = styled.div`
 
         font-weight: ${(props) => (props.status ? 'normal' : 'bold')};
         text-decoration: ${(props) => (props.status ? 'none' : 'underline')};
-        background-color: #ffffff;
+        background-color: #fbfbfb;
 
         color: #393939;
     }
