@@ -16,8 +16,8 @@ const MyPageBody = styled.div`
     background-color: #fbfbfb;
 
     h1 {
-        margin: 1% 80% 1% 0%;
-        font-size: 20px;
+        margin: 3% 80% 2% 0%;
+        font-size: 25px;
         font-weight: bold;
         color: #000000;
     }
@@ -47,6 +47,9 @@ const MyPageBody = styled.div`
         text-align: center;
         font-size: 17px;
         color: ${(props) => props.blue || 'red'};
+    }
+    h6 {
+        flex-grow: 1;
     }
 `;
 
@@ -258,6 +261,11 @@ function MyPage() {
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
+        if (isConfirmPassword) {
+            sendChangePassword();
+        } else {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
 
         // console.log(Email);
         // console.log(typeof ConfirmAuth);
@@ -270,10 +278,9 @@ function MyPage() {
 
     const sendChangePassword = async () => {
         try {
-            const res = await api.member.sendPassword(PastPassword, Password);
+            const res = await api.member.sendPassword(Password);
             console.log(res);
             //화면넘기기
-
             alert('비밀번호가 정상적으로 변경되었습니다.');
             window.location.href = '/vote';
         } catch (e) {
@@ -298,8 +305,8 @@ function MyPage() {
     return (
         <MyPageBody>
             <h1>마이페이지</h1>
-            <InputWithLabel label="등급" name="accessLevel" backColor="#fbfbfb" placeholder={accessLevel[utils.storageManager.userInfo.accessLevel]} disabled="true" />
-            <InputWithLabel label="학교 E-mail" name="email" backColor="#fbfbfb" placeholder={utils.storageManager.userInfo.email} disabled="true" />
+            <InputWithLabel label="등급" name="accessLevel" backColor="#fbfbfb" placeholder={accessLevel[utils.storageManager.userInfo.accessLevel]} disabled={true} />
+            <InputWithLabel label="학교 E-mail" name="email" backColor="#fbfbfb" placeholder={utils.storageManager.userInfo.email} disabled={true} />
             <InputWithLabel label="기존 비밀번호 확인" name="pastPW" onChange={onPastPasswordHandler} type="password" />
             <InputWithLabel label="새 비밀번호 입력" name="pw" onChange={onPasswordHandler} type="password" />
             {isPassword ? (
@@ -321,11 +328,11 @@ function MyPage() {
                     <h3>{ConfirmPasswordMessage}</h3>
                 </Wrapper3>
             )}
-            <InputWithLabel label="성명" name="name" backColor="#fbfbfb" placeholder={utils.storageManager.userInfo.name} disabled="true" />
-            <InputWithLabel label="학번" name="studentID" backColor="#fbfbfb" placeholder={utils.storageManager.userInfo.studentID} disabled="true" />
-            <InputWithLabel label="학과" name="major" backColor="#fbfbfb" placeholder={utils.types.Category[utils.storageManager.userInfo.major]} disabled="true" />
-
-            <button onClick={onSubmitHandler}> 확인</button>
+            <InputWithLabel label="성명" name="name" backColor="#fbfbfb" placeholder={utils.storageManager.userInfo.name} disabled={true} />
+            <InputWithLabel label="학번" name="studentID" backColor="#fbfbfb" placeholder={utils.storageManager.userInfo.studentID} disabled={true} />
+            <InputWithLabel label="학과" name="major" backColor="#fbfbfb" placeholder={utils.types.Category[utils.storageManager.userInfo.major]} disabled={true} />
+            <h6></h6>
+            <button onClick={onSubmitHandler}> 저장</button>
         </MyPageBody>
     );
 }
