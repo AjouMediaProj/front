@@ -60,10 +60,7 @@ class Request {
 
     async sendPassword(password) {
         try {
-            const response = await utils.axios.post('/auth/update-password', { password });
-            if (response.data.data == null) {
-                throw response.data.error;
-            }
+            await utils.axios.patch('/auth/update-password', { password });
             return true;
         } catch (e) {
             utils.common.errorHandler(e);

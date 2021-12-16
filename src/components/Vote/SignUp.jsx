@@ -199,7 +199,7 @@ const InputWithLabel2 = ({ label, onClick, ...rest }) => (
                 <Label2>{emailPlaceholder}</Label2>
             </Wrapper4>
         </Wrapper>
-        <button onClick={onClick}>인증번호 확인</button>
+        <button onClick={onClick}>인증번호 발송</button>
     </Wrapper2>
 );
 
@@ -248,7 +248,8 @@ function SignUp() {
 
     useEffect(() => {
         setMajorData();
-    }, []);
+    }, [Major]);
+
     let options = [];
     const setMajorData = () => {
         for (let key in utils.types.Category) {
@@ -488,11 +489,3 @@ function SignUp() {
 }
 
 export default SignUp;
-
-let options = [];
-
-for (let key in utils.types.Category) {
-    if (key.length === 5) {
-        options.push({ value: Number(key), laabel: utils.types.Category.key });
-    }
-}
