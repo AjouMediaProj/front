@@ -248,7 +248,7 @@ function SignUp() {
 
     useEffect(() => {
         setMajorData();
-    }, [Major]);
+    }, [Email, Major, ConfirmAuth, Name, Password, ConfirmPassword, StudentId, bChecked]);
 
     let options = [];
     const setMajorData = () => {
