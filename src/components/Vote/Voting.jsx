@@ -143,6 +143,8 @@ const DivStyle = styled.div`
     transform: translate(-50%, -50%);
 `;
 
+let click = true;
+
 function Voting({ history }) {
     const location = useLocation();
     const getParams = location.state.voteIdx;
@@ -183,7 +185,6 @@ function Voting({ history }) {
         setOverview(location.state.voteData);
     }, []);
 
-    let click = true;
     const overClick = () => {
         if (click) {
             console.log('클릭됨');
