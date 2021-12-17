@@ -17,7 +17,7 @@ const StatusBody = styled.div`
     background-color: #fbfbfb;
 
     h1 {
-        margin: 2% 70% 1% 0%;
+        margin: 2% 0% 1% 5%;
         width: 20vw;
         font-size: 20px;
         font-weight: bold;
@@ -43,7 +43,7 @@ const StatusBody = styled.div`
     }
 
     h3 {
-        margin: 1% 70% 0% 0%;
+        margin: 2% 0% 1% 0%;
         width: 20vw;
         font-size: 20px;
         font-weight: bold;
@@ -313,6 +313,13 @@ const BtnContainer = styled.div`
         font-size: 15px;
         font-weight: ${(props) => props.weight || 'normal'};
     }
+`;
+
+const Wrapper6 = styled.div`
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
 `;
 
 function VotingStatus({ history }) {
@@ -725,8 +732,12 @@ function VotingStatus({ history }) {
                 </>
             ) : (
                 <>
-                    <h3>* 1시간마다 동기화 됩니다</h3>
-                    <h1>진행중인 투표현황</h1>
+                    <Wrapper6>
+                        <h1>진행중인 투표현황</h1>
+                        <h5></h5>
+                        <h3>* 1시간마다 동기화 됩니다</h3>
+                    </Wrapper6>
+
                     {drawVoteStatus}
                 </>
             )}

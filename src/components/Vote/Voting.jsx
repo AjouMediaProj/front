@@ -203,11 +203,11 @@ function Voting({ history }) {
             return;
         } else {
             if (click) sendVote();
-            overClick();
         }
     };
 
     const sendVote = async () => {
+        overClick();
         setCircle('inline');
         try {
             const res = await api.vote.sendVote(location.state.voteIdx, selectValue, false);
