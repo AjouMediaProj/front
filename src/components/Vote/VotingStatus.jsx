@@ -17,7 +17,7 @@ const StatusBody = styled.div`
     background-color: #fbfbfb;
 
     h1 {
-        margin: 2% 0% 1% 5%;
+        margin: 2% 70% 1% 0%;
         width: 20vw;
         font-size: 20px;
         font-weight: bold;
@@ -318,8 +318,26 @@ const BtnContainer = styled.div`
 const Wrapper6 = styled.div`
     display: flex;
     flex-direction: row;
-
     width: 100%;
+
+    h1 {
+        margin: 2% 0% 1% 5%;
+        width: 20vw;
+        font-size: 20px;
+        font-weight: bold;
+        color: #000000;
+    }
+
+    h3 {
+        margin: 2% 0% 1% 0%;
+        width: 20vw;
+        font-size: 20px;
+        font-weight: bold;
+        color: #d41a1a;
+    }
+    h5 {
+        flex-grow: 1;
+    }
 `;
 
 function VotingStatus({ history }) {
@@ -343,6 +361,10 @@ function VotingStatus({ history }) {
     const [title, setTitle] = useState('');
     const [pYear, setPYear] = useState(0);
     const [pTitle, setPTitle] = useState('');
+
+    const [eYear, setEYear] = useState(0);
+    const [eTitle, setETitle] = useState('');
+
     const [pageNumber, setPageNumber] = useState(1);
     const [isBold, setIsBold] = useState(false);
 
@@ -589,9 +611,13 @@ function VotingStatus({ history }) {
                 const res = await api.vote.getPastVote(page, title, year);
                 if (res.list.length === 0) {
                     alert('검색 결과가 없습니다.');
+                    setPTitle(eTitle);
+                    setPYear(eYear);
                 } else {
                     setPastVoteData(res.list);
                     setListCount(res.totalCount);
+                    setETitle(title);
+                    setEYear(year);
                 }
             } catch (e) {
                 if (e.response) {
